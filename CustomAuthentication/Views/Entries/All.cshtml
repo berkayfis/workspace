@@ -1,0 +1,65 @@
+﻿@using BibTeXLibrary;
+@model List<BibEntry>
+@{
+    ViewData["Title"] = "All";
+}
+
+
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Year</th>
+            <th scope="col">Detail</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var entry in Model)
+        {
+            <tr>
+                <th scope="row">@entry.Type</th>
+                <td>@entry.Title</td>
+                <td>@entry.Author</td>
+                <td>@entry.Year</td>
+                @*<td><button type="button" class="btn btn-outline-success" onclick="window.location.href='@Url.Action("Detail","Entries",new {tags = Newtonsoft.Json.JsonConvert.SerializeObject(@entry._tags)})'">Detail</button></td>*@
+                <td><button type="button" class="btn btn-outline-success" onclick="showDetail(@Newtonsoft.Json.JsonConvert.SerializeObject(@entry._tags))">Detail</button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="detailDiv" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    function showDetail(tagsString) {
+        console.log(tagsString);
+        $(".modal-body").html("");
+        $(".modal-body").append("<p>"+tagsString.title+"</p>");
+        $("#detailDiv").modal('show');        
+    }
+
+    function closeDetail() {
+        $("#detailDiv").modal('hide');        
+    }
+</script>

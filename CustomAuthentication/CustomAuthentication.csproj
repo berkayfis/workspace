@@ -13,4 +13,11 @@
     <PackageReference Include="MongoDB.Driver" Version="2.8.0" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Reference Include="BibTeXLibrary">
+      <HintPath>..\..\..\..\Downloads\BibTeXLibrary-master\BibTeXLibrary\bin\Debug\BibTeXLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

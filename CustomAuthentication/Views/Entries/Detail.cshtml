@@ -1,0 +1,14 @@
+﻿@using Newtonsoft.Json.Linq;
+@model JObject
+@{
+    ViewData["Title"] = "Detail";
+}
+
+
+<h1>Detail</h1>
+
+@foreach (var x in Model)
+{
+    <p>@x.Key    </p>
+    <p> @x.Value</p>
+}

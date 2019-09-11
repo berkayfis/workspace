@@ -29,6 +29,7 @@ namespace CustomAuthentication
             });
 
             services.AddScoped<UserService>();
+            services.AddScoped<PublicationService>();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

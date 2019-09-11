@@ -28,7 +28,8 @@
           "Microsoft.AspNetCore.Razor.Design": "2.2.0",
           "Microsoft.NETCore.App": "2.2.0",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.2.0",
-          "MongoDB.Driver": "2.8.0"
+          "MongoDB.Driver": "2.8.0",
+          "BibTeXLibrary": "0.0.1.0"
         },
         "runtime": {
           "CustomAuthentication.dll": {}
@@ -721,6 +722,17 @@
         "dependencies": {
           "System.Runtime": "4.3.0",
           "System.Runtime.Handles": "4.3.0"
+        }
+      },
+      "BibTeXLibrary/0.0.1.0": {
+        "runtime": {
+          "BibTeXLibrary.dll": {
+            "assemblyVersion": "0.0.1.0",
+            "fileVersion": "1.0.0.0"
+          }
+        },
+        "compile": {
+          "BibTeXLibrary.dll": {}
         }
       },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
@@ -4194,6 +4206,11 @@
       "sha512": "sha512-k/+g4b7vjdd4aix83sTgC9VG6oXYKAktSfNIJUNGxPEj7ryEOfzHHhfnmsZvjxawwcD9HyWXKCXmPjX8U4zeSw==",
       "path": "system.threading.threadpool/4.3.0",
       "hashPath": "system.threading.threadpool.4.3.0.nupkg.sha512"
+    },
+    "BibTeXLibrary/0.0.1.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
     },
     "Microsoft.AspNet.WebApi.Client/5.2.6": {
       "type": "package",

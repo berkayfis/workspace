@@ -30,3 +30,8 @@ C:\Users\BerkayFis\source\repos\CustomAuthentication\CustomAuthentication\obj\De
 C:\Users\BerkayFis\source\repos\CustomAuthentication\CustomAuthentication\obj\Debug\netcoreapp2.2\Razor\Views\Account\Login.g.cshtml.cs
 C:\Users\BerkayFis\source\repos\CustomAuthentication\CustomAuthentication\obj\Debug\netcoreapp2.2\CustomAuthentication.csprojAssemblyReference.cache
 C:\Users\BerkayFis\source\repos\CustomAuthentication\CustomAuthentication\obj\Debug\netcoreapp2.2\Razor\Views\Register\Register.g.cshtml.cs
+C:\Users\BerkayFis\source\repos\CustomAuthentication\CustomAuthentication\bin\Debug\netcoreapp2.2\BibTeXLibrary.dll
+C:\Users\BerkayFis\source\repos\CustomAuthentication\CustomAuthentication\bin\Debug\netcoreapp2.2\BibTeXLibrary.pdb
+C:\Users\BerkayFis\source\repos\CustomAuthentication\CustomAuthentication\obj\Debug\netcoreapp2.2\Razor\Views\Entries\All.g.cshtml.cs
+C:\Users\BerkayFis\source\repos\CustomAuthentication\CustomAuthentication\obj\Debug\netcoreapp2.2\Razor\Views\Entries\Detail.g.cshtml.cs
+C:\Users\BerkayFis\source\repos\CustomAuthentication\CustomAuthentication\obj\Debug\netcoreapp2.2\Razor\Views\Entries\Index.g.cshtml.cs
