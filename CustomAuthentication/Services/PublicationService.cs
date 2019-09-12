@@ -22,7 +22,7 @@ namespace CustomAuthentication.Services
 
         public List<BibEntry> GetAllEntriesFromFile(string filePath)
         {
-            BibParser parser = new BibParser(new StreamReader("C:\\Users\\BerkayFis\\Desktop\\test.bib", Encoding.Default));
+            BibParser parser = new BibParser(new StreamReader(filePath, Encoding.Default));
             return parser.GetAllResult();
         }
 
