@@ -13876,23 +13876,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\BerkayFis\\.nuget\\packages\\": {},
+    "C:\\Users\\berkay.fis\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\BerkayFis\\source\\repos\\CustomAuthentication\\CustomAuthentication\\CustomAuthentication.csproj",
+      "projectUniqueName": "C:\\Users\\berkay.fis\\Source\\Repos\\workspace\\CustomAuthentication\\CustomAuthentication.csproj",
       "projectName": "CustomAuthentication",
-      "projectPath": "C:\\Users\\BerkayFis\\source\\repos\\CustomAuthentication\\CustomAuthentication\\CustomAuthentication.csproj",
-      "packagesPath": "C:\\Users\\BerkayFis\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\BerkayFis\\source\\repos\\CustomAuthentication\\CustomAuthentication\\obj\\",
+      "projectPath": "C:\\Users\\berkay.fis\\Source\\Repos\\workspace\\CustomAuthentication\\CustomAuthentication.csproj",
+      "packagesPath": "C:\\Users\\berkay.fis\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\berkay.fis\\Source\\Repos\\workspace\\CustomAuthentication\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\BerkayFis\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\berkay.fis\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -13900,7 +13900,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://www.nuget.org/api/v2/": {}
       },
       "frameworks": {
         "netcoreapp2.2": {
