@@ -49,5 +49,10 @@ namespace CustomAuthentication.Controllers
 
             return View(json);
         }
+
+        public IActionResult ShowRespectiveForm(string publicationType)
+        {
+            return PartialView(string.Format("Publications/_{0}",publicationType));
+        }
     }
 }

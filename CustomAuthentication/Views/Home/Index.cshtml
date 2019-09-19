@@ -13,4 +13,36 @@
             <h4>Welcome to Asp.Net Core Authentication and Authorization Demo!!</h4>
         </div>
     </div>
-</div>  
+</div>
+<div>
+    <select id="publication" name="publicationType">
+        <option value="Article">Article</option>
+        <option value="Book">Book</option>
+        <option value="Misc">Misc</option>
+    </select>
+</div>
+
+@*<partial name="Publications/_Article" />*@
+
+<div id="partialPlaceHolder">
+
+
+</div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    // jquery
+    $(document).ready(function () {
+        $("#publication").on("change", function () {
+
+            var url = '@Url.Action("ShowRespectiveForm", "Entries")' + "?publicationType=" + $(this).val();
+
+            //window.location.replace(url);
+            $("#partialPlaceHolder").load(url, function () {
+                // add your fade code here
+            });
+
+        });
+    });
+</script>
+
+
