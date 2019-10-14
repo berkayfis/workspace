@@ -2,25 +2,31 @@
     ViewData["Title"] = "Home Page";
 }
 
+
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
-            <h2><strong>Home Page </strong></h2><br /><br />
+        <div class="col-md-8">
             Hello @User.Identity.Name
             <a asp-area="" asp-controller="Account" asp-action="Login">Logout</a>
             <br />
-            <br />
-            <h4>Welcome to Asp.Net Core Authentication and Authorization Demo!!</h4>
+            <h4>Welcome to Citation Editor!</h4>
+        </div>
+        <div class="dropdown col-md-2 offset-md-1 align-self-end">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Select Publication Type
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item publication-types" href="#" name="Article">Article</a>
+                <a class="dropdown-item publication-types" href="#" name="Book">Book</a>
+                <a class="dropdown-item publication-types" href="#" name="Misc">Misc</a>
+                <a class="dropdown-item publication-types" href="#" name="Online">Online</a>
+                <a class="dropdown-item publication-types" href="#" name="Conference">Conference</a>
+                <a class="dropdown-item publication-types" href="#" name="Url">Url</a>
+            </div>
         </div>
     </div>
 </div>
-<div>
-    <select id="publication" name="publicationType">
-        <option value="Article">Article</option>
-        <option value="Book">Book</option>
-        <option value="Misc">Misc</option>
-    </select>
-</div>
+
 
 @*<partial name="Publications/_Article" />*@
 
@@ -29,14 +35,14 @@
 
 </div>
 <script src="~/lib/jquery/dist/jquery.js"></script>
+
 <script>
     // jquery
     $(document).ready(function () {
-        $("#publication").on("change", function () {
+        $(".publication-types").on("click", function () {
 
-            var url = '@Url.Action("ShowRespectiveForm", "Entries")' + "?publicationType=" + $(this).val();
+            var url = '@Url.Action("ShowRespectiveForm", "Entries")' + "?publicationType=" + $(this).prop("name");
 
-            //window.location.replace(url);
             $("#partialPlaceHolder").load(url, function () {
                 // add your fade code here
             });
