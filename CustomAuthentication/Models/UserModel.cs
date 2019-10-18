@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace CustomAuthentication.Models
 {
@@ -10,6 +11,7 @@ namespace CustomAuthentication.Models
         public string UserId { get; set; }
 
         [BsonElement("Username")]
+        [Required]
         public string UserName { get; set; }
 
         [BsonElement("Email")]

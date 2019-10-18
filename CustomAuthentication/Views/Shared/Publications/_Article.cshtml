@@ -2,27 +2,56 @@
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
+
+@model CustomAuthentication.Models.Publications.Article
+
 <h1>
     Article
 </h1>
 
-<form>
+<form asp-controller="Publication" asp-action="SaveArticle">
+    <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group row">
         <label for="author">Author</label>
         <div class="col-sm-9 offset-2">
-            <input type="text" class="form-control" id="author">
+            <input asp-for="Author" type="text" class="form-control" id="author">
+            <span asp-validation-for="Author"></span>
         </div>
     </div>
     <div class="form-group row">
         <label for="title">Title</label>
         <div class="col-sm-9 offset-2">
-            <input type="text" class="form-control" id="title">
+            <input asp-for="Title" type="text" class="form-control" id="title">
         </div>
     </div>
     <div class="form-group row">
         <label for="year">Year</label>
         <div class="col-sm-9 offset-2">
-            <input type="text" class="form-control" id="year">
+            <input asp-for="Year" type="text" class="form-control" id="year">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="journal">Journal</label>
+        <div class="col-sm-9 offset-2">
+            <input asp-for="Journal" type="text" class="form-control" id="journal">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="volume">Volume</label>
+        <div class="col-sm-9 offset-2">
+            <input asp-for="Volume" type="text" class="form-control" id="volume">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="number">Number</label>
+        <div class="col-sm-9 offset-2">
+            <input asp-for="Number" type="text" class="form-control" id="number">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="pages">Pages</label>
+        <div class="col-sm-9 offset-2">
+            <input asp-for="Pages" type="text" class="form-control" id="pages">
         </div>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
