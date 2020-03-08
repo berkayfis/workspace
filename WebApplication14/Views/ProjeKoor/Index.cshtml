@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+	<div class="row m-t-30">
+		<div class="col-md-12">
+			<!-- DATA TABLE-->
+			<div class="table-responsive m-b-40">
+				<table class="table table-borderless table-data3">
+					<thead>
+						<tr>
+							<th>Oturum No</th>
+							<th>Proje İsmi</th>
+							<th>Ogrenci 1</th>
+							<th>Ogrenci 2</th>
+							<th>Form 2</th>
+							<th>Toplantıya Al</th>
+						</tr>
+					</thead>
+					<tbody>
+						@{
+							int i = 0;
+						}
+						@foreach (OgrenciProjeOnerisi proje in ViewBag.öğrenciOnerileri)
+						{
+							<tr>
+								<td>@proje.OturumNo</td>
+								<td>@proje.Isim</td>
+								<td>@proje.Ogrno1</td>
+								<td>@proje.Ogrno2</td>
+								<td>@Html.ActionLink("pdf", "Index", "PdfViewer", new { path = proje.Form2 }, new { target = "_blank" })</td>
+								<td>
+									@Html.ActionLink("Onayla", "Onayla", "ProjeKoor", new { id = proje.Id })
+								</td>
+								<td></td>
+							</tr>
+							i++;
+						}
+					</tbody>
+				</table>
+			</div>
+			<!-- END DATA TABLE-->
+		</div>
+	</div>

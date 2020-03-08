@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewData["Title"] = "Eski Önerilerim";
+}
+
+	<div class="block-content-outer">
+		<div class="block-content-inner">
+			<form action="/ProjeOnerilerim/EskiOnerilerim" method="post" role="form">
+				<div class="block-heading">
+					<div class="main-text h2">
+						Eski Projeleri Önerme
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label>Projenizin İsmini Seçiniz</label>
+					<select class="form-control" name="id" required>
+						@foreach (EskiKabulGorenProjeler proje in ViewBag.eskiOnerilerim)
+						{
+							<option value="@proje.Id">
+								@proje.Isim
+							</option>
+						}
+					</select>
+				</div>
+				<div class="table-responsive m-b-20">
+					<table class="table table-borderless table-data3">
+						<thead>
+							<tr>
+								<th>İsim</th>
+								<th>Kişi Sayısı</th>
+								<th>Grup Sayısı</th>
+								<th>Form-1</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (EskiKabulGorenProjeler eskiProje in ViewBag.eskiOnerilerim)
+							{
+								<tr>
+									<td>@(eskiProje.Isim)</td>
+									<td>@(eskiProje.KisiSayisi)</td>
+									<td>@(eskiProje.GrupSayisi)</td>
+									<td>
+										@Html.ActionLink("pdf", "PdfGoruntule2", "PdfViewer", new { path = eskiProje.Form1, banch = eskiProje.Danisman.Kisaltma }, new { target = "_blank" })
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+
+				<button type="submit" class="btn btn-primary">Kaydet</button>
+			</form>
+		</div>
+	</div>

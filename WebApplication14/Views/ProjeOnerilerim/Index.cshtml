@@ -1,0 +1,217 @@
+﻿@using WebApplication14.Models
+@model IEnumerable<WebApplication14.Models.ProjeOnerileri>
+@{
+	ViewData["Title"] = "Önerdiğim Projeler";
+	List<int> atamaSayisi = ViewBag.AtamaSayısı;
+	List<int> istekGonderilmisMi = ViewBag.istekGonderilmisMi;
+	Takvim takvim = ViewBag.takvim;
+	String s = takvim.Toplanti.Value.Date.ToShortDateString();
+	int i = 0;
+
+}
+
+@if (ViewBag.geç == null)//Form2 tarihi geçmediyse
+{
+	<div class="sufee-alert alert with-close alert-warning alert-dismissible fade show">
+		<span class="badge badge-pill badge-warning">Bilgilendirme</span>
+		Proje Atamalarını <strong>@(s)</strong> tarihine kadar tamamlamanız gerekmektedir.
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">×</span>
+		</button>
+	</div>
+	<div class="row m-t-30">
+		<div class="col-md-12">
+
+			<!-- DATA TABLE-->
+			<div class="table-responsive m-b-40">
+				<table class="table table-borderless table-data3">
+					<thead>
+						<tr>
+							<th>Tür</th>
+							<th>Proje İsmi</th>
+							<th>Kişi Sayısı</th>
+							<th>Grup Sayısı</th>
+							<th>Düzenle</th>
+							<th>Form1</th>
+							<th>Atama Sayısı</th>
+							<th>Atama Yap</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (ProjeOnerileri proje in Model)
+						{
+							<tr>
+								<td>@proje.Kategori</td>
+								<td>@proje.Isim</td>
+								<td>@proje.KisiSayisi</td>
+								<td>@proje.GrupSayisi</td>
+								<td><a class="btn btn-success" href="/ProjeOnerilerim/ProjeDuzenle?id=@proje.Id"><i class="fas fa-edit"></i></a></td>
+								<td>
+									@Html.ActionLink("pdf", "PdfGoruntule2", "PdfViewer", new { path = proje.Form1, banch = proje.Danisman.Kisaltma }, new { target = "_blank" })
+								</td>
+								<td>@atamaSayisi[i]</td>
+								@if (atamaSayisi[i] == proje.GrupSayisi)
+								{
+									<td>
+										<font color="red">Kontenjan Doldu</font>
+									</td>
+								}
+								else
+								{
+									if (istekGonderilmisMi[i] == 0)
+									{
+										<td>
+											<font color="blue">İstek Gönderilmedi</font>
+										</td>
+									}
+									else if (istekGonderilmisMi[i] == 1)
+									{
+										<td><a class="btn btn-success" href="/ProjeOnerilerim/ProjeAta?id=@proje.Id"><i class="fas fa-first-aid"></i></a></td>
+									}
+								}
+							</tr>
+							i++;
+						}
+					</tbody>
+				</table>
+			</div>
+			<!-- END DATA TABLE-->
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<!-- USER DATA-->
+			<div class="user-data m-b-30">
+				<h3 class="title-3 m-b-30">
+					<i class="zmdi zmdi-account-calendar"></i>Danışmanı Olduğum Projeler
+				</h3>
+				<div class="table-responsive table-data">
+					<table class="table">
+						<thead>
+							<tr>
+								<td>Proje Adı</td>
+								<td>Alan Öğrenciler</td>
+								<td>Sil</td>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (ProjeAl proje in ViewBag.DanismaniOldugumProjeler)
+							{
+								<tr>
+									@if (proje.ProjeNo != null)
+									{
+										<td>
+											<div class="table-data__info">
+												<h6>@proje.ProjeNoNavigation.Isim</h6>
+												<span>
+													<a>@proje.ProjeNoNavigation.Kategori</a>
+												</span>
+											</div>
+										</td>
+										<td>
+											<span class="role user">@(proje.OgrNo1Navigation.OgrenciNo + " " + proje.OgrNo1Navigation.Ad + " " + proje.OgrNo1Navigation.Soyad)</span>
+											@if (proje.OgrNo2 != null)
+											{
+												<span class="role user">@(proje.OgrNo2Navigation.OgrenciNo + " " + proje.OgrNo2Navigation.Ad + " " + proje.OgrNo2Navigation.Soyad)</span>
+											}
+										</td>
+									}
+									else if (proje.OgrenciOneriNo != null)
+									{
+										<td>
+											<div class="table-data__info">
+												<h6>@proje.OgrenciOneriNoNavigation.Isim</h6>
+												<span>
+													<a>@proje.OgrenciOneriNoNavigation.Turu</a>
+												</span>
+											</div>
+										</td>
+										<td>
+											<span class="role user">@(proje.OgrenciOneriNoNavigation.Ogrno1 + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Soyad)</span>
+											@if (proje.OgrNo2 != null)
+											{
+												<span class="role user">@(proje.OgrenciOneriNoNavigation.Ogrno2 + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Soyad)</span>
+											}
+										</td>
+									}
+									<td>
+										<a class="btn btn-danger" href="/ProjeOnerilerim/AtananProjeSil?id=@proje.Id"><i class="fas fa-times-circle"></i></a>
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<!-- END USER DATA-->
+		</div>
+	</div>
+}
+else if (ViewBag.geç == 1)
+{
+	<div class="row">
+		<div class="col-lg-12">
+			<!-- USER DATA-->
+			<div class="user-data m-b-30">
+				<h3 class="title-3 m-b-30">
+					<i class="zmdi zmdi-account-calendar"></i>Bu Dönem Danışmanı Olduğum Projeler
+				</h3>
+				<div class="table-responsive table-data">
+					<table class="table">
+						<thead>
+							<tr>
+								<td>Proje Adı</td>
+								<td>Alan Öğrenciler</td>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (ProjeAl proje in ViewBag.kabulEdilenProjeler)
+							{
+								<tr>
+									@if (proje.ProjeNo != null)
+									{
+										<td>
+											<div class="table-data__info">
+												<h6>@proje.ProjeNoNavigation.Isim</h6>
+												<span>
+													<a>@proje.ProjeNoNavigation.Kategori</a>
+												</span>
+											</div>
+										</td>
+										<td>
+											<span class="role user">@(proje.OgrNo1Navigation.OgrenciNo + " " + proje.OgrNo1Navigation.Ad + " " + proje.OgrNo1Navigation.Soyad)</span>
+											@if (proje.OgrNo2 != null)
+											{
+												<span class="role user">@(proje.OgrNo2Navigation.OgrenciNo + " " + proje.OgrNo2Navigation.Ad + " " + proje.OgrNo2Navigation.Soyad)</span>
+											}
+										</td>
+									}
+									else if (proje.OgrenciOneriNo != null)
+									{
+										<td>
+											<div class="table-data__info">
+												<h6>@proje.OgrenciOneriNoNavigation.Isim</h6>
+												<span>
+													<a>@proje.OgrenciOneriNoNavigation.Turu</a>
+												</span>
+											</div>
+										</td>
+										<td>
+											<span class="role user">@(proje.OgrenciOneriNoNavigation.Ogrno1 + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Soyad)</span>
+											@if (proje.OgrNo2 != null)
+											{
+												<span class="role user">@(proje.OgrenciOneriNoNavigation.Ogrno2 + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Soyad)</span>
+											}
+										</td>
+									}
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<!-- END USER DATA-->
+		</div>
+	</div>
+}
+

@@ -1,0 +1,160 @@
+﻿
+@{
+	ViewData["Title"] = "RaporlarıDagit";
+}
+
+@if (ViewBag.AraRapor1 != null)
+{
+	<h1>
+		Proje Ara Raporları Dağıtma Sayfası
+		<span class="badge badge-secondary">1. Ara Rapor</span>
+		<a class="btn btn-success" href="/ProjeKoor/RaporlarRandomDagit"><i class="fas fa-boxes"></i>Rastgele Dağıt</a>
+	</h1>
+}
+else if (ViewBag.AraRapor2 != null)
+{
+<h1>
+	Proje Ara Raporları Dağıtma Sayfası
+	<span class="badge badge-secondary">2. Ara Rapor</span>
+	<a class="btn btn-success" href="/ProjeKoor/RaporlarRandomDagit"><i class="fas fa-boxes"></i>-Rastgele Dağıt</a>
+</h1>
+}
+<br />
+<div class="col-lg-12">
+	<div class="au-card au-card--bg-blue au-card-top-countries m-b-30">
+		<div class="au-card-inner">
+			<div class="table-responsive">
+				<table class="table table-top-countries">
+					<thead>
+						<tr>
+							<th>Proje Adı</th>
+							<th>Danışman</th>
+							<th>Öğrenci 1</th>
+							<th>Öğrenci 2</th>
+							<th>Form</th>
+							<th>Görevli Asistan</th>
+						</tr>
+					</thead>
+					<tbody>
+						@if (ViewBag.AraRapor1 != null)
+						{
+							foreach (ProjeAl proje in ViewBag.AraRapor1)
+							{
+						<tr>
+							@if (proje.ProjeNo != null)
+							{
+								<td>@proje.ProjeNoNavigation.Isim</td>
+								<td>@proje.ProjeNoNavigation.Danisman.Kisaltma</td>
+								<td>@(proje.OgrNo1Navigation.OgrenciNo + " " + proje.OgrNo1Navigation.Ad + " " + proje.OgrNo1Navigation.Soyad)</td>
+								<td>
+									@if (proje.OgrNo2 != null)
+									{
+										@(proje.OgrNo2Navigation.OgrenciNo + " " + proje.OgrNo2Navigation.Ad + " " + proje.OgrNo2Navigation.Soyad)
+									}
+								</td>
+								@if (proje.Ararapor1 != null)
+								{
+									<td>@Html.ActionLink("Ara Rapor 1", "PdfGoruntule2", "PdfViewer", new { path = proje.Ararapor1, banch = proje.OgrNo1 }, new { target = "_blank", style = "color:#FFFFFF;" })</td>
+									if (proje.AsistanId != null)
+									{
+										<td>@proje.Asistan.Kisaltma</td>
+									}
+								}
+								else
+								{
+									<td>Yüklenmedi.</td>
+								}
+							}
+							else if (proje.OgrenciOneriNo != null)
+							{
+								<td>@proje.OgrenciOneriNoNavigation.Isim</td>
+								<td>@proje.OgrenciOneriNoNavigation.Danisman.Kisaltma</td>
+								<td>@(proje.OgrenciOneriNoNavigation.Ogrno1 + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Soyad)</td>
+								<td>
+									@if (proje.OgrNo2 != null)
+									{
+										@(proje.OgrenciOneriNoNavigation.Ogrno2 + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Soyad)
+									}
+								</td>
+								@if (proje.Ararapor1 != null)
+								{
+									<td>@Html.ActionLink("Ara Rapor 1", "PdfGoruntule2", "PdfViewer", new { path = proje.Ararapor1 ,banch = proje.OgrenciOneriNoNavigation.Ogrno1}, new { target = "_blank", style = "color:#FFFFFF;" })</td>
+									if (proje.AsistanId != null)
+									{
+										<td>@proje.Asistan.Kisaltma</td>
+									}
+								}
+								else
+								{
+									<td>Yüklenmedi.</td>
+								}
+							}
+
+						</tr>
+							}
+						}
+						else if (ViewBag.AraRapor2 != null)
+						{
+							foreach (ProjeAl proje in ViewBag.AraRapor2)
+							{
+					<tr>
+						@if (proje.ProjeNo != null)
+						{
+							<td>@proje.ProjeNoNavigation.Isim</td>
+							<td>@proje.ProjeNoNavigation.Danisman.Kisaltma</td>
+							<td>@(proje.OgrNo1Navigation.OgrenciNo + " " + proje.OgrNo1Navigation.Ad + " " + proje.OgrNo1Navigation.Soyad)</td>
+							<td>
+								@if (proje.OgrNo2 != null)
+								{
+									@(proje.OgrNo2Navigation.OgrenciNo + " " + proje.OgrNo2Navigation.Ad + " " + proje.OgrNo2Navigation.Soyad)
+								}
+							</td>
+							@if (proje.Ararapor2 != null)
+							{
+								<td>@Html.ActionLink("Ara Rapor 2", "PdfGoruntule2", "PdfViewer", new { path = proje.Ararapor2, banch = proje.OgrNo1 }, new { target = "_blank", style = "color:#FFFFFF;" })</td>
+								if (proje.AsistanId != null)
+								{
+									<td>@proje.Asistan.Kisaltma</td>
+								}
+							}
+							else
+							{
+								<td>Yüklenmedi.</td>
+							}
+						}
+						else if (proje.OgrenciOneriNo != null)
+						{
+							<td>@proje.OgrenciOneriNoNavigation.Isim</td>
+							<td>@proje.OgrenciOneriNoNavigation.Danisman.Kisaltma</td>
+							<td>@(proje.OgrenciOneriNoNavigation.Ogrno1 + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Soyad)</td>
+							<td>
+								@if (proje.OgrNo2 != null)
+								{
+									@(proje.OgrenciOneriNoNavigation.Ogrno2 + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Soyad)
+								}
+							</td>
+							@if (proje.Ararapor2 != null)
+							{
+								<td>@Html.ActionLink("Ara Rapor 2", "PdfGoruntule2", "PdfViewer", new { path = proje.Ararapor2, banch = proje.OgrenciOneriNoNavigation.Ogrno1 }, new { target = "_blank", style = "color:#FFFFFF;" })</td>
+								if (proje.AsistanId != null)
+								{
+									<td>@proje.Asistan.Kisaltma</td>
+								}
+							}
+							else
+							{
+								<td>Yüklenmedi.</td>
+							}
+						}
+
+					</tr>
+							}
+						}
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+

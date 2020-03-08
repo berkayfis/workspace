@@ -1,0 +1,35 @@
+﻿@using Microsoft.AspNetCore.Http;
+@{
+	ViewData["Title"] = "Duyurular";
+}
+
+@foreach (Duyuru duyuru in ViewBag.Duyurular)
+{
+	<div class="col-md-12">
+		<div class="card">
+			<div class="card-header">
+				<strong class="card-title">
+					@duyuru.Baslik
+					<small>
+						<span class="badge badge-success float-right mt-1">@duyuru.Zaman</span>
+						<span class="badge badge-danger float-right mt-1">@duyuru.Koordinator.Akademisyen.Kisaltma</span>
+					</small>
+				</strong>
+			</div>
+			<div class="card-body">
+				<p class="card-text">
+					@if (@duyuru.Icerik.Length > 150)
+					{
+						@(duyuru.Icerik.Substring(0, 150) + "...");
+						@Html.ActionLink("Duyuruyu Görüntüle", "DuyuruGörüntüle", "ProjeKoor", new { id = duyuru.Id })
+					}
+					else
+					{
+						@duyuru.Icerik;
+					}
+				</p>
+			</div>
+		</div>
+	</div>
+}
+

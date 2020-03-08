@@ -1,0 +1,37 @@
+﻿@using WebApplication14.Models
+@model IEnumerable<WebApplication14.Models.ProjeAl>
+@{
+	ViewData["Title"] = "Index";
+}
+
+<div class="row m-t-30">
+	<div class="col-md-12">
+		<!-- DATA TABLE-->
+		<div class="table-responsive m-b-40">
+			<table class="table table-borderless table-data3">
+				<thead>
+					<tr>
+						<th>Proje</th>
+						<th>Grup</th>
+						<th>Öğrenci</th>
+						<th>Kabul Durumu</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (ProjeAl proje in Model)
+					{
+						<tr>
+							<td>@proje.ProjeNoNavigation.Isim</td>
+							<td>@proje</td>
+							<td>@proje.OgrNo1</td>
+							<td>@proje.KabulDurumu</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+		<!-- END DATA TABLE-->
+	</div>
+</div>
+
+

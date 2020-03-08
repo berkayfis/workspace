@@ -1,0 +1,113 @@
+﻿@using WebApplication14.Models
+@{
+	ViewData["Title"] = "ProjeAta";
+	List<Istek> buProjeyeİstekGönderenler = ViewBag.buProjeyeİstekGönderenler;
+}
+@model ProjeOnerileri
+<div class="row">
+	<div class="col-md-12">
+		<div class="block">
+			<div class="block-heading">
+				<div class="main-text h2">
+					Öğrenci Atama Sayfası
+				</div>
+			</div>
+			<div class="block-content-outer">
+				<div class="block-content-inner">
+					<form action="/ProjeOnerilerim/ProjeAta" method="post" role="form">
+						<div class="form-group">
+							<label for="exampleInputEmail1">Proje İsmi</label>
+							<input disabled type="text" class="form-control" id="exampleInputEmail1" value="@Model.Isim">
+						</div>
+
+						@if (Model.KisiSayisi == 1)
+						{
+							<div class="form-group">
+								<label for="exampleInputEmail1">Projeyi atamak istediğiniz öğrenciyi seçiniz</label>
+								<select class="form-control" name="istekId">
+									@foreach (Istek istek in ViewBag.buProjeyeİstekGönderenler)
+									{
+										<option value="@istek.Id">@(istek.OgrNo1Navigation.OgrenciNo + " " + istek.OgrNo1Navigation.Ad + " " + istek.OgrNo1Navigation.Soyad)</option>
+									}
+								</select>
+							</div>
+
+							<div class="table-responsive m-b-20">
+								<table class="table table-borderless table-data3">
+									<thead>
+										<tr>
+											<th>Öğrenci 1</th>
+											<th>Form-2</th>
+										</tr>
+									</thead>
+									<tbody>
+										@foreach (Istek istek2 in ViewBag.buProjeyeİstekGönderenler)
+										{
+											<tr>
+												<td>@(istek2.OgrNo1Navigation.OgrenciNo + " " + istek2.OgrNo1Navigation.Ad + " " + istek2.OgrNo1Navigation.Soyad)</td>
+												<td>
+													@Html.ActionLink("pdf", "PdfGoruntule2", "PdfViewer", new { path = istek2.Form2, banch = istek2.Proje.Danisman.Kisaltma }, new { target = "_blank" })
+												</td>
+											</tr>
+										}
+									</tbody>
+								</table>
+							</div>
+						}
+
+						@if (Model.KisiSayisi > 1)
+						{
+							<div class="form-group">
+								<label for="exampleInputEmail1">Projeyi atamak istediğiniz grubu seçiniz</label>
+								<select class="form-control" name="istekId">
+									@{
+										int i = 0;
+										List<int> istekler = ViewBag.istekIds;
+									}
+									@foreach (String s in ViewBag.gruplar)
+									{
+										<option value="@istekler[i]">@s</option>
+										i++;
+									}
+								</select>
+							</div>
+
+							<div class="table-responsive m-b-30">
+								<table class="table table-borderless table-data3">
+									<thead>
+										<tr>
+											<th>Öğrenci 1</th>
+											<th>Öğrenci 2</th>
+											<th>Form-2</th>
+										</tr>
+									</thead>
+									<tbody>
+										@foreach (Istek istek2 in ViewBag.buProjeyeİstekGönderenler)
+										{
+											<tr>
+												<td>@(istek2.OgrNo1Navigation.OgrenciNo + " " + istek2.OgrNo1Navigation.Ad + " " + istek2.OgrNo1Navigation.Soyad)</td>
+												<td>@(istek2.OgrNo2Navigation.OgrenciNo + " " + istek2.OgrNo2Navigation.Ad + " " + istek2.OgrNo2Navigation.Soyad)</td>
+												<td>
+													@Html.ActionLink("pdf", "PdfGoruntule2", "PdfViewer", new { path = istek2.Form2, banch = istek2.Proje.Danisman.Kisaltma }, new { target = "_blank" })
+												</td>
+											</tr>
+										}
+									</tbody>
+								</table>
+							</div>
+						}
+
+						<button type="submit" class="btn btn-primary">Kaydet</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="~/js/main.js"></script>
+<script>
+function myNewFunction(sel) {
+	var as = sel.options[sel.selectedIndex].text;
+	alert(as);
+}
+</script>

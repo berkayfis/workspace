@@ -1,0 +1,96 @@
+﻿@using Microsoft.AspNetCore.Http;
+@{
+	ViewData["Title"] = "Index";
+	if (Context.Session.GetInt32("mail") == 0)
+	{
+		Context.Session.SetInt32("mail", 2);
+		<div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+			<span class="badge badge-pill badge-danger">Gönderilemedi</span>
+			Hata oluştu...
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">×</span>
+			</button>
+		</div>
+	}
+	else if (Context.Session.GetInt32("mail") == 1)
+	{
+		Context.Session.SetInt32("mail", 2);
+		<div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
+			<span class="badge badge-pill badge-success">Gönderildi</span>
+			Başarılı bir şekilde gönderildi.
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">×</span>
+			</button>
+		</div>
+	}
+}
+
+<div class="row">
+	<div class="col-lg-12">
+		<!-- USER DATA-->
+		<div class="user-data m-b-30">
+			<h3 class="title-3 m-b-30">
+				<i class="zmdi zmdi-account-calendar"></i>Danışmanı Olduğum Projeler
+			</h3>
+			<div class="table-responsive table-data">
+				<table class="table">
+					<thead>
+						<tr>
+							<td>Proje Adı</td>
+							<td>Alan Öğrenciler</td>
+							<td>Mail Gönder</td>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (ProjeAl proje in ViewBag.DanismaniOldugumProjeler)
+						{
+							<tr>
+								@if (proje.ProjeNo != null)
+								{
+									<td>
+										<div class="table-data__info">
+											<h6>@proje.ProjeNoNavigation.Isim</h6>
+											<span>
+												<a>@proje.ProjeNoNavigation.Kategori</a>
+											</span>
+										</div>
+									</td>
+									<td>
+										<span class="role user">@(proje.OgrNo1Navigation.OgrenciNo + " " + proje.OgrNo1Navigation.Ad + " " + proje.OgrNo1Navigation.Soyad)</span>
+										@if (proje.OgrNo2 != null)
+										{
+											<span class="role user">@(proje.OgrNo2Navigation.OgrenciNo + " " + proje.OgrNo2Navigation.Ad + " " + proje.OgrNo2Navigation.Soyad)</span>
+										}
+									</td>
+								}
+								else if (proje.OgrenciOneriNo != null)
+								{
+									<td>
+										<div class="table-data__info">
+											<h6>@proje.OgrenciOneriNoNavigation.Isim</h6>
+											<span>
+												<a>@proje.OgrenciOneriNoNavigation.Turu</a>
+											</span>
+										</div>
+									</td>
+									<td>
+										<span class="role user">@(proje.OgrenciOneriNoNavigation.Ogrno1 + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Soyad)</span>
+										@if (proje.OgrNo2 != null)
+										{
+											<span class="role user">@(proje.OgrenciOneriNoNavigation.Ogrno2 + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Soyad)</span>
+										}
+									</td>
+								}
+								<td>
+									<a class="btn btn-success" href="/Chat/SendEmail?id=@proje.Id"><i class="fas fa-send"></i></a>
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<!-- END USER DATA-->
+	</div>
+
+</div>

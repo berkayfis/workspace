@@ -1,0 +1,31 @@
+﻿
+@{
+	ViewData["Title"] = "DonemBaslat";
+}
+@using (Html.BeginForm("Donembaslat", "ProjeKoor", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+	<div class="row">
+		<div class="col-md-6">
+			<div class="block">
+				<div class="block-heading">
+					<div class="main-text h2">
+						Yeni Dönem Başlatma Sayfası
+					</div>
+				</div>
+				<div class="block-content-outer">
+					<div class="block-content-inner">
+						<div class="form-group">
+							<label for="exampleInputEmail1">Dönem(Örnek : 1920-Güz)</label>
+							<input type="text" class="form-control" placeholder="1920-Bahar" name="Dönem" required>
+						</div>
+						<div class="form-group">
+							<label>Dersi Alan Öğrenciler : (.xls, .xlsx)</label>
+							<input type="file" name="öğrenciler" required>
+						</div> 
+						<button type="submit" class="btn btn-primary">Kaydet</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+}

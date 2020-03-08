@@ -1,0 +1,86 @@
+﻿@using Microsoft.AspNetCore.Http;
+@{
+	ViewData["Title"] = "IstekGonder";
+}
+@model ProjeOnerileri
+
+@if (ViewBag.flag == 1)
+{
+	<div>
+		<img src="~/images/istek.png" />
+	</div>
+}
+else if (ViewBag.flag == 0)
+{
+	@using (Html.BeginForm("IstekGonder", "Ogrenci", FormMethod.Post, new { enctype = "multipart/form-data" }))
+	{
+		if (Model.KisiSayisi == 1)
+		{
+			<div class="row">
+				<div class="col-md-12">
+					<div class="block">
+						<div class="block-heading">
+							<div class="main-text h2">
+								İstek Gönderme Sayfası
+							</div>
+						</div>
+						<div class="block-content-outer">
+							<div class="block-content-inner">
+								<form action="/Ogrenci/IstekGonder" method="post" role="form">
+									<div class="form-group">
+										<label for="exampleInputEmail1">Proje İsmi</label>
+										<input type="text" class="form-control" id="exampleInputEmail1" placeholder="@Model.Isim">
+									</div>
+									<div class="form-group">
+										Form-2'yi seçiniz : <input type="file" name="Form2" required>
+									</div>
+									<button type="submit" class="btn btn-primary">Gonder</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+		else if (Model.KisiSayisi > 1)
+		{
+			<div class="row">
+				<div class="col-md-12">
+					<div class="block">
+						<div class="block-heading">
+							<div class="main-text h2">
+								İstek Gönderme Sayfası
+							</div>
+						</div>
+						<div class="block-content-outer">
+							<div class="block-content-inner">
+								<form action="/Ogrenci/IstekGonder" method="post" role="form">
+
+									<div class="form-group">
+										<label for="exampleInputEmail1">Proje İsmi</label>
+										<input type="text" class="form-control" id="exampleInputEmail1" placeholder="@Model.Isim">
+									</div>
+									<div class="form-group">
+										<label for="exampleInputEmail1">Grup Arkadaşınızı Seçiniz</label>
+										<select class="form-control" name="OgrNo2" required>
+											@foreach (Ogrenci öğrenci in ViewBag.öğrenciler)
+											{
+												<option value="@öğrenci.OgrenciNo">
+													@(öğrenci.OgrenciNo + " " + öğrenci.Ad + " " + öğrenci.Soyad)
+												</option>
+											}
+										</select>
+									</div>
+									<div class="form-group">
+										Form-2'yi seçiniz : <input type="file" name="Form2" required>
+									</div>
+									<button type="submit" class="btn btn-primary">Gonder</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+	}
+}

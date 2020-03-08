@@ -1,0 +1,23 @@
+﻿
+@{
+	ViewData["Title"] = "DersiAlanOgrenciler";
+}
+	<div class="col-lg-6">
+		<div class="au-card au-card--bg-blue au-card-top-countries m-b-30">
+			<div class="au-card-inner">
+				<div class="table-responsive">
+					<table class="table table-top-countries">
+						<tbody>
+							@foreach (String öğrenciInfo in ViewBag.alanlar)
+							{
+								<tr>
+
+									<td>@öğrenciInfo</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>

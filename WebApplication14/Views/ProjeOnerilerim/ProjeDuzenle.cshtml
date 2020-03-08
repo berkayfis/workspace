@@ -1,0 +1,70 @@
+﻿
+@{
+	ViewData["Title"] = "ProjeDuzenle";
+}
+
+@using WebApplication14.Models
+@model ProjeOnerileri
+@using (Html.BeginForm("ProjeDuzenle", "ProjeOnerilerim", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+	<div class="row">
+		<div class="col-md-12">
+			<div class="block">
+				<div class="block-heading">
+					<div class="main-text h2">
+						Proje Düzenleme Sayfası
+					</div>
+				</div>
+				<div class="block-content-outer">
+					<div class="block-content-inner">
+						<form action="/ProjeOnerilerim/ProjeDuzenle" method="post" role="form">
+
+							<div class="form-group">
+								<label for="exampleInputEmail1">Proje İsmi</label>
+								<input type="text" class="form-control" id="exampleInputEmail1" placeholder="@Model.Isim" name="Isim">
+							</div>
+							<div class="form-group">
+								<label for="exampleInputEmail1">Proje Türü</label>
+								<select class="form-control" name="Kategori">
+									<option value="Bilgisayar(Ara) Proje">
+										Bilgisayar(Ara) Proje
+									</option>
+									<option value="Bitirme Projesi">
+										Bitirme Projesi
+									</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="exampleInputEmail1">Alan Oturumu</label>
+								<select class="form-control" name="OturumNo">
+									@foreach (AlanOturum oturum in ViewBag.Oturumlar)
+									{
+										<option value="@oturum.Adi">
+											@oturum.Adi
+										</option>
+									}
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="exampleInputEmail1">Kişi Sayısı</label>
+								<input type="number" class="form-control" id="exampleInputEmail1" placeholder="@Model.KisiSayisi" name="KisiSayisi" min="1" max="2">
+							</div>
+							<div class="form-group">
+								<label for="exampleInputEmail1">Grup Sayısı</label>
+								<input type="number" class="form-control" id="exampleInputEmail1" placeholder="@Model.GrupSayisi" name="GrupSayisi" min="1" max="3">
+							</div>
+
+							<div class="form-group">
+								Form-1'i seçiniz : <input type="file" name="Form1">
+							</div>
+
+							<button type="submit" class="btn btn-primary">Kaydet</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+

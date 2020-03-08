@@ -1,0 +1,73 @@
+﻿
+@{
+	ViewData["Title"] = "ProjeOner";
+}
+@using (Html.BeginForm("ProjeOner", "Ogrenci", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+	<div class="block-content-outer">
+		<div class="block-content-inner">
+			<form action="/ProjeOnerilerim/ProjeEkle" method="post" role="form">
+				<div class="block-heading">
+					<div class="main-text h2">
+						Öğrenci Proje Önerisi Ekleme Sayfası
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="exampleInputEmail1">Proje İsmi</label>
+					<input type="text" class="form-control" id="exampleInputEmail1" placeholder="Proje ismini giriniz" name="Isim" required>
+				</div>
+				<div class="form-group">
+					<label for="exampleInputEmail1">Proje Türü</label>
+					<select class="form-control" name="Turu" required>
+						<option value="Bilgisayar(Ara) Proje">
+							Bilgisayar(Ara) Proje
+						</option>
+						<option value="Bitirme Projesi">
+							Bitirme Projesi
+						</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label>2 Kişilik Projeler İçin Grup Arkadaşınızı Seçiniz</label>
+					<select class="form-control" name="Ogrno2" required>
+						<option value="0">Tek kişilik proje</option>
+						@foreach (Ogrenci öğrenci in ViewBag.öğrenciler)
+						{
+							<option value="@öğrenci.OgrenciNo">
+								@(öğrenci.OgrenciNo + " " + öğrenci.Ad + " " + öğrenci.Soyad)
+							</option>
+						}
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="exampleInputEmail1">Alan Oturumu</label>
+					<select class="form-control" name="OturumNo" required>
+						@foreach (AlanOturum oturum in ViewBag.oturumlar)
+						{
+							<option value="@oturum.Id">
+								@oturum.Adi
+							</option>
+						}
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="exampleInputEmail1">Danışman Hocanızı seçiniz:</label>
+					<select class="form-control" name="Danismanid" required>
+						@foreach (AkademikPersonel akademisyen in ViewBag.akademisyenler)
+						{
+							<option value="@akademisyen.Id">
+								@akademisyen.Kisaltma
+							</option>
+						}
+					</select>
+				</div>
+
+				<div class="form-group">
+					Form-2'yi seçiniz : <input type="file" name="Form2" required>
+				</div>
+
+				<button type="submit" class="btn btn-primary">Kaydet</button>
+			</form>
+		</div>
+	</div>
+}

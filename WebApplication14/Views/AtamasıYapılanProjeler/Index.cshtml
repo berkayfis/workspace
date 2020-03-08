@@ -1,0 +1,135 @@
+﻿@using System.Linq
+@using Microsoft.AspNetCore.Http;
+@{
+	ViewData["Title"] = "Ataması Yapılan Projeler";
+}
+@if (ViewBag.flag == 1)//eğer ataması yapıldıysa öğrenciye bildir
+{
+	ProjeAl aldığıProje = ViewBag.aldığıProje;
+	String s = "";
+
+	if (aldığıProje.ProjeNo != null)
+	{
+		s = aldığıProje.ProjeNoNavigation.Isim + " (" + aldığıProje.ProjeNoNavigation.Danisman.Kisaltma + ")";
+
+	}
+	else if (aldığıProje.OgrenciOneriNo != null)
+	{
+		s = aldığıProje.OgrenciOneriNoNavigation.Isim + "(" + aldığıProje.OgrenciOneriNoNavigation.Danisman.Kisaltma + ")";
+	}
+
+	if (aldığıProje.KabulDurumu == null)
+	{
+		<div class="sufee-alert alert with-close alert-secondary alert-dismissible fade show">
+			<span class="badge badge-pill badge-secondary">Proje Atamanız Yapılmıştır</span>
+			Atanan Proje : @(s + " Kurul Kararı bekleniyor...")
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">×</span>
+			</button>
+		</div>
+	}
+	else if (aldığıProje.KabulDurumu == "Kabul")
+	{
+		<div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
+			<span class="badge badge-pill badge-success">Projeniz Kabul Edilmiştir</span>
+			Kabul Edilen Proje : @s
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">×</span>
+			</button>
+		</div>
+	}
+	else if (aldığıProje.KabulDurumu == "Ret")
+	{
+		<div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+			<span class="badge badge-pill badge-danger">Projeniz Reddedilmiştir</span>
+			Reddedilen Proje : @s
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">×</span>
+			</button>
+		</div>
+	}
+}
+<div class="row m-t-30">
+	<div class="col-md-12">
+		<!-- DATA TABLE-->
+		<div class="table-responsive m-b-40">
+			<table class="table table-borderless table-data3">
+				<thead>
+					<tr>
+						<th>İsim</th>
+						<th>Danışman</th>
+						<th>Ogr1</th>
+						<th>Ogr2</th>
+						<th>Kabul Durumu</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (ProjeAl proje in ViewBag.alınanProjeler)
+					{
+						<tr>
+							@if (proje.ProjeNo == null)
+							{//bu proje öğrenci önerisidir
+								<td>@proje.OgrenciOneriNoNavigation.Isim</td>
+								<td>@proje.OgrenciOneriNoNavigation.Danisman.Kisaltma</td>
+								<td>
+									@(proje.OgrenciOneriNoNavigation.Ogrno1 + " " +
+									proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Ad + " " +
+									proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Soyad)
+								</td>
+								@if (proje.OgrenciOneriNoNavigation.Ogrno2 != null)
+								{
+									<td>
+										@(proje.OgrenciOneriNoNavigation.Ogrno2 + " " +
+										proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Ad + " " +
+										proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Soyad)
+									</td>
+								}
+								else
+								{
+									<td> </td>
+								}
+							}
+							else if (proje.OgrenciOneriNo == null)//bu proje akademisyen önerisidir
+							{
+								<td>@proje.ProjeNoNavigation.Isim</td>
+								<td>@proje.ProjeNoNavigation.Danisman.Kisaltma</td>
+								<td>@(proje.OgrNo1 + " " + proje.OgrNo1Navigation.Ad + " " + proje.OgrNo1Navigation.Soyad)</td>
+								@if (proje.OgrNo2 != null)
+								{
+									<td>@(proje.OgrNo2 + " " + proje.OgrNo2Navigation.Ad + " " + proje.OgrNo2Navigation.Soyad)</td>
+								}
+								else
+								{
+									<td> </td>
+								}
+							}
+							@if (Context.Session.GetInt32("koordinatör") != null)
+							{
+								if (proje.KabulDurumu != null)
+								{
+									if (proje.KabulDurumu == "Kabul")
+									{
+										<td><font color="green">Kabul</font>@Html.ActionLink("Geri Al", "Undo", "ProjeKoor", new { id = proje.Id })</td>
+									}
+									else if (proje.KabulDurumu == "Ret")
+									{
+										<td><font color="red">Ret</font>@Html.ActionLink("Geri Al", "Undo", "ProjeKoor", new { id = proje.Id })</td>
+									}
+								}
+								else
+								{
+									<td>@Html.ActionLink("Kabul", "Kabul", "ProjeKoor", new { id = proje.Id }) | @Html.ActionLink("Ret", "Ret", "ProjeKoor", new { id = proje.Id })</td>
+								}
+							}
+							else
+							{
+								<td>@proje.KabulDurumu</td>
+							}
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+		<!-- END DATA TABLE-->
+	</div>
+</div>

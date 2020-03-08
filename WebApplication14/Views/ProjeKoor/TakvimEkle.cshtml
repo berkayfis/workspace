@@ -1,0 +1,88 @@
+﻿
+@{
+	ViewData["Title"] = "TakvimEkle";
+}
+	<form action="/ProjeKoor/TakvimEkle" method="post" role="form">
+		<div class="row">
+			<div class="col-lg-4">
+				<div class="card">
+					<div class="card-header">
+						<strong>Proje Takvimi Belirleme</strong>
+					</div>
+					<div class="card-body card-block">
+						<div class="form-group">
+							<label class=" form-control-label">Proje Önerilerinin Form-2 Teslimi</label>
+							<input type="date" name="Form2" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label class=" form-control-label">Proje Önerileri Değerlendirme Toplantısı Sonuçlarının İlanı</label>
+							<input type="date" class="form-control" name="Toplanti" required>
+						</div>
+						<div class="form-group">
+							<label class=" form-control-label">Proje Önerileri Reddedilen Öğrencilerin Dersi Sildirmesi</label>
+							<input type="date" class="form-control" name="Ret" required>
+						</div>
+						<div class="form-group">
+							<label class=" form-control-label">1. Ara Rapor Teslimi</label>
+							<input type="date" class="form-control" name="Ararapor1" required>
+						</div>
+						<div class="form-group">
+							<label class=" form-control-label">2. Ara Rapor Teslimi</label>
+							<input type="date" class="form-control" name="Ararapor2" required>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4">
+				<div class="card">
+					<div class="card-header">
+						<strong>Final Sınavı</strong>
+					</div>
+					<div class="card-body card-block">
+						<div class="form-group">
+							<label>Final Rapor Teslimi</label>
+							<input type="date" name="FİnalRapor" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label>Bilgisayar(Ara) Projesi Final Sınavı</label>
+							<input type="date" name="AraSinav" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label>Bitirme Projesi Final Sınavı</label>
+							<input type="date" class="form-control" name="BİtİrmeSinav" required>
+						</div>
+						<div class="form-group">
+							<label>Proje Kitap Teslimi(Finalde Başarılı Olanlar İçin)</label>
+							<input type="date" class="form-control" name="Kİtap" required>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4">
+				<div class="card">
+					<div class="card-header">
+						<strong>Bütünleme Sınavı</strong>
+					</div>
+					<div class="card-body card-block">
+						<div class="form-group">
+							<label>Bütünleme Rapor Teslimi</label>
+							<input type="date" class="form-control" name="Bütünlemerapor" required>
+						</div>
+						<div class="form-group">
+							<label>Bilgisayar(Ara) Projesi Bütünleme Sınavı</label>
+							<input type="date" class="form-control" name="Arabütünleme" required>
+						</div>
+						<div class="form-group">
+							<label>Bitirme Projesi Bütünleme Sınavı</label>
+							<input type="date" class="form-control" name="Bitirmebutunleme" required>
+						</div>
+						<div class="form-group">
+							<label>Proje Kitap Teslimi(Bütünlemede Başarılı Olanlar İçin)</label>
+							<input type="date" class="form-control" name="Bkitap" required>
+						</div>
+					</div>
+				</div>
+			</div>
+			<button type="submit" class="btn btn-primary">Kaydet</button>
+		</div>
+	</form>

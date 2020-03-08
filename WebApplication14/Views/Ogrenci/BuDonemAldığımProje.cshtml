@@ -1,0 +1,123 @@
+﻿@using Microsoft.AspNetCore.Http;
+@{
+	ViewData["Title"] = "BuDonemAldığımProje";
+	ProjeAl proje = ViewBag.BuDonemAldigimProje;
+	String ogrNo = Context.Session.GetString("öğrenci");
+}
+
+@if (ViewBag.BuDonemAldigimProje != null)
+{
+	@using (Html.BeginForm("BuDonemAldığımProje", "Ogrenci", FormMethod.Post, new { enctype = "multipart/form-data" }))
+	{
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="card">
+					<div class="card-header">
+						<strong>Bu Dönem Aldığınız Proje</strong>
+					</div>
+					<div class="card-body card-block">
+						@if (proje.OgrenciOneriNo != null)
+						{
+							<div class="form-group">
+								<label class=" form-control-label">Proje İsmi</label>
+								<input type="text" class="form-control" value="@proje.OgrenciOneriNoNavigation.Isim" disabled>
+							</div>
+							<div class="form-group">
+								<label class=" form-control-label">Tür</label>
+								<input type="text" class="form-control" value="@proje.OgrenciOneriNoNavigation.Turu" disabled>
+							</div>
+							<div class="form-group">
+								<label class=" form-control-label">Danışman</label>
+								<input type="text" class="form-control" value="@proje.OgrenciOneriNoNavigation.Danisman.Kisaltma" disabled>
+							</div>
+						}
+						else if (proje.ProjeNoNavigation != null)
+						{
+							<div class="form-group">
+								<label class=" form-control-label">Proje İsmi</label>
+								<input type="text" class="form-control" value="@proje.ProjeNoNavigation.Isim" disabled>
+							</div>
+							<div class="form-group">
+								<label class=" form-control-label">Tür</label>
+								<input type="text" class="form-control" value="@proje.ProjeNoNavigation.Kategori" disabled>
+							</div>
+							<div class="form-group">
+								<label class=" form-control-label">Danışman</label>
+								<input type="text" class="form-control" value="@proje.ProjeNoNavigation.Danisman.Kisaltma" disabled>
+							</div>
+						}
+					</div>
+				</div>
+			</div>
+			@if (ViewBag.AraRapor1 != null)
+			{
+				<div class="col-lg-6">
+					<div class="card">
+						<div class="card-header">
+							<strong>Ara Rapor 1 Yükleme</strong>
+						</div>
+						<div class="card-body card-block">
+							<div class="form-group">
+								<label>1. Ara Rapor</label>
+								@if (proje.Ararapor1 != null)
+								{
+									@Html.ActionLink("Yüklediğiniz Rapor", "PdfGoruntule2", "PdfViewer", new { path = proje.Ararapor1 , banch = ogrNo}, new { target = "_blank" })
+								}
+								<input type="file" name="AraRapor1" class="form-control" required>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-primary">Kaydet</button>
+					</div>
+				</div>
+			}
+			else if (ViewBag.AraRapor2 != null)
+			{
+				<div class="col-lg-6">
+					<div class="card">
+						<div class="card-header">
+							<strong>Ara Rapor 2 Yükleme</strong>
+						</div>
+						<div class="card-body card-block">
+							<div class="form-group">
+								<label>2. Ara Rapor</label>
+								@if (proje.Ararapor2 != null)
+								{
+									@Html.ActionLink("Yüklediğiniz Rapor", "PdfGoruntule2", "PdfViewer", new { path = proje.Ararapor2, banch = ogrNo}, new { target = "_blank" })
+								}
+								<input type="file" name="AraRapor2" class="form-control" required>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-primary">Kaydet</button>
+					</div>
+				</div>
+			}
+			else if (ViewBag.FinalRapor != null)
+			{
+				<div class="col-lg-6">
+					<div class="card">
+						<div class="card-header">
+							<strong>Final Raporu Yükleme</strong>
+						</div>
+						<div class="card-body card-block">
+							<div class="form-group">
+								<label>Final Raporu</label>
+								@if (proje.Finalrapor != null)
+								{
+									@Html.ActionLink("Yüklediğiniz Rapor", "PdfGoruntule2", "PdfViewer", new { path = proje.Finalrapor, banch = ogrNo }, new { target = "_blank" })
+								}
+								<input type="file" name="FinalRaporu" class="form-control" required>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-primary">Kaydet</button>
+					</div>
+				</div>
+			}
+		</div>
+
+	}
+}
+else
+{
+	<h3>Kurul Kararı Bekleniyor.</h3>
+}
+

@@ -1,0 +1,41 @@
+﻿
+@{
+	ViewData["Title"] = "Akademisyen Proje Önerileri";
+}
+
+<div class="row m-t-30">
+	<div class="col-md-12">
+		<!-- DATA TABLE-->
+		<div class="table-responsive m-b-40">
+			<table class="table table-borderless table-data3">
+				<thead>
+					<tr>
+						<th>Oturum No</th>
+						<th>Proje İsmi</th>
+						<th>Danışman</th>
+						<th>Kişi Sayısı</th>
+						<th>Grup Sayısı</th>
+						<th>Form-1</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (ProjeOnerileri proje in ViewBag.projeler)
+					{
+					<tr>
+						<td>@proje.OturumNo</td>
+						<td>@proje.Isim</td>
+						<td>@proje.Danisman.Kisaltma</td>
+						<td>@proje.KisiSayisi</td>
+						<td>@proje.GrupSayisi</td>
+						<td>@Html.ActionLink("pdf", "Index", "PdfViewer", new { id = proje.Id }, new { target = "_blank" })</td>
+					</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+		<!-- END DATA TABLE-->
+	</div>
+</div>
+
+
+

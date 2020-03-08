@@ -1,0 +1,88 @@
+﻿@using Microsoft.AspNetCore.Http;
+@{
+	ViewData["Title"] = "Index";
+	List<int> kaçKezAtandı = ViewBag.kaçKezAtandı;
+	int i = 0;
+}
+@if (ViewBag.flag == 1)//eğer ataması yapıldıysa öğrenciye bildir
+{
+	ProjeAl aldığıProje = ViewBag.aldığıProje;
+	String s = "";
+
+	if (aldığıProje.ProjeNo != null)
+	{
+		s = aldığıProje.ProjeNoNavigation.Isim + " (" + aldığıProje.ProjeNoNavigation.Danisman.Kisaltma + ")";
+
+	}
+	else if (aldığıProje.OgrenciOneriNo != null)
+	{
+		s = aldığıProje.OgrenciOneriNoNavigation.Isim + "(" + aldığıProje.OgrenciOneriNoNavigation.Danisman.Kisaltma + ")";
+	}
+
+	if (aldığıProje.KabulDurumu == null)
+	{
+		<div class="sufee-alert alert with-close alert-secondary alert-dismissible fade show">
+			<span class="badge badge-pill badge-secondary">Proje Atamanız Yapılmıştır</span>
+			Atanan Proje : @(s + " Kurul Kararı bekleniyor...")
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">×</span>
+			</button>
+		</div>
+	}
+}
+
+<div class="row m-t-30">
+	<div class="col-md-12">
+		@if (ViewBag.flag == 0)
+		{//eğer ataması yapılmadıysa 'proje öner'i göster
+			<a class="btn btn-success" href="/Ogrenci/ProjeOner"><i class="fas fa-plus"></i>Proje Öner</a>
+		}
+		<!-- DATA TABLE-->
+		<div class="table-responsive m-b-40">
+			<table class="table table-borderless table-data3">
+				<thead>
+					<tr>
+						<th>Oturum No</th>
+						<th>Tür</th>
+						<th>Proje İsmi</th>
+						<th>Danışman</th>
+						<th>Kişi Sayısı</th>
+						<th>Grup Sayısı</th>
+						<th>Atama Sayısı</th>
+						@if (ViewBag.flag == 0)
+						{//atama yapılmadıysa
+							<th>Istek Gonder</th>
+						}
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (ProjeOnerileri proje in ViewBag.AkademisyenOnerileri)
+					{
+						<tr>
+							<td>@proje.OturumNo</td>
+							<td>@proje.Kategori</td>
+							<td>@proje.Isim</td>
+							<td>@proje.Danisman.Kisaltma</td>
+							<td>@proje.KisiSayisi</td>
+							<td>@proje.GrupSayisi</td>
+							<td>@kaçKezAtandı[i]</td>
+							@if (ViewBag.flag == 0)//atama yapılmadıysa
+							{
+								if (kaçKezAtandı[i] >= proje.GrupSayisi)//projenin kontenjanı dolu
+								{
+									<td>Proje Kontenjanı Doldu.</td>
+								}
+								else
+								{
+									<td>@Html.ActionLink("İstek Gönder", "IstekGonder", "Ogrenci", new { id = proje.Id })</td>
+								}
+							}
+						</tr>
+						i++;
+					}
+				</tbody>
+			</table>
+		</div>
+		<!-- END DATA TABLE-->
+	</div>
+</div>

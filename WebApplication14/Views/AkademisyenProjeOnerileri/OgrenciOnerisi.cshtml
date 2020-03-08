@@ -1,0 +1,69 @@
+﻿@using WebApplication14.Models
+@model IEnumerable<WebApplication14.Models.OgrenciProjeOnerisi>
+@{
+	ViewData["Title"] = "OgrenciOnerisi";
+	int i = 0;
+	List<int> onayladığım = ViewBag.OnayladığımProjeler;
+}
+@if (ViewBag.flag != 0)
+{
+	<div class="sufee-alert alert with-close alert-primary alert-dismissible fade show">
+		<span class="badge badge-pill badge-primary">Öğrenci Önerisi</span>
+		Onaylamanız gereken öğrenci proje önerileri mevcut.
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">×</span>
+		</button>
+	</div>
+}
+
+<div class="row m-t-30">
+	<div class="col-md-12">
+		<!-- DATA TABLE-->
+		<div class="table-responsive m-b-40">
+			<table class="table table-borderless table-data3">
+				<thead>
+					<tr>
+						<th>Oturum No</th>
+						<th>Proje İsmi</th>
+						<th>Danışman</th>
+						<th>Ogr1</th>
+						<th>Ogr2</th>
+						<th>Form-2</th>
+						<th>Kabul Et</th>
+						<th>Statü</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (OgrenciProjeOnerisi proje in Model)
+					{
+						<tr>
+							<td>@proje.OturumNo</td>
+							<td>@proje.Isim</td>
+							<td>@proje.Danisman.Kisaltma</td>
+							<td>@(proje.Ogrno1 + " " + proje.Ogrno1Navigation.Ad + " " + proje.Ogrno1Navigation.Soyad)</td>
+							@if (proje.Ogrno2 != null)
+							{
+								<td>@(proje.Ogrno2 + " " + proje.Ogrno2Navigation.Ad + " " + proje.Ogrno2Navigation.Soyad)</td>
+							}
+							else
+							{
+								<td> </td>
+							}
+							<td>@Html.ActionLink("Form-2", "PdfGoruntule", "PdfViewer", new { path = proje.Form2 }, new { target="_blank"})</td>
+							@if (onayladığım[i] == 1)
+							{ //onaylandı ise
+								<td>Onaylandı @Html.ActionLink("Geri Al", "Discard", "AkademisyenProjeOnerileri", new { id = proje.Id })</td>
+							}
+							else if(onayladığım[i] == 0){ //onaylanmadı ise
+								<td>@Html.ActionLink("Kabul Et", "OgrenciOnerisiOnayla", "AkademisyenProjeOnerileri", new { id = proje.Id })</td>
+							}
+							<td>@proje.Statu</td>
+						</tr>
+						i++;
+					}
+				</tbody>
+			</table>
+		</div>
+		<!-- END DATA TABLE-->
+	</div>
+</div>

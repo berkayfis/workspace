@@ -1,0 +1,30 @@
+﻿@model WebApplication14.Models.Duyuru
+@{
+	ViewData["Title"] = "DuyuruGörüntüle";
+}
+
+<div class="col-md-12">
+	<div class="card">
+		<div class="card-header">
+			<strong class="card-title">
+				@Model.Baslik
+				<small>
+					<span class="badge badge-success float-right mt-1">@Model.Zaman</span>
+					<span class="badge badge-danger float-right mt-1">@(Model.Koordinator.Akademisyen.Unvan + " " + Model.Koordinator.Akademisyen.Ad + " " + Model.Koordinator.Akademisyen.Soyad)</span>
+				</small>
+			</strong>
+		</div>
+		<div class="card-body">
+			<p class="card-text">
+				<!--<pre>
+
+				</pre>-->
+				@Model.Icerik
+				@if (Model.Eklenti != null)
+				{
+					@Html.ActionLink("Eklenti", "PdfGoruntule", "PdfViewer", new { path = Model.Eklenti }, new { target = "_blank" })
+				}
+			</p>
+		</div>
+	</div>
+</div>
