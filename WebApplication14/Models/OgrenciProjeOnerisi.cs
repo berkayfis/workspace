@@ -11,8 +11,8 @@ namespace WebApplication14.Models
         }
 
         public int Id { get; set; }
-        public string Ogrno1 { get; set; }
-        public string Ogrno2 { get; set; }
+        public string Ogrenci1No { get; set; }
+        public string Ogrenci2No { get; set; }
         public int? Danismanid { get; set; }
         public string Isim { get; set; }
         public int? OturumNo { get; set; }

@@ -5,7 +5,7 @@
 	List<int> atamaSayisi = ViewBag.AtamaSayısı;
 	List<int> istekGonderilmisMi = ViewBag.istekGonderilmisMi;
 	Takvim takvim = ViewBag.takvim;
-	String s = takvim.Toplanti.Value.Date.ToShortDateString();
+	string toplantiTarihi = takvim.Toplanti.Value.Date.ToShortDateString();
 	int i = 0;
 
 }
@@ -14,7 +14,7 @@
 {
 	<div class="sufee-alert alert with-close alert-warning alert-dismissible fade show">
 		<span class="badge badge-pill badge-warning">Bilgilendirme</span>
-		Proje Atamalarını <strong>@(s)</strong> tarihine kadar tamamlamanız gerekmektedir.
+		Proje Atamalarını <strong>@(toplantiTarihi)</strong> tarihine kadar tamamlamanız gerekmektedir.
 		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 			<span aria-hidden="true">×</span>
 		</button>
@@ -127,10 +127,10 @@
 											</div>
 										</td>
 										<td>
-											<span class="role user">@(proje.OgrenciOneriNoNavigation.Ogrno1 + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Soyad)</span>
+											<span class="role user">@(proje.OgrenciOneriNoNavigation.Ogrenci1No + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Soyad)</span>
 											@if (proje.OgrNo2 != null)
 											{
-												<span class="role user">@(proje.OgrenciOneriNoNavigation.Ogrno2 + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Soyad)</span>
+												<span class="role user">@(proje.OgrenciOneriNoNavigation.Ogrenci2No + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Soyad)</span>
 											}
 										</td>
 									}
@@ -197,10 +197,10 @@ else if (ViewBag.geç == 1)
 											</div>
 										</td>
 										<td>
-											<span class="role user">@(proje.OgrenciOneriNoNavigation.Ogrno1 + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Soyad)</span>
+											<span class="role user">@(proje.OgrenciOneriNoNavigation.Ogrenci1No + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Soyad)</span>
 											@if (proje.OgrNo2 != null)
 											{
-												<span class="role user">@(proje.OgrenciOneriNoNavigation.Ogrno2 + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Soyad)</span>
+												<span class="role user">@(proje.OgrenciOneriNoNavigation.Ogrenci2No + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Soyad)</span>
 											}
 										</td>
 									}

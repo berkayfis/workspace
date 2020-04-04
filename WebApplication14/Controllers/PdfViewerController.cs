@@ -9,10 +9,15 @@ namespace WebApplication14.Controllers
 {
     public class PdfViewerController : Controller
     {
-		AraProjeContext p = new AraProjeContext();
-        public IActionResult Index(int id)
+		private readonly AraProjeContext _context;
+
+		public PdfViewerController(AraProjeContext context)
+		{
+			_context = context;
+		}
+		public IActionResult Index(int id)
         {
-			ProjeOnerileri proje = p.ProjeOnerileri.FirstOrDefault(x => x.Id == id);
+			ProjeOnerileri proje = _context.ProjeOnerileri.FirstOrDefault(x => x.Id == id);
 			if (proje != null && proje.Form1 != null)
 			{ //eğer akademisyen önerisi ise
 				String name = proje.Form1;

@@ -9,21 +9,26 @@ namespace WebApplication14.Controllers
 {
     public class SinifAtamaController : Controller
     {
-		AraProjeContext p = new AraProjeContext();
-        public IActionResult Index()
+		private readonly AraProjeContext _context;
+
+		public SinifAtamaController(AraProjeContext context)
+		{
+			_context = context;
+		}
+		public IActionResult Index()
         {
-			Takvim t = p.Takvim.FirstOrDefault(x => x.Id == 1);
+			Takvim t = _context.Takvim.FirstOrDefault(x => x.Id == 1);
 			if (DateTime.Today < t.Finalrapor)//daha final raporu teslim edilmemiş sınıf atamaya kalkıyor
 				return RedirectToAction("Logout", "Login");
 			//ara proje raporlarını yüklemeyen && final raporunu yüklemeyen, final sınavına giremez
-			List<ProjeAl> buDonemProjeYapanlarAra = p.ProjeAl.Where(x => x.KabulDurumu == "Kabul" && 
+			List<ProjeAl> buDonemProjeYapanlarAra = _context.ProjeAl.Where(x => x.KabulDurumu == "Kabul" && 
 																	 (x.ProjeNoNavigation.Kategori == "Bilgisayar(Ara) Proje" || 
 																	  x.OgrenciOneriNoNavigation.Turu == "Bilgisayar(Ara) Proje")&&
 																     (x.Ararapor1 != null || x.Ararapor2 != null) && 
 																	  x.Finalrapor != null).OrderBy(x => x.ProjeNoNavigation.DanismanId).
 																	  ToList();
 
-			List<ProjeAl> buDonemProjeYapanlarBitirme = p.ProjeAl.Where(x => x.KabulDurumu == "Kabul" &&
+			List<ProjeAl> buDonemProjeYapanlarBitirme = _context.ProjeAl.Where(x => x.KabulDurumu == "Kabul" &&
 																	  x.ProjeNoNavigation.Kategori == "Bitirme Projesi" &&
 																	 (x.Ararapor1 != null || x.Ararapor2 != null) &&
 																	  x.Finalrapor != null).ToList();
@@ -34,15 +39,15 @@ namespace WebApplication14.Controllers
 
 			List<List<ProjeAl>> danismanlikYaptigiProjeler = new List<List<ProjeAl>>();//her bir akademisyenin danışmanlık yaptığı projeleri
 			List<List<ProjeAl>> danismanlikYaptigiProjeler2 = new List<List<ProjeAl>>();
-			List<AkademikPersonel> akademisyenler = p.AkademikPersonel.ToList();
+			List<AkademikPersonel> akademisyenler = _context.AkademikPersonel.ToList();
 			List<int> toplamProjeSayisi = new List<int>();
 			foreach (AkademikPersonel akademisyen in akademisyenler)
 			{
-				List<ProjeAl> akademisyeninDanismanlikYaptigiAraProjeler = p.ProjeAl.Where(x => (x.ProjeNoNavigation.DanismanId == akademisyen.Id && x.ProjeNoNavigation.Kategori == "Bilgisayar(Ara) Proje"||
+				List<ProjeAl> akademisyeninDanismanlikYaptigiAraProjeler = _context.ProjeAl.Where(x => (x.ProjeNoNavigation.DanismanId == akademisyen.Id && x.ProjeNoNavigation.Kategori == "Bilgisayar(Ara) Proje"||
 																							  x.OgrenciOneriNoNavigation.Danismanid == akademisyen.Id && x.OgrenciOneriNoNavigation.Turu == "Bilgisayar(Ara) Proje") && 
 																						      x.KabulDurumu == "Kabul" && (x.Ararapor1 != null || x.Ararapor2 != null) && x.Finalrapor != null).
 																	                          ToList();
-				List<ProjeAl> akademisyeninDanismanlikYaptigiBitirmeProjeleri = p.ProjeAl.Where(x => (x.ProjeNoNavigation.DanismanId == akademisyen.Id && x.ProjeNoNavigation.Kategori == "Bitirme Projesi" ||
+				List<ProjeAl> akademisyeninDanismanlikYaptigiBitirmeProjeleri = _context.ProjeAl.Where(x => (x.ProjeNoNavigation.DanismanId == akademisyen.Id && x.ProjeNoNavigation.Kategori == "Bitirme Projesi" ||
 																							  x.OgrenciOneriNoNavigation.Danismanid == akademisyen.Id && x.OgrenciOneriNoNavigation.Turu == "Bitirme Projesi") &&
 																							  x.KabulDurumu == "Kabul" && (x.Ararapor1 != null || x.Ararapor2 != null) && x.Finalrapor != null).
 																							  ToList();
@@ -132,7 +137,7 @@ namespace WebApplication14.Controllers
 			}*/
 
 			//jüri öğretim üyeleri arasından seçilir(arş. grv. yer almaz)
-			List<AkademikPersonel> bolumdekiHocalar = p.AkademikPersonel.Where(x => x.Unvan == "Dr. Öğr. Üyesi" || 
+			List<AkademikPersonel> bolumdekiHocalar = _context.AkademikPersonel.Where(x => x.Unvan == "Dr. Öğr. Üyesi" || 
 																					x.Unvan == "Doç. Dr." || 
 																					x.Unvan == "Prof. Dr.").ToList();
 
@@ -141,7 +146,7 @@ namespace WebApplication14.Controllers
 			//proje önerisi vermeyen akademisyenler, joker jüri olarak kullan
 			foreach (AkademikPersonel akademisyen in bolumdekiHocalar)
 			{
-				ProjeOnerileri projeOnerisi = p.ProjeOnerileri.FirstOrDefault(x => x.DanismanId == akademisyen.Id);
+				ProjeOnerileri projeOnerisi = _context.ProjeOnerileri.FirstOrDefault(x => x.DanismanId == akademisyen.Id);
 				if (projeOnerisi == null) { //bu akademisyen joker
 					jokers.Add(akademisyen);
 				}

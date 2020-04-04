@@ -59,96 +59,99 @@
 			</div>
 			<nav class="navbar-mobile">
 				<div class="container-fluid">
-					<ul class="navbar-mobile__list list-unstyled">
-						@if (Context.Session.GetInt32("akademisyen") != null)
-						{
-							<li>
-								<a href="/AkademisyenProjeOnerileri/Index">
-									<i class="fas fa-chart-bar"></i>Akademisyen Proje Önerileri
-								</a>
-							</li>
-							if (Context.Session.GetInt32("asistan") != null) { 
-								<li>
-									<a href="/RaporIncele/Index">
-										<i class="fas fa-file-text"></i>Rapor İncele
-									</a>
-								</li>
-							}
-							<li>
-								<a href="/ProjeOnerilerim/Index">
-									<i class="fas fa-user"></i>Proje Önerilerim
-								</a>
-							</li>
-							@if (Context.Session.GetInt32("Form2SureDoldu") == null)
-							{ //Form2 yükleme tarihinden sonra proje yükleyemez
-								<li class="has-sub">
-									<a class="js-arrow" href="#">
-										<i class="fas fa-plus-circle"></i>Proje Ekle
-									</a>
-									<ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-										<li>
-											<a href="/ProjeOnerilerim/ProjeEkle">Yeni Proje Ekle</a>
-										</li>
-										<li>
-											<a href="/ProjeOnerilerim/EskiOnerilerim">Eski Önerilerimden Getir</a>
-										</li>
-										<li>
-											<a href="/AkademisyenProjeOnerileri/OgrenciOnerisi">Öğrenci Önerileri</a>
-										</li>
-									</ul>
-								</li>
-							}
-								<li>
-									<a href="/Chat/Index">
-										<i class="fas fa-envelope"></i>Mail
-									</a>
-								</li>
-						}
-							@if (Context.Session.GetInt32("öğrenci") != null)
-							{
-								<li>
-									<a href="/Ogrenci/Index">
-										<i class="fas fa-map-marker-alt"></i>YayınlananProjeler
-									</a>
-								</li>
-							}
-							<li>
-								<a href="/ProjeTakvimi/Index">
-									<i class="fas fa-calendar-alt"></i>Proje Takvimi
-								</a>
-							</li>
-							<li>
-								<a href="/ProjeKoor/Duyurular">
-									<i class="fas fa-newspaper"></i>Duyurular
-								</a>
-							</li>
-							@if (Context.Session.GetInt32("AraSınavveBitirmeSınav") != null) { 
-								<li>
-									<a href="/SinifAtama/Index">
-										<i class="fas fa-random"></i>Sınıf Atama
-									</a>
-								</li>
-							}
-							
-							@if (Context.Session.GetInt32("koordinatör") != null)
-							{
-								<li>
-									<a href="/ProjeKoor/YayınladığımDuyurular">
-										<i class="fas fa-file-text"></i>Yayınladığım Duyurular
-									</a>
-								</li>
-								<li>
-									<a href="/ProjeKoor/RaporlarıDagit">
-										<i class="fas fa-sitemap"></i>Raporları Dağıt
-									</a>
-								</li>
-							}
-							<li>
-								<a href="/AtamasıYapılanProjeler/Index">
-									<i class="fas fa-gavel"></i>Atanan Projeler
-								</a>
-							</li>
-						</ul>
+                    <ul class="navbar-mobile__list list-unstyled">
+                        @if (Context.Session.GetInt32("akademisyen") != null)
+                        {
+                            <li>
+                                <a href="/AkademisyenProjeOnerileri/Index">
+                                    <i class="fas fa-chart-bar"></i>Akademisyen Proje Önerileri
+                                </a>
+                            </li>
+                            if (Context.Session.GetInt32("asistan") != null)
+                            {
+                                <li>
+                                    <a href="/RaporIncele/Index">
+                                        <i class="fas fa-file-text"></i>Rapor İncele
+                                    </a>
+                                </li>
+                            }
+                            <li>
+                                <a href="/ProjeOnerilerim/Index">
+                                    <i class="fas fa-user"></i>Proje Önerilerim
+                                </a>
+                            </li>
+                            @if (Context.Session.GetInt32("Form2SureDoldu") == null)
+                            { //Form2 yükleme tarihinden sonra proje yükleyemez
+                                <li class="has-sub">
+                                    <a class="js-arrow" href="#">
+                                        <i class="fas fa-plus-circle"></i>Proje Ekle
+                                    </a>
+                                    <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                                        <li>
+                                            <a href="/ProjeOnerilerim/ProjeEkle">Yeni Proje Ekle</a>
+                                        </li>
+                                        <li>
+                                            <a href="/ProjeOnerilerim/EskiOnerilerim">Eski Önerilerimden Getir</a>
+                                        </li>
+                                        <li>
+                                            <a href="/AkademisyenProjeOnerileri/OgrenciOnerisi">Öğrenci Önerileri</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            }
+
+                        }
+                        <li>
+                            <a href="/Chat/Index">
+                                <i class="fas fa-envelope"></i>Mail
+                            </a>
+                        </li>
+                        @if (Context.Session.GetInt32("öğrenci") != null)
+                        {
+                            <li>
+                                <a href="/Ogrenci/Index">
+                                    <i class="fas fa-map-marker-alt"></i>YayınlananProjeler
+                                </a>
+                            </li>
+                        }
+                        <li>
+                            <a href="/ProjeTakvimi/Index">
+                                <i class="fas fa-calendar-alt"></i>Proje Takvimi
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/ProjeKoor/Duyurular">
+                                <i class="fas fa-newspaper"></i>Duyurular
+                            </a>
+                        </li>
+                        @if (Context.Session.GetInt32("AraSınavveBitirmeSınav") != null)
+                        {
+                            <li>
+                                <a href="/SinifAtama/Index">
+                                    <i class="fas fa-random"></i>Sınıf Atama
+                                </a>
+                            </li>
+                        }
+
+                        @if (Context.Session.GetInt32("koordinatör") != null)
+                        {
+                            <li>
+                                <a href="/ProjeKoor/YayınladığımDuyurular">
+                                    <i class="fas fa-file-text"></i>Yayınladığım Duyurular
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/ProjeKoor/RaporlarıDagit">
+                                    <i class="fas fa-sitemap"></i>Raporları Dağıt
+                                </a>
+                            </li>
+                        }
+                        <li>
+                            <a href="/AtamasıYapılanProjeler/Index">
+                                <i class="fas fa-gavel"></i>Atanan Projeler
+                            </a>
+                        </li>
+                    </ul>
 				</div>
 			</nav>
 		</header>
@@ -162,124 +165,122 @@
 			</div>
 			<div class="menu-sidebar__content js-scrollbar1">
 				<nav class="navbar-sidebar">
-					<ul class="list-unstyled navbar__list">
-						@if (Context.Session.GetInt32("akademisyen") != null)
-						{
-							<li>
-								<a href="/AkademisyenProjeOnerileri/Index">
-									<i class="fas fa-chart-bar"></i>Akademisyen Proje Önerileri
-								</a>
-							</li>
-							if (Context.Session.GetInt32("asistan") != null)
-							{
-								<li>
-									<a href="/RaporIncele/Index">
-										<i class="fas fa-file-text"></i>Rapor İncele
-									</a>
-								</li>
-							}
-							<li>
-								<a href="/ProjeOnerilerim/Index">
-									<i class="fas fa-user"></i>Proje Önerilerim
-								</a>
-							</li>
-							@if (Context.Session.GetInt32("Form2SureDoldu") == null)
-							{ //Form2 yükleme tarihinden sonra proje yükleyemez
-								<li class="has-sub">
-									<a class="js-arrow" href="#">
-										<i class="fas fa-plus-circle"></i>Proje Ekle
-									</a>
-									<ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-										<li>
-											<a href="/ProjeOnerilerim/ProjeEkle">Yeni Proje Ekle</a>
-										</li>
-										<li>
-											<a href="/ProjeOnerilerim/EskiOnerilerim">Eski Önerilerimden Getir</a>
-										</li>
-										<li>
-											<a href="/AkademisyenProjeOnerileri/OgrenciOnerisi">Öğrenci Önerileri</a>
-										</li>
-									</ul>
-								</li>
-							}
+                    <ul class="list-unstyled navbar__list">
+                        @if (Context.Session.GetInt32("akademisyen") != null)
+                        {
+                            <li>
+                                <a href="/AkademisyenProjeOnerileri/Index">
+                                    <i class="fas fa-chart-bar"></i>Akademisyen Proje Önerileri
+                                </a>
+                            </li>
+                            if (Context.Session.GetInt32("asistan") != null)
+                            {
+                                <li>
+                                    <a href="/RaporIncele/Index">
+                                        <i class="fas fa-file-text"></i>Rapor İncele
+                                    </a>
+                                </li>
+                            }
+                            <li>
+                                <a href="/ProjeOnerilerim/Index">
+                                    <i class="fas fa-user"></i>Proje Önerilerim
+                                </a>
+                            </li>
+                            @if (Context.Session.GetInt32("Form2SureDoldu") == null)
+                            { //Form2 yükleme tarihinden sonra proje yükleyemez
+                                <li class="has-sub">
+                                    <a class="js-arrow" href="#">
+                                        <i class="fas fa-plus-circle"></i>Proje Ekle
+                                    </a>
+                                    <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                                        <li>
+                                            <a href="/ProjeOnerilerim/ProjeEkle">Yeni Proje Ekle</a>
+                                        </li>
+                                        <li>
+                                            <a href="/ProjeOnerilerim/EskiOnerilerim">Eski Önerilerimden Getir</a>
+                                        </li>
+                                        <li>
+                                            <a href="/AkademisyenProjeOnerileri/OgrenciOnerisi">Öğrenci Önerileri</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            }
+                        }
+                        <li>
+                            <a href="/Chat/Index">
+                                <i class="fas fa-envelope"></i>Mail
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/ProjeTakvimi/Index">
+                                <i class="fas fa-calendar-alt"></i>Proje Takvimi
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/ProjeKoor/Duyurular">
+                                <i class="fas fa-newspaper"></i>Duyurular
+                            </a>
+                        </li>
+                        @if (Context.Session.GetInt32("AraSınavveBitirmeSınav") != null)
+                        {
+                            <li>
+                                <a href="/SinifAtama/Index">
+                                    <i class="fas fa-random"></i>Sınıf Atama
+                                </a>
+                            </li>
+                        }
+                        @if (Context.Session.GetInt32("koordinatör") != null)
+                        {
 
-							<li>
-								<a href="/Chat/Index">
-									<i class="fas fa-envelope"></i>Mail
-								</a>
-							</li>
-						}
+                            <li>
+                                <a href="/ProjeKoor/YayınladığımDuyurular">
+                                    <i class="fas fa-file-text"></i>Yayınladığım Duyurular
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/ProjeKoor/RaporlarıDagit">
+                                    <i class="fas fa-sitemap"></i>Raporları Dağıt
+                                </a>
+                            </li>
+                        }
+                        <li>
+                            <a href="/AtamasıYapılanProjeler/Index">
+                                <i class="fas fa-gavel"></i>Atanan Projeler
+                            </a>
+                        </li>
+                        @if (Context.Session.GetInt32("öğrenci") != null)
+                        {
+                            if (Context.Session.GetInt32("projeAlmisMi") == 1)//proje atamam yapıldıysa
+                            {
+                                if (Context.Session.GetInt32("KabulOlduMu") == 1)//ve bu atama kabul olduysa
+                                {
+                                    <li>
+                                        <a href="/Ogrenci/BuDonemAldığımProje">
+                                            <i class="fas fa-clipboard-list"></i>Atanan Proje
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
 
-						<li>
-							<a href="/ProjeTakvimi/Index">
-								<i class="fas fa-calendar-alt"></i>Proje Takvimi
-							</a>
-						</li>
-						<li>
-							<a href="/ProjeKoor/Duyurular">
-								<i class="fas fa-newspaper"></i>Duyurular
-							</a>
-						</li>
-						@if (Context.Session.GetInt32("AraSınavveBitirmeSınav") != null)
-						{
-							<li>
-								<a href="/SinifAtama/Index">
-									<i class="fas fa-random"></i>Sınıf Atama
-								</a>
-							</li>
-						}
-						@if (Context.Session.GetInt32("koordinatör") != null)
-						{
+                                }
+                            }
+                            else//proje ataması yapılmadıysa istek gönderdiğim projeleri göster
+                            {
+                                <li>
+                                    <a href="/Ogrenci/Index">
+                                        <i class="fas fa-bullhorn"></i>Yayınlanan Projeler
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/Ogrenci/IstekGonderdigimProjeler">
+                                        <i class="fas fa-mail-forward"></i>İstek Gönderdiğim Projeler
+                                    </a>
+                                </li>
+                            }
 
-							<li>
-								<a href="/ProjeKoor/YayınladığımDuyurular">
-									<i class="fas fa-file-text"></i>Yayınladığım Duyurular
-								</a>
-							</li>
-							<li>
-								<a href="/ProjeKoor/RaporlarıDagit">
-									<i class="fas fa-sitemap"></i>Raporları Dağıt
-								</a>
-							</li>
-						}
-						<li>
-							<a href="/AtamasıYapılanProjeler/Index">
-								<i class="fas fa-gavel"></i>Atanan Projeler
-							</a>
-						</li>
-						@if (Context.Session.GetInt32("öğrenci") != null)
-						{
-							if (Context.Session.GetInt32("projeAlmisMi") == 1)//proje atamam yapıldıysa
-							{
-								if (Context.Session.GetInt32("KabulOlduMu") == 1)//ve bu atama kabul olduysa
-								{
-									<li>
-										<a href="/Ogrenci/BuDonemAldığımProje">
-											<i class="fas fa-clipboard-list"></i>Atanan Proje
-										</a>
-									</li>
-								}
-								else
-								{
-
-								}
-							}
-							else//proje ataması yapılmadıysa istek gönderdiğim projeleri göster
-							{
-								<li>
-									<a href="/Ogrenci/Index">
-										<i class="fas fa-bullhorn"></i>Yayınlanan Projeler
-									</a>
-								</li>
-								<li>
-									<a href="/Ogrenci/IstekGonderdigimProjeler">
-										<i class="fas fa-mail-forward"></i>İstek Gönderdiğim Projeler
-									</a>
-								</li>
-							}
-
-						}
-					</ul>
+                        }
+                    </ul>
 				</nav>
 			</div>
 		</aside>

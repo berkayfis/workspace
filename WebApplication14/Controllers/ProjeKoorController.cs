@@ -5,19 +5,26 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ExcelDataReader;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication14.Models;
 
 namespace WebApplication14.Controllers
 {
+    [Authorize(Roles = "Koordinator")]
     public class ProjeKoorController : Controller
     {
-        AraProjeContext p = new AraProjeContext();
+        private readonly AraProjeContext _context;
+
+        public ProjeKoorController(AraProjeContext context)
+        {
+            _context = context;
+        }
 
         public IActionResult Index()
         {
-            ViewBag.öğrenciOnerileri = p.OgrenciProjeOnerisi.ToList();
+            ViewBag.öğrenciOnerileri = _context.OgrenciProjeOnerisi.ToList();
             return View();
 
         }
@@ -27,10 +34,12 @@ namespace WebApplication14.Controllers
             proje.OgrenciOneriNo = id;
             proje.ProjeDurumu = "Yeni Proje (Öğrenci Önerisinden)";
 
-            p.ProjeAl.Add(proje);
-            p.SaveChanges();
+            _context.ProjeAl.Add(proje);
+            _context.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        #region  DUYURU         
         public IActionResult DuyuruYayınla()
         {
             if (HttpContext.Session.GetInt32("koordinatör") == null)
@@ -58,10 +67,10 @@ namespace WebApplication14.Controllers
 
             duyuru.Zaman = DateTime.Now;
             int id = Convert.ToInt32(HttpContext.Session.GetInt32("id"));
-            ProjeKoordinatoru koor = p.ProjeKoordinatoru.FirstOrDefault(x => x.AkademisyenId == id);
+            ProjeKoordinatoru koor = _context.ProjeKoordinatoru.FirstOrDefault(x => x.AkademisyenId == id);
             duyuru.KoordinatorNo = koor.Id;
-            p.Duyuru.Add(duyuru);
-            p.SaveChanges();
+            _context.Duyuru.Add(duyuru);
+            _context.SaveChanges();
             return RedirectToAction("Duyurular");
         }
         public IActionResult DuyuruDüzenle(int id)
@@ -69,7 +78,7 @@ namespace WebApplication14.Controllers
             if (HttpContext.Session.GetInt32("koordinatör") == null)
                 return RedirectToAction("Logout", "Login");
 
-            Duyuru duyuru = p.Duyuru.FirstOrDefault(x => x.Id == id);
+            Duyuru duyuru = _context.Duyuru.FirstOrDefault(x => x.Id == id);
             if (duyuru != null)
             {
                 if (duyuru.KoordinatorNo != HttpContext.Session.GetInt32("koordinatör"))
@@ -84,7 +93,7 @@ namespace WebApplication14.Controllers
         public async Task<IActionResult> DuyuruDüzenleAsync(Duyuru duyuru, IFormFile Eklenti)
         {
             int id = Convert.ToInt32(HttpContext.Session.GetInt32("DuyuruID"));
-            Duyuru duyuruDb = p.Duyuru.FirstOrDefault(x => x.Id == id);
+            Duyuru duyuruDb = _context.Duyuru.FirstOrDefault(x => x.Id == id);
 
             if (duyuru.Baslik != null && !duyuruDb.Baslik.Contains("[Düzenlendi]"))
             {
@@ -110,13 +119,13 @@ namespace WebApplication14.Controllers
                     duyuruDb.Eklenti = filePath;
                 }
             }
-            p.SaveChanges();
+            _context.SaveChanges();
 
             return RedirectToAction("Duyurular", "ProjeKoor");
         }
         public IActionResult Duyurular()
         {
-            ViewBag.Duyurular = p.Duyuru.ToList();
+            ViewBag.Duyurular = _context.Duyuru.ToList();
             return View();
         }
         public IActionResult YayınladığımDuyurular()
@@ -125,16 +134,16 @@ namespace WebApplication14.Controllers
                 return RedirectToAction("Logout", "Login");
 
             int id = Convert.ToInt32(HttpContext.Session.GetInt32("koordinatör"));
-            ViewBag.YayınladığımDuyurular = p.Duyuru.Where(x => x.KoordinatorNo == id).ToList();
+            ViewBag.YayınladığımDuyurular = _context.Duyuru.Where(x => x.KoordinatorNo == id).ToList();
             return View();
         }
 
         public IActionResult DuyuruGörüntüle(int id)
         {
-            Duyuru duyuru = p.Duyuru.FirstOrDefault(x => x.Id == id);
+            Duyuru duyuru = _context.Duyuru.FirstOrDefault(x => x.Id == id);
             return View(duyuru);
         }
-
+        #endregion
         public IActionResult DersiAlanOgrenciler()
         {
             String filePath = "C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + HttpContext.Session.GetString("BulunduğumuzDönem");
@@ -161,15 +170,15 @@ namespace WebApplication14.Controllers
                 liste.Add(excelReader.GetValue(0).ToString() + " " + excelReader.GetString(1) + " " + excelReader.GetString(2));
                 Ogrenci ogrenci = new Ogrenci();
                 ogrenci.OgrenciNo = excelReader.GetValue(0).ToString();
-                Ogrenci ogrenci1 = p.Ogrenci.FirstOrDefault(x => x.OgrenciNo == ogrenci.OgrenciNo);
+                Ogrenci ogrenci1 = _context.Ogrenci.FirstOrDefault(x => x.OgrenciNo == ogrenci.OgrenciNo);
                 if (ogrenci1 == null)
                 {
                     ogrenci.Ad = excelReader.GetString(1);
                     ogrenci.Soyad = excelReader.GetString(2);
-                    p.Ogrenci.Add(ogrenci);
+                    _context.Ogrenci.Add(ogrenci);
                 }
             }
-            p.SaveChanges();
+            _context.SaveChanges();
 
             ViewBag.alanlar = liste;
 
@@ -177,20 +186,21 @@ namespace WebApplication14.Controllers
             excelReader.Close();
             return View();
         }
+
         public IActionResult Kabul(int id)
         {
             if (HttpContext.Session.GetInt32("koordinatör") == null)//Proje kurulunun kararını sadece koordinatör atayabilir
                 return RedirectToAction("Logout", "Login");
 
-            Takvim takvim = p.Takvim.FirstOrDefault(x => x.Id == 1);
+            Takvim takvim = _context.Takvim.FirstOrDefault(x => x.Id == 1);
             if (takvim.Toplanti == DateTime.Today)
             {
-                ProjeAl alınanProje = p.ProjeAl.FirstOrDefault(x => x.Id == id);
+                ProjeAl alınanProje = _context.ProjeAl.FirstOrDefault(x => x.Id == id);
                 if (alınanProje != null)
                 {
                     alınanProje.KabulDurumu = "Kabul";
                 }
-                p.SaveChanges();
+                _context.SaveChanges();
             }
             else
             { //Proje kurulunun kararı toplantı gününün haricinde atanmaz
@@ -205,15 +215,15 @@ namespace WebApplication14.Controllers
             if (HttpContext.Session.GetInt32("koordinatör") == null)//Proje kurulunun kararını sadece koordinatör atayabilir
                 return RedirectToAction("Logout", "Login");
 
-            Takvim takvim = p.Takvim.FirstOrDefault(x => x.Id == 1);
+            Takvim takvim = _context.Takvim.FirstOrDefault(x => x.Id == 1);
             if (takvim.Toplanti == DateTime.Today)
             {
-                ProjeAl alınanProje = p.ProjeAl.FirstOrDefault(x => x.Id == id);
+                ProjeAl alınanProje = _context.ProjeAl.FirstOrDefault(x => x.Id == id);
                 if (alınanProje != null)
                 {
                     alınanProje.KabulDurumu = "Ret";
                 }
-                p.SaveChanges();
+                _context.SaveChanges();
             }
             else
             { //Proje kurulunun kararı toplantı gününün haricinde atanmaz
@@ -227,15 +237,15 @@ namespace WebApplication14.Controllers
             if (HttpContext.Session.GetInt32("koordinatör") == null)//Proje kurulunun kararını sadece koordinatör atayabilir
                 return RedirectToAction("Logout", "Login");
 
-            Takvim takvim = p.Takvim.FirstOrDefault(x => x.Id == 1);
+            Takvim takvim = _context.Takvim.FirstOrDefault(x => x.Id == 1);
             if (takvim.Toplanti == DateTime.Today)
             {
-                ProjeAl alınanProje = p.ProjeAl.FirstOrDefault(x => x.Id == id);
+                ProjeAl alınanProje = _context.ProjeAl.FirstOrDefault(x => x.Id == id);
                 if (alınanProje != null)
                 {
                     alınanProje.KabulDurumu = null;
                 }
-                p.SaveChanges();
+                _context.SaveChanges();
             }
             else
             { //Proje kurulunun kararı toplantı gününün haricinde atanmaz
@@ -255,8 +265,8 @@ namespace WebApplication14.Controllers
         [HttpPost]
         public IActionResult TakvimEkle(Takvim takvim)
         {
-            p.Takvim.Add(takvim);
-            p.SaveChanges();
+            _context.Takvim.Add(takvim);
+            _context.SaveChanges();
 
             return RedirectToAction("Index", "ProjeKoor");
         }
@@ -301,8 +311,8 @@ namespace WebApplication14.Controllers
             if (HttpContext.Session.GetInt32("koordinatör") == null)
                 return RedirectToAction("Logout", "Login");
 
-            Takvim t = p.Takvim.FirstOrDefault(x => x.Id == 1);
-            List<ProjeAl> alınanProjeler = p.ProjeAl.ToList();
+            Takvim t = _context.Takvim.FirstOrDefault(x => x.Id == 1);
+            List<ProjeAl> alınanProjeler = _context.ProjeAl.ToList();
             if (DateTime.Today > t.Ararapor1 && DateTime.Today < t.Ararapor2)
             { //Ara Rapor 1'in incelenme süresi
                 ViewBag.AraRapor1 = alınanProjeler;
@@ -316,14 +326,14 @@ namespace WebApplication14.Controllers
         }
         public IActionResult RaporlarRandomDagit()
         {
-            List<ProjeAl> projeler = p.ProjeAl.ToList();
+            List<ProjeAl> projeler = _context.ProjeAl.ToList();
             foreach (ProjeAl proje in projeler)
             {
                 proje.AsistanId = null;
             }
 
 
-            Takvim t = p.Takvim.FirstOrDefault(x => x.Id == 1);
+            Takvim t = _context.Takvim.FirstOrDefault(x => x.Id == 1);
             if (DateTime.Today > t.Ararapor1 && DateTime.Today < t.Ararapor2)
             { //Ara Rapor 1'in incelenme süresi
                 RaporlariRandomDagit(1);
@@ -345,13 +355,13 @@ namespace WebApplication14.Controllers
             List<ProjeAl> projeler = new List<ProjeAl>();
             if (n == 1)
             {
-                projeler = p.ProjeAl.Where(x => x.Ararapor1 != null).ToList();
+                projeler = _context.ProjeAl.Where(x => x.Ararapor1 != null).ToList();
             }
             else if (n == 2)
             {
-                projeler = p.ProjeAl.Where(x => x.Ararapor2 != null).ToList();
+                projeler = _context.ProjeAl.Where(x => x.Ararapor2 != null).ToList();
             }
-            List<AkademikPersonel> resAssist = p.AkademikPersonel.Where(x => x.Unvan == "Arş. Grv.").ToList();
+            List<AkademikPersonel> resAssist = _context.AkademikPersonel.Where(x => x.Unvan == "Arş. Grv.").ToList();
             int[,] isYuku = new int[2, resAssist.Count];
             int i = 0;
             foreach (AkademikPersonel akademisyen in resAssist)
@@ -375,7 +385,7 @@ namespace WebApplication14.Controllers
 				}*/
                 isYuku[i, 1]++;
             }
-            p.SaveChanges();
+            _context.SaveChanges();
         }
     }
 }

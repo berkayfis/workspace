@@ -10,44 +10,89 @@ using MimeKit;
 using System.Net;
 using WebApplication14.Models;
 using System.Net.Mail;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApplication14.Controllers
 {
+	[Authorize]
     public class ChatController : Controller
     {
-		AraProjeContext p = new AraProjeContext();
-        public IActionResult Index()
-        {
-			if (HttpContext.Session.GetInt32("akademisyen") == null)
-			{
-				return RedirectToAction("Logout", "Login");
-			}
+		private readonly AraProjeContext _context;
 
-			int id = Convert.ToInt32(HttpContext.Session.GetInt32("id"));
-			ViewBag.DanismaniOldugumProjeler = p.ProjeAl.Where(x => (x.ProjeNoNavigation.DanismanId == id || x.OgrenciOneriNoNavigation.Danismanid == id) && x.KabulDurumu == "Kabul").ToList();
+		public ChatController(AraProjeContext context)
+		{
+			_context = context;
+		}
+		public IActionResult Index()
+        {
+			//if (HttpContext.Session.GetInt32("akademisyen") == null)
+			//{
+			//	return RedirectToAction("Logout", "Login");
+			//}
+			SetMessageGuid();
+			//ViewBag.DanismaniOldugumProjeler = _context.ProjeAl.Where(x => (x.ProjeNoNavigation.DanismanId == id || x.OgrenciOneriNoNavigation.Danismanid == id) && x.KabulDurumu == "Kabul").ToList();
             return View();
         }
-		public IActionResult SendEmail() {
-			if (HttpContext.Session.GetInt32("akademisyen") == null)
-			{
-				return RedirectToAction("Logout", "Login");
-			}
 
-			int id = 1;
-			try
+		private void SetMessageGuid()
+		{
+			var userRole = User.Identity.AuthenticationType;
+			if (userRole == "Akademisyen Claims")
 			{
-				id = Convert.ToInt32(HttpContext.Request.Query["id"].ToString());
+				CheckAkademisyenMessageGuid();				
 			}
-			catch (NullReferenceException nre)
+			else if (userRole == "Ogrenci Claims")
 			{
-				return RedirectToAction("Index", "Home");
+				CheckOgrenciMessageGuid();
 			}
-			ProjeAl proje = p.ProjeAl.FirstOrDefault(x => x.Id == id);
-
-
-			return View();
+		}
+		private void CheckOgrenciMessageGuid()
+		{
+			string id = HttpContext.Session.GetString("id");
+			Ogrenci ogrenci = _context.Ogrenci.Find(id);
+			if (ogrenci != null && ogrenci.MessageId == Guid.Empty)
+			{
+				ogrenci.MessageId = Guid.NewGuid();
+				_context.Ogrenci.Update(ogrenci);
+				_context.SaveChanges();
+			}
+		}
+		private void CheckAkademisyenMessageGuid()
+		{
+			int id = Convert.ToInt32(HttpContext.Session.GetInt32("id"));
+			AkademikPersonel akademisyen = _context.AkademikPersonel.Find(id);
+			if (akademisyen != null && akademisyen.MessageId == Guid.Empty)
+			{
+				akademisyen.MessageId = Guid.NewGuid();
+				_context.AkademikPersonel.Update(akademisyen);
+				_context.SaveChanges();
+			}
 		}
 
+		[Authorize]
+		public IActionResult SendEmail() {
+			//if (HttpContext.Session.GetInt32("akademisyen") == null)
+			//{
+			//	return RedirectToAction("Logout", "Login");
+			//}
+
+			//int id = 1;
+			//try
+			//{
+			//	id = Convert.ToInt32(HttpContext.Request.Query["id"].ToString());
+			//}
+			//catch (NullReferenceException nre)
+			//{
+			//	return RedirectToAction("Index", "Home");
+			//}
+			//ProjeAl proje = _context.ProjeAl.FirstOrDefault(x => x.Id == id);
+			var akademisyenler = _context.AkademikPersonel.OrderBy(x => x.Ad);
+			var ogrenciler = _context.Ogrenci.OrderBy(x => x.OgrenciNo);
+
+			ViewBag.Akademisyenler = akademisyenler;
+			ViewBag.Ogrenciler = ogrenciler;
+			return View();
+		}
 		[HttpPost]
 		public async Task<IActionResult> SendEmailAsync(String Baslik, String İcerik, IFormFile Eklenti) {
 			String filePath = "";
@@ -73,7 +118,7 @@ namespace WebApplication14.Controllers
 			MailboxAddress to = new MailboxAddress("KarsiTaraf","fsakyildiz@gmail.com");//öğrencilerin e mail adresi
 			m.To.Add(to);
 			int id = Convert.ToInt32(HttpContext.Session.GetInt32("id"));
-			AkademikPersonel a = p.AkademikPersonel.Find(id);
+			AkademikPersonel a = _context.AkademikPersonel.Find(id);
 
 			m.Subject = a.Unvan + " " + a.Ad + " "  + a.Soyad + " - " + Baslik;
 			bodyBuilder.TextBody = İcerik;

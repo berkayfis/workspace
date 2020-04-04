@@ -13,7 +13,12 @@ namespace WebApplication14.Controllers
 	public class HomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;
-		AraProjeContext p = new AraProjeContext();
+		private readonly AraProjeContext _context;
+
+		public HomeController(AraProjeContext context)
+		{
+			_context = context;
+		}
 
 		public HomeController(ILogger<HomeController> logger)
 		{

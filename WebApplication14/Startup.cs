@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,11 +28,35 @@ namespace WebApplication14
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddDbContext<AraProjeContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+			services.AddDbContext<AraProjeContext>(options => options.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+				.AddCookie(config =>
+				{
+					config.Cookie.Name = "UserInfo.Cookie";
+					config.LoginPath = "/Login/Index";
+				});
+
+			services.AddAuthorization( options =>
+			{
+				options.AddPolicy("Akademisyen", policy =>
+				{
+					policy.RequireClaim(ClaimTypes.Role, "Akademisyen");
+				});
+				options.AddPolicy("Ogrenci", policy =>
+				{
+					policy.RequireClaim(ClaimTypes.Role, "Ogrenci");
+				});
+				options.AddPolicy("Koordinator", policy =>
+				{
+					policy.RequireClaim(ClaimTypes.Role, "Koordinator");
+				});
+			});
+
 			services.AddControllersWithViews();
 
-			services.AddIdentity<IdentityUser, IdentityRole>()
-		.AddEntityFrameworkStores<AraProjeContext>();
+		//	services.AddIdentity<IdentityUser, IdentityRole>()
+		//.AddEntityFrameworkStores<AraProjeContext>();
 			services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(5));
 
 			services.AddScoped(typeof(DbContext), typeof(AraProjeContext));

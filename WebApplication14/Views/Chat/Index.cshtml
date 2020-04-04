@@ -41,56 +41,14 @@
 							<td>Mail Gönder</td>
 						</tr>
 					</thead>
-					<tbody>
-						@foreach (ProjeAl proje in ViewBag.DanismaniOldugumProjeler)
-						{
-							<tr>
-								@if (proje.ProjeNo != null)
-								{
-									<td>
-										<div class="table-data__info">
-											<h6>@proje.ProjeNoNavigation.Isim</h6>
-											<span>
-												<a>@proje.ProjeNoNavigation.Kategori</a>
-											</span>
-										</div>
-									</td>
-									<td>
-										<span class="role user">@(proje.OgrNo1Navigation.OgrenciNo + " " + proje.OgrNo1Navigation.Ad + " " + proje.OgrNo1Navigation.Soyad)</span>
-										@if (proje.OgrNo2 != null)
-										{
-											<span class="role user">@(proje.OgrNo2Navigation.OgrenciNo + " " + proje.OgrNo2Navigation.Ad + " " + proje.OgrNo2Navigation.Soyad)</span>
-										}
-									</td>
-								}
-								else if (proje.OgrenciOneriNo != null)
-								{
-									<td>
-										<div class="table-data__info">
-											<h6>@proje.OgrenciOneriNoNavigation.Isim</h6>
-											<span>
-												<a>@proje.OgrenciOneriNoNavigation.Turu</a>
-											</span>
-										</div>
-									</td>
-									<td>
-										<span class="role user">@(proje.OgrenciOneriNoNavigation.Ogrno1 + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Soyad)</span>
-										@if (proje.OgrNo2 != null)
-										{
-											<span class="role user">@(proje.OgrenciOneriNoNavigation.Ogrno2 + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Soyad)</span>
-										}
-									</td>
-								}
-								<td>
-									<a class="btn btn-success" href="/Chat/SendEmail?id=@proje.Id"><i class="fas fa-send"></i></a>
-								</td>
-							</tr>
-						}
-					</tbody>
+					
 				</table>
 			</div>
 		</div>
 		<!-- END USER DATA-->
 	</div>
+    <div>
+        <a class="btn btn-success" href="/Chat/SendEmail">Yeni Mesaj Gönder</a>
+    </div>
 
 </div>

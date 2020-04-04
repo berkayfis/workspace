@@ -9,10 +9,15 @@ namespace WebApplication14.Controllers
 {
     public class KurulKararıController : Controller
     {
-		AraProjeContext p = new AraProjeContext();
+        private readonly AraProjeContext _context;
+
+        public KurulKararıController(AraProjeContext context)
+        {
+            _context = context;
+        }
         public IActionResult Index()
         {
-			var model = p.ProjeAl.ToList();
+			var model = _context.ProjeAl.ToList();
             return View(model);
         }
     }

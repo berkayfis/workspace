@@ -10,16 +10,21 @@ namespace WebApplication14.Controllers
 {
     public class RaporInceleController : Controller
     {
-		AraProjeContext p = new AraProjeContext();
-        public IActionResult Index()
+		private readonly AraProjeContext _context;
+
+		public RaporInceleController(AraProjeContext context)
+		{
+			_context = context;
+		}
+		public IActionResult Index()
         {
 			if (HttpContext.Session.GetInt32("asistan") == null) {
 				return RedirectToAction("Logout", "Login");
 			}
 			int id = Convert.ToInt32(HttpContext.Session.GetInt32("id"));
-			List<ProjeAl> incelenecekRaporlar = p.ProjeAl.Where(x => x.AsistanId == id).ToList();
+			List<ProjeAl> incelenecekRaporlar = _context.ProjeAl.Where(x => x.AsistanId == id).ToList();
 
-			Takvim t = p.Takvim.FirstOrDefault(x => x.Id == 1);
+			Takvim t = _context.Takvim.FirstOrDefault(x => x.Id == 1);
 			if (DateTime.Today > t.Ararapor1 && DateTime.Today < t.Ararapor2)
 			{ //Ara Rapor 1'in incelenme süresi
 				ViewBag.AraRapor1 = incelenecekRaporlar;

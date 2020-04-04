@@ -9,25 +9,50 @@
 			<div class="block">
 				<div class="block-heading">
 					<div class="main-text h2">
-						Mail Gönderme Sayfası
+						Mesaj Gönderme Sayfası
 					</div>
 				</div>
 				<div class="block-content-outer">
 					<div class="block-content-inner">
-						<form action="/Chat/SendEmail" method="post" role="form">
-							<div class="form-group">
-								<label for="exampleInputEmail1">Mail Başlığı</label>
-								<input type="text" class="form-control" placeholder="Mail konusunu giriniz" name="Baslik">
-							</div>
-							<div class="form-group">
-								<textarea name="İcerik" id="" cols="30" rows="7" class="form-control" placeholder="Mail İçeriğini Giriniz" style="margin-top: 0px; margin-bottom: 0px; height: 181px;"></textarea>
-							</div>
-							<div class="form-group">
-								<label>Eklenti</label><br><br>
-								<input type="file" name="Eklenti">
-							</div>
-							<button type="submit" class="btn btn-primary">Kaydet</button>
-						</form>
+                        <form action="/Chat/SendEmail" method="post" role="form">
+                            <div class="form-group">
+                                <label>Mesaj İçeriği</label>
+                                <textarea name="İcerik" id="" cols="30" rows="7" class="form-control" placeholder="Mesaj İçeriğini Giriniz" style="margin-top: 0px; margin-bottom: 0px; height: 181px;"></textarea>
+                            </div>
+                            @if (User.Identity.AuthenticationType == "Akademisyen Claims")
+                            {
+                                <div class="form-group">
+                                    <label>Öğrenci Seçiniz</label>
+                                    <select class="form-control" name="id" required>
+                                        @foreach (Ogrenci ogrenci in ViewBag.Ogrenciler)
+                                        {
+                                            <option value="@ogrenci.OgrenciNo">
+                                                @string.Join(' ', ogrenci.Ad, ogrenci.Soyad)
+                                            </option>
+                                        }
+                                    </select>
+                                </div>
+                            }
+                            else if (User.Identity.AuthenticationType == "Ogrenci Claims")
+                            {
+                                <div class="form-group">
+                                    <label>Öğrenci Seçiniz</label>
+                                    <select class="form-control" name="id" required>
+                                        @foreach (AkademikPersonel akademisyen in ViewBag.Akademisyenler)
+                                        {
+                                            <option value="@akademisyen.Id">
+                                                @string.Join(' ', akademisyen.Ad, akademisyen.Soyad)
+                                            </option>
+                                        }
+                                    </select>
+                                </div>
+                            }
+                            <div class="form-group">
+                                <label>Eklenti</label><br><br>
+                                <input type="file" name="Eklenti">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Kaydet</button>
+                        </form>
 					</div>
 				</div>
 			</div>

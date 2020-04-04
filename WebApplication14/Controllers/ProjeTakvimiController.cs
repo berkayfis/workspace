@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication14.Models;
@@ -10,17 +11,25 @@ namespace WebApplication14.Controllers
 {
     public class ProjeTakvimiController : Controller
     {
-        AraProjeContext p = new AraProjeContext();
+        private readonly AraProjeContext _context;
+
+        public ProjeTakvimiController(AraProjeContext context)
+        {
+            _context = context;
+        }
+
+        
         public IActionResult Index()
         {
-            Takvim takvim = p.Takvim.FirstOrDefault(x => x.Id == 1);
+            Takvim takvim = _context.Takvim.FirstOrDefault(x => x.Id == 1);
             ViewBag.takvim = takvim;
             return View();
         }
         [HttpPost]
+        [Authorize(Roles = "Koordinator")]
         public IActionResult Index(Takvim takvimYeni)
         {
-            Takvim takvim = p.Takvim.FirstOrDefault(x => x.Id == 1);
+            Takvim takvim = _context.Takvim.FirstOrDefault(x => x.Id == 1);
             if (takvimYeni.Arabütünleme != null)
                 takvim.Arabütünleme = takvimYeni.Arabütünleme;
             if (takvimYeni.Ararapor1 != null)
@@ -47,7 +56,7 @@ namespace WebApplication14.Controllers
                 takvim.Ret = takvimYeni.Ret;
             if (takvimYeni.Toplanti != null)
                 takvim.Toplanti = takvimYeni.Toplanti;
-            p.SaveChanges();
+            _context.SaveChanges();
             return RedirectToAction("Index", "ProjeTakvimi");
         }
     }

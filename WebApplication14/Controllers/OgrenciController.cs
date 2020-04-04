@@ -11,7 +11,12 @@ namespace WebApplication14.Controllers
 {
 	public class OgrenciController : Controller
 	{
-		AraProjeContext p = new AraProjeContext();
+		private readonly AraProjeContext _context;
+
+		public OgrenciController(AraProjeContext context)
+		{
+			_context = context;
+		}
 		public IActionResult Index()
 		{
 			if (HttpContext.Session.GetInt32("Form2SureDoldu") == 1) {//Form2 tesliminden sonra istek gönderme kapanır
@@ -29,13 +34,13 @@ namespace WebApplication14.Controllers
 			}
 			ViewBag.flag = flag;
 
-			List<ProjeOnerileri> akademisyenOnerileri = p.ProjeOnerileri.OrderBy(x => x.Danisman.Kisaltma).ToList();
+			List<ProjeOnerileri> akademisyenOnerileri = _context.ProjeOnerileri.OrderBy(x => x.Danisman.Kisaltma).ToList();
 			ViewBag.AkademisyenOnerileri = akademisyenOnerileri;
 
 			List<int> kaçKezAtandı = new List<int>();
 			foreach (ProjeOnerileri proje in akademisyenOnerileri)
 			{
-				kaçKezAtandı.Add(p.ProjeAl.Where(x => x.ProjeNo == proje.Id).Count());
+				kaçKezAtandı.Add(_context.ProjeAl.Where(x => x.ProjeNo == proje.Id).Count());
 			}
 			ViewBag.kaçKezAtandı = kaçKezAtandı;
 
@@ -55,8 +60,8 @@ namespace WebApplication14.Controllers
 				return RedirectToAction("Index", "Ogrenci");
 			}
 
-			ViewBag.oturumlar = p.AlanOturum.ToList();
-			ViewBag.akademisyenler = p.AkademikPersonel.ToList().OrderBy(x => x.Kisaltma);
+			ViewBag.oturumlar = _context.AlanOturum.ToList();
+			ViewBag.akademisyenler = _context.AkademikPersonel.ToList().OrderBy(x => x.Kisaltma);
 			ViewBag.öğrenciler = atamasıYapılmayanOgrenciler();
 			return View();
 		}
@@ -65,15 +70,15 @@ namespace WebApplication14.Controllers
 		public async Task<IActionResult> ProjeOnerAsync(OgrenciProjeOnerisi proje, IFormFile Form2)
 		{
 			String ogrNo = HttpContext.Session.GetString("id");
-			Ogrenci a = p.Ogrenci.Find(ogrNo);
+			Ogrenci a = _context.Ogrenci.Find(ogrNo);
 			if (a != null) {
-				proje.Ogrno1 = ogrNo;
+				proje.Ogrenci1No = ogrNo;
 			}
 
 			if (Form2.Length > 0)
 			{
 				// full path to file in temp location
-				var filePath = "C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + proje.Ogrno1 + " - " + proje.Isim + ".pdf";
+				var filePath = "C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + proje.Ogrenci1No + " - " + proje.Isim + ".pdf";
 
 				using (var stream = new FileStream(filePath, FileMode.Create))
 				{
@@ -91,10 +96,10 @@ namespace WebApplication14.Controllers
 			alınan_proje.= proje.Danismanid;*/
 			alınan_proje.ProjeDurumu = "Yeni Proje (Öğrenci Önerisinden)";
 
-			if (proje.Ogrno2 == "0")
-				proje.Ogrno2 = null;
-			p.OgrenciProjeOnerisi.Add(proje);
-			p.SaveChanges();
+			if (proje.Ogrenci2No == "0")
+				proje.Ogrenci2No = null;
+			_context.OgrenciProjeOnerisi.Add(proje);
+			_context.SaveChanges();
 			//p.ProjeAl.Add(alınan_proje);
 			//p.SaveChanges();
 			return RedirectToAction("Index", "Ogrenci");
@@ -109,8 +114,8 @@ namespace WebApplication14.Controllers
 			String ogrNo = HttpContext.Session.GetString("id");
 
 			//Kontenjan dolduysa istek gönderemezsin
-			int count = p.ProjeAl.Where(x => x.ProjeNo == id).Count();
-			ProjeOnerileri projeÖnerisi = p.ProjeOnerileri.FirstOrDefault(x => x.Id == id);
+			int count = _context.ProjeAl.Where(x => x.ProjeNo == id).Count();
+			ProjeOnerileri projeÖnerisi = _context.ProjeOnerileri.FirstOrDefault(x => x.Id == id);
 			if (count == projeÖnerisi.GrupSayisi)
 				return RedirectToAction("Logout", "Login");
 
@@ -127,14 +132,14 @@ namespace WebApplication14.Controllers
 
 			//bu projeye daha önce istek göndermiş mi
 			int flag = 0;
-			Istek istek = p.Istek.FirstOrDefault(x => x.OgrNo1 == ogrNo && x.ProjeId == id);
+			Istek istek = _context.Istek.FirstOrDefault(x => x.OgrNo1 == ogrNo && x.ProjeId == id);
 			if (istek != null)
 			{
 				flag = 1;
 			}
 			else
 			{
-				istek = p.Istek.FirstOrDefault(x => x.OgrNo2 == ogrNo && x.ProjeId == id);
+				istek = _context.Istek.FirstOrDefault(x => x.OgrNo2 == ogrNo && x.ProjeId == id);
 				if (istek != null)
 				{
 					flag = 1;
@@ -142,9 +147,9 @@ namespace WebApplication14.Controllers
 			}
 			ViewBag.flag = flag;
 
-			ProjeOnerileri proje = p.ProjeOnerileri.FirstOrDefault(x => x.Id == id);
+			ProjeOnerileri proje = _context.ProjeOnerileri.FirstOrDefault(x => x.Id == id);
 			//giriş yapan kullanıcıyı view'a gönderME
-			List<Ogrenci> öğrenciler = p.Ogrenci.ToList();
+			List<Ogrenci> öğrenciler = _context.Ogrenci.ToList();
 			Ogrenci ogrenci = öğrenciler.FirstOrDefault(x => x.OgrenciNo == ogrNo);
 			öğrenciler.Remove(ogrenci);
 
@@ -158,13 +163,13 @@ namespace WebApplication14.Controllers
 		public async Task<IActionResult> IstekGonderAsync(String OgrNo2, IFormFile Form2)
 		{
 			int id = Convert.ToInt32(HttpContext.Session.GetInt32("İstekProjeID"));
-			Istek i = new Istek();
-			i.ProjeId = id;
+			Istek istek = new Istek();
+			istek.ProjeId = id;
 			String ogrNo = HttpContext.Session.GetString("id");
-			i.OgrNo1 = ogrNo;
-			i.OgrNo2 = OgrNo2;
+			istek.OgrNo1 = ogrNo;
+			istek.OgrNo2 = OgrNo2;
 
-			ProjeOnerileri proje = p.ProjeOnerileri.FirstOrDefault(x => x.Id == id);
+			ProjeOnerileri proje = _context.ProjeOnerileri.FirstOrDefault(x => x.Id == id);
 			if (Form2 != null) {
 				if (Form2.Length > 0)
 				{
@@ -179,37 +184,36 @@ namespace WebApplication14.Controllers
 					{
 						await Form2.CopyToAsync(stream);
 					}
-					i.Form2 = filePath;
+					istek.Form2 = filePath;
 				}
 			}
 
 
-			p.Istek.Add(i);
-			p.SaveChanges();
+			_context.Istek.Add(istek);
+			_context.SaveChanges();
 			return RedirectToAction("Index", "Ogrenci");
 		}
 
 		public IActionResult IstekGonderdigimProjeler() {
 			String ogrNo = HttpContext.Session.GetString("id");
 
-			var takvim = p.Takvim.FirstOrDefault(x => x.Id == 1);//bunu FirstOrDefault(x => x.Donem == "2019-Güz") yap
-			DateTime bugün = DateTime.Today;
+			var takvim = _context.Takvim.FirstOrDefault(x => x.Id == 1);//bunu FirstOrDefault(x => x.Donem == "2019-Güz") yap
 			DateTime Form2SonGün = Convert.ToDateTime(takvim.Form2);
-			if (Form2SonGün < bugün)
+			if (DateTime.Today > Form2SonGün)
 				ViewBag.takvim = 1;//form2 son gün geçti
 
-			ViewBag.istekGonderdigimProjeler = p.Istek.Where(x => x.OgrNo1 == ogrNo || x.OgrNo2 == ogrNo).ToList();
+			ViewBag.istekGonderdigimProjeler = _context.Istek.Where(x => x.OgrNo1 == ogrNo || x.OgrNo2 == ogrNo).ToList();
 			return View();
 		}
 		public IActionResult BuDonemAldığımProje() {
-			String ogrNo = HttpContext.Session.GetString("id");
+			string ogrenciNo = HttpContext.Session.GetString("id");
 
-			ProjeAl proje = ProjeAlmisMi(ogrNo);
+			ProjeAl proje = ProjeAlmisMi(ogrenciNo);
 			if (proje != null && proje.KabulDurumu == "Kabul")
 			{
 				ViewBag.BuDonemAldigimProje = proje;
 
-				var takvim = p.Takvim.FirstOrDefault(x => x.Id == 1);
+				var takvim = _context.Takvim.FirstOrDefault(x => x.Id == 1);
 				if (DateTime.Today == takvim.Ararapor1)
 				{
 					ViewBag.AraRapor1 = 1;
@@ -245,7 +249,7 @@ namespace WebApplication14.Controllers
 					if (proje != null)//zaten var proje:)
 					{
 						proje.Ararapor1 = filePath;
-						p.SaveChanges();
+						_context.SaveChanges();
 					}
 
 				}
@@ -262,7 +266,7 @@ namespace WebApplication14.Controllers
 					if (proje != null)//zaten var proje:)
 					{
 						proje.Ararapor2 = filePath;
-						p.SaveChanges();
+						_context.SaveChanges();
 					}
 
 				}
@@ -280,7 +284,7 @@ namespace WebApplication14.Controllers
 					if (proje != null)//zaten var proje:)
 					{
 						proje.Finalrapor = filePath;
-						p.SaveChanges();
+						_context.SaveChanges();
 					}
 
 				}
@@ -289,75 +293,76 @@ namespace WebApplication14.Controllers
 			return RedirectToAction("BuDonemAldığımProje", "Ogrenci");
 		}
 		public IActionResult DevamProjesi() {
-			String no = HttpContext.Session.GetString("id");
-			ViewBag.projem = p.EskiBasarisizAlinanProje.Where(x => x.Ogrno1 == no).ToList();
+			string ogrenciNo = HttpContext.Session.GetString("id");
+			ViewBag.projem = _context.EskiBasarisizAlinanProje.Where(x => x.Ogrno1 == ogrenciNo).ToList();
 			return View();
 		}
 		[HttpPost]
 		public IActionResult DevamProjesi(int id)
 		{
-			EskiBasarisizAlinanProje kalınanProje = p.EskiBasarisizAlinanProje.FirstOrDefault(x => x.Id == id);
-			OgrenciProjeOnerisi proje = new OgrenciProjeOnerisi();
+			EskiBasarisizAlinanProje kalinanProje = _context.EskiBasarisizAlinanProje.FirstOrDefault(x => x.Id == id);
+			OgrenciProjeOnerisi proje = new OgrenciProjeOnerisi
+			{
+				Isim = kalinanProje.Isim,
+				Ogrenci1No = kalinanProje.Ogrno1,
+				OturumNo = kalinanProje.OturumNo,
+				Statu = kalinanProje.Statu,
+				Turu = kalinanProje.Turu,
+				Danismanid = kalinanProje.Danismanid,
+				Form2 = kalinanProje.Form2
+			};
 
-			proje.Isim = kalınanProje.Isim;
-			proje.Ogrno1 = kalınanProje.Ogrno1;
-			proje.OturumNo = kalınanProje.OturumNo;
-			proje.Statu = kalınanProje.Statu;
-			proje.Turu = kalınanProje.Turu;
-			proje.Danismanid = kalınanProje.Danismanid;
-			proje.Form2 = kalınanProje.Form2;
-
-			p.OgrenciProjeOnerisi.Add(proje);
-			p.SaveChanges();
+			_context.OgrenciProjeOnerisi.Add(proje);
+			_context.SaveChanges();
 
 			return RedirectToAction("Index");
 		}
 
 		public List<Ogrenci> atamasıYapılmayanOgrenciler() {
-			List<Ogrenci> öğrenciler = p.Ogrenci.ToList();
-			List<ProjeAl> alınanProjeler = p.ProjeAl.ToList();
-			List<String> projeAlanNumaralar = new List<String>();
+			List<Ogrenci> ogrenciler = _context.Ogrenci.ToList();
+			List<ProjeAl> alinanProjeler = _context.ProjeAl.ToList();
+			List<string> projeAlanNumaralar = new List<string>();
 
-			foreach (ProjeAl proje1 in alınanProjeler)//proje alan öğrencileri bul
+			foreach (ProjeAl proje in alinanProjeler)//proje alan öğrencileri bul
 			{
-				if (proje1.ProjeNo != null)
+				if (proje.ProjeNo != null)
 				{
-					projeAlanNumaralar.Add(proje1.OgrNo1);
-					if (proje1.OgrNo2 != null)
+					projeAlanNumaralar.Add(proje.OgrNo1);
+					if (proje.OgrNo2 != null)
 					{
-						projeAlanNumaralar.Add(proje1.OgrNo2);
+						projeAlanNumaralar.Add(proje.OgrNo2);
 					}
 				}
-				else if (proje1.OgrenciOneriNo != null)
+				else if (proje.OgrenciOneriNo != null)
 				{
-					projeAlanNumaralar.Add(proje1.OgrenciOneriNoNavigation.Ogrno1);
-					if (proje1.OgrenciOneriNoNavigation.Ogrno2 != null)
+					projeAlanNumaralar.Add(proje.OgrenciOneriNoNavigation.Ogrenci1No);
+					if (proje.OgrenciOneriNoNavigation.Ogrenci2No != null)
 					{
-						projeAlanNumaralar.Add(proje1.OgrenciOneriNoNavigation.Ogrno2);
+						projeAlanNumaralar.Add(proje.OgrenciOneriNoNavigation.Ogrenci2No);
 					}
 				}
 			}
-			foreach (String Numara in projeAlanNumaralar)//Proje alan numaraları öğrencilerden çıkar
+			foreach (string ogrenciNo in projeAlanNumaralar)//Proje alan numaraları öğrencilerden çıkar
 			{
-				Ogrenci öğrenci = öğrenciler.FirstOrDefault(x => x.OgrenciNo == Numara);
-				if (öğrenci != null)
+				Ogrenci projeAlanOgrenci = ogrenciler.FirstOrDefault(x => x.OgrenciNo == ogrenciNo);
+				if (projeAlanOgrenci != null)
 				{
-					öğrenciler.Remove(öğrenci);
+					ogrenciler.Remove(projeAlanOgrenci);
 				}
 			}
 			//kendisini de seçemez
-			String ogrNo = HttpContext.Session.GetString("id");
-			Ogrenci ogrenci = p.Ogrenci.FirstOrDefault(x => x.OgrenciNo == ogrNo);
-			öğrenciler.Remove(ogrenci);
+			string ogrNo = HttpContext.Session.GetString("id");
+			Ogrenci ogrenci = _context.Ogrenci.FirstOrDefault(x => x.OgrenciNo == ogrNo);
+			ogrenciler.Remove(ogrenci);
 
-			return öğrenciler;
+			return ogrenciler;
 		}
 
 		public ProjeAl ProjeAlmisMi(String ogrNo) {
-			ProjeAl proje = p.ProjeAl.FirstOrDefault(x => x.OgrNo1 == ogrNo || x.OgrNo2 == ogrNo);//Akademisyen önerilerinden bir proje almış mı?
+			ProjeAl proje = _context.ProjeAl.FirstOrDefault(x => x.OgrNo1 == ogrNo || x.OgrNo2 == ogrNo);//Akademisyen önerilerinden bir proje almış mı?
 			if (proje == null)
 			{
-				proje = p.ProjeAl.FirstOrDefault(x => x.OgrenciOneriNoNavigation.Ogrno1 == ogrNo || x.OgrenciOneriNoNavigation.Ogrno2 == ogrNo);//öğrencinin kendi önerisini danışman kabul etmiş mi
+				proje = _context.ProjeAl.FirstOrDefault(x => x.OgrenciOneriNoNavigation.Ogrenci1No == ogrNo || x.OgrenciOneriNoNavigation.Ogrenci2No == ogrNo);//öğrencinin kendi önerisini danışman kabul etmiş mi
 				if (proje != null)
 				{
 					return proje;

@@ -24,6 +24,9 @@ namespace WebApplication14.Models
         public string KullaniciAdi { get; set; }
         public string Sifre { get; set; }
 
+        public Guid MessageId { get; set; }
+
+
         public virtual ICollection<EskiBasarisizAlinanProje> EskiBasarisizAlinanProje { get; set; }
         public virtual ICollection<EskiKabulGorenProjeler> EskiKabulGorenProjeler { get; set; }
         public virtual ICollection<OgrenciProjeOnerisi> OgrenciProjeOnerisi { get; set; }

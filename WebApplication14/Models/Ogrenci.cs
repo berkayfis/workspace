@@ -18,10 +18,21 @@ namespace WebApplication14.Models
             ProjeAlOgrNo2Navigation = new HashSet<ProjeAl>();
         }
 
+        public Guid MessageId { get; set; }
+
         [Key]
         public string OgrenciNo { get; set; }
         public string Ad { get; set; }
         public string Soyad { get; set; }
+
+        public string Email { get; set; }
+
+        public string Password { get; set; }
+
+
+        //public string Email { get; set; }
+
+        //public string Sifre { get; set; }
 
         public virtual ICollection<EskiBasarisizAlinanProje> EskiBasarisizAlinanProjeOgrno1Navigation { get; set; }
         public virtual ICollection<EskiBasarisizAlinanProje> EskiBasarisizAlinanProjeOgrno2Navigation { get; set; }

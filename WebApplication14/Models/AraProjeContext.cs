@@ -36,6 +36,8 @@ namespace WebApplication14.Models
         public virtual DbSet<ProjeOnerileri> ProjeOnerileri { get; set; }
         public virtual DbSet<Takvim> Takvim { get; set; }
 
+        public virtual DbSet<Message> Messages { get; set; }
+
 
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -225,13 +227,13 @@ namespace WebApplication14.Models
 
                 entity.HasOne(d => d.Ogrno1Navigation)
                     .WithMany(p => p.OgrenciProjeOnerisiOgrno1Navigation)
-                    .HasForeignKey(d => d.Ogrno1)
+                    .HasForeignKey(d => d.Ogrenci1No)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK__OGRENCI_P__OGRNO__33D4B598");
 
                 entity.HasOne(d => d.Ogrno2Navigation)
                     .WithMany(p => p.OgrenciProjeOnerisiOgrno2Navigation)
-                    .HasForeignKey(d => d.Ogrno2)
+                    .HasForeignKey(d => d.Ogrenci2No)
                     .HasConstraintName("FK__OGRENCI_P__OGRNO__34C8D9D1");
 
                 entity.HasOne(d => d.OturumNoNavigation)

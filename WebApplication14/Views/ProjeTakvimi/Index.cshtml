@@ -1,190 +1,112 @@
 ﻿@using Microsoft.AspNetCore.Http;
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
 @{
-	ViewData["Title"] = "Index";
-	Takvim takvim = ViewBag.takvim;
+    ViewData["Title"] = "Index";
+    Takvim takvim = ViewBag.takvim;
 }
 <div class="row">
-	@if (Context.Session.GetInt32("koordinatör") == null)
-	{
-		<div class="col-lg-4">
-			<div class="card">
-				<div class="card-header">
-					<strong>Proje Takvimi</strong>
-				</div>
-				<div class="card-body card-block">
-					<div class="form-group">
-						<label class=" form-control-label">Proje Önerilerinin Form-2 Teslimi</label>
-						<input type="text" value="@takvim.Form2" class="form-control" disabled>
-					</div>
-					<div class="form-group">
-						<label class=" form-control-label">Proje Önerileri Değerlendirme Toplantısı Sonuçlarının İlanı</label>
-						<input type="text" value="@takvim.Toplanti" class="form-control" disabled>
-					</div>
-					<div class="form-group">
-						<label class=" form-control-label">Proje Önerileri Reddedilen Öğrencilerin Dersi Sildirmesi</label>
-						<input type="text" value="@takvim.Ret" class="form-control" disabled>
-					</div>
-					<div class="form-group">
-						<label class=" form-control-label">1. Ara Rapor Teslimi</label>
-						<input type="text" value="@takvim.Ararapor1" class="form-control" disabled>
-					</div>
-					<div class="form-group">
-						<label class=" form-control-label">2. Ara Rapor Teslimi</label>
-						<input type="text" value="@takvim.Ararapor2" class="form-control" disabled>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-4">
-			<div class="card">
-				<div class="card-header">
-					<strong>Final Sınavı</strong>
-				</div>
-				<div class="card-body card-block">
-					<div class="form-group">
-						<label>Final Rapor Teslimi</label>
-						<input type="text" value="@takvim.Finalrapor" class="form-control" disabled>
-					</div>
-					<div class="form-group">
-						<label>Bilgisayar(Ara) Projesi Final Sınavı</label>
-						<input type="text" value="@takvim.Arasinav" class="form-control" disabled>
-					</div>
-					<div class="form-group">
-						<label>Bitirme Projesi Final Sınavı</label>
-						<input type="text" class="form-control" value="@takvim.Bitirmesinav" disabled>
-					</div>
-					<div class="form-group">
-						<label>Proje Kitap Teslimi(Finalde Başarılı Olanlar İçin)</label>
-						<input type="text" class="form-control" value="@takvim.Kitap" disabled>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-4">
-			<div class="card">
-				<div class="card-header">
-					<strong>Bütünleme Sınavı</strong>
-				</div>
-				<div class="card-body card-block">
-					<div class="form-group">
-						<label>Bütünleme Rapor Teslimi</label>
-						<input type="text" class="form-control" value="@takvim.Bütünlemerapor" disabled>
-					</div>
-					<div class="form-group">
-						<label>Bilgisayar(Ara) Projesi Bütünleme Sınavı</label>
-						<input type="text" class="form-control" value="@takvim.Arabütünleme" disabled>
-					</div>
-					<div class="form-group">
-						<label>Bitirme Projesi Bütünleme Sınavı</label>
-						<input type="text" class="form-control" value="@takvim.Bitirmebutunleme" disabled>
-					</div>
-					<div class="form-group">
-						<label>Proje Kitap Teslimi(Bütünlemede Başarılı Olanlar İçin)</label>
-						<input type="text" class="form-control" value="@takvim.Bkitap" disabled>
-					</div>
-				</div>
-			</div>
-		</div>
-	}
-	else
-	{
-		<form action="/ProjeTakvimi/Index" method="post" role="form">
-			<div class="row">
-				<div class="col-lg-4">
-					<div class="card">
-						<div class="card-header">
-							<strong>Proje Takvimi</strong>
-						</div>
-						<div class="card-body card-block">
-							<div class="form-group">
-								<label class=" form-control-label">Proje Önerilerinin Form-2 Teslimi</label>
-								<input type="text" value="@takvim.Form2" class="form-control" disabled>
-								<input type="date" name="Form2" class="form-control">
-							</div>
-							<div class="form-group">
-								<label class=" form-control-label">Proje Önerileri Değerlendirme Toplantısı Sonuçlarının İlanı</label>
-								<input type="text" value="@takvim.Toplanti" class="form-control" disabled>
-								<input type="date" class="form-control" name="Toplanti">
-							</div>
-							<div class="form-group">
-								<label class=" form-control-label">Proje Önerileri Reddedilen Öğrencilerin Dersi Sildirmesi</label>
-								<input type="text" value="@takvim.Ret" class="form-control" disabled>
-								<input type="date" class="form-control" name="Ret">
-							</div>
-							<div class="form-group">
-								<label class=" form-control-label">1. Ara Rapor Teslimi</label>
-								<input type="text" value="@takvim.Ararapor1" class="form-control" disabled>
-								<input type="date" class="form-control" name="Ararapor1">
-							</div>
-							<div class="form-group">
-								<label class=" form-control-label">2. Ara Rapor Teslimi</label>
-								<input type="text" value="@takvim.Ararapor2" class="form-control" disabled>
-								<input type="date" class="form-control" name="Ararapor2">
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-4">
-					<div class="card">
-						<div class="card-header">
-							<strong>Final Sınavı</strong>
-						</div>
-						<div class="card-body card-block">
-							<div class="form-group">
-								<label>Final Rapor Teslimi</label>
-								<input type="text" value="@takvim.Finalrapor" class="form-control" disabled>
-								<input type="date" name="FİnalRapor" class="form-control">
-							</div>
-							<div class="form-group">
-								<label>Bilgisayar(Ara) Projesi Final Sınavı</label>
-								<input type="text" value="@takvim.Arasinav" class="form-control" disabled>
-								<input type="date" name="AraSinav" class="form-control">
-							</div>
-							<div class="form-group">
-								<label>Bitirme Projesi Final Sınavı</label>
-								<input type="text" class="form-control" value="@takvim.Bitirmesinav" disabled>
-								<input type="date" class="form-control" name="BİtİrmeSinav">
-							</div>
-							<div class="form-group">
-								<label>Proje Kitap Teslimi(Finalde Başarılı Olanlar İçin)</label>
-								<input type="text" class="form-control" value="@takvim.Kitap" disabled>
-								<input type="date" class="form-control" name="Kİtap">
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-4">
-					<div class="card">
-						<div class="card-header">
-							<strong>Bütünleme Sınavı</strong>
-						</div>
-						<div class="card-body card-block">
-							<div class="form-group">
-								<label>Bütünleme Rapor Teslimi</label>
-								<input type="text" class="form-control" value="@takvim.Bütünlemerapor" disabled>
-								<input type="date" class="form-control" name="Bütünlemerapor">
-							</div>
-							<div class="form-group">
-								<label>Bilgisayar(Ara) Projesi Bütünleme Sınavı</label>
-								<input type="text" class="form-control" value="@takvim.Arabütünleme" disabled>
-								<input type="date" class="form-control" name="Arabütünleme">
-							</div>
-							<div class="form-group">
-								<label>Bitirme Projesi Bütünleme Sınavı</label>
-								<input type="text" class="form-control" value="@takvim.Bitirmebutunleme" disabled>
-								<input type="date" class="form-control" name="Bitirmebutunleme">
-							</div>
-							<div class="form-group">
-								<label>Proje Kitap Teslimi(Bütünlemede Başarılı Olanlar İçin)</label>
-								<input type="text" class="form-control" value="@takvim.Bkitap" disabled>
-								<input type="date" class="form-control" name="Bkitap">
-							</div>
-						</div>
-					</div>
-				</div>
-				<button type="submit" class="btn btn-primary">Kaydet</button>
-			</div>
-		</form>
-	}	
+
+    <form action="/ProjeTakvimi/Index" method="post" role="form">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Proje Takvimi</strong>
+                    </div>
+                    <div class="card-body card-block">
+                        <div class="form-group">
+                            <label class=" form-control-label">Proje Önerilerinin Form-2 Teslimi</label>
+                            <input type="text" value="@takvim.Form2" class="form-control" disabled>
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "Koordinator")).Succeeded){<input type="date" name="Form2" class="form-control">}
+                        </div>
+                        <div class="form-group">
+                            <label class=" form-control-label">Proje Önerileri Değerlendirme Toplantısı Sonuçlarının İlanı</label>
+                            <input type="text" value="@takvim.Toplanti" class="form-control" disabled>
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "Koordinator")).Succeeded){<input type="date" class="form-control" name="Toplanti">}
+                        </div>
+                        <div class="form-group">
+                            <label class=" form-control-label">Proje Önerileri Reddedilen Öğrencilerin Dersi Sildirmesi</label>
+                            <input type="text" value="@takvim.Ret" class="form-control" disabled>
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "Koordinator")).Succeeded){<input type="date" class="form-control" name="Ret">}
+                        </div>
+                        <div class="form-group">
+                            <label class=" form-control-label">1. Ara Rapor Teslimi</label>
+                            <input type="text" value="@takvim.Ararapor1" class="form-control" disabled>
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "Koordinator")).Succeeded){<input type="date" class="form-control" name="Ararapor1">}
+                        </div>
+                        <div class="form-group">
+                            <label class=" form-control-label">2. Ara Rapor Teslimi</label>
+                            <input type="text" value="@takvim.Ararapor2" class="form-control" disabled>
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "Koordinator")).Succeeded){<input type="date" class="form-control" name="Ararapor2">}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Final Sınavı</strong>
+                    </div>
+                    <div class="card-body card-block">
+                        <div class="form-group">
+                            <label>Final Rapor Teslimi</label>
+                            <input type="text" value="@takvim.Finalrapor" class="form-control" disabled>
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "Koordinator")).Succeeded){<input type="date" name="FİnalRapor" class="form-control">}
+                        </div>
+                        <div class="form-group">
+                            <label>Bilgisayar(Ara) Projesi Final Sınavı</label>
+                            <input type="text" value="@takvim.Arasinav" class="form-control" disabled>
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "Koordinator")).Succeeded){<input type="date" name="AraSinav" class="form-control">}
+                        </div>
+                        <div class="form-group">
+                            <label>Bitirme Projesi Final Sınavı</label>
+                            <input type="text" class="form-control" value="@takvim.Bitirmesinav" disabled>
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "Koordinator")).Succeeded){<input type="date" class="form-control" name="BİtİrmeSinav">}
+                        </div>
+                        <div class="form-group">
+                            <label>Proje Kitap Teslimi(Finalde Başarılı Olanlar İçin)</label>
+                            <input type="text" class="form-control" value="@takvim.Kitap" disabled>
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "Koordinator")).Succeeded){<input type="date" class="form-control" name="Kİtap">}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Bütünleme Sınavı</strong>
+                    </div>
+                    <div class="card-body card-block">
+                        <div class="form-group">
+                            <label>Bütünleme Rapor Teslimi</label>
+                            <input type="text" class="form-control" value="@takvim.Bütünlemerapor" disabled>
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "Koordinator")).Succeeded){<input type="date" class="form-control" name="Bütünlemerapor">}
+                        </div>
+                        <div class="form-group">
+                            <label>Bilgisayar(Ara) Projesi Bütünleme Sınavı</label>
+                            <input type="text" class="form-control" value="@takvim.Arabütünleme" disabled>
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "Koordinator")).Succeeded){<input type="date" class="form-control" name="Arabütünleme">}
+                        </div>
+                        <div class="form-group">
+                            <label>Bitirme Projesi Bütünleme Sınavı</label>
+                            <input type="text" class="form-control" value="@takvim.Bitirmebutunleme" disabled>
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "Koordinator")).Succeeded){<input type="date" class="form-control" name="Bitirmebutunleme">}
+                        </div>
+                        <div class="form-group">
+                            <label>Proje Kitap Teslimi(Bütünlemede Başarılı Olanlar İçin)</label>
+                            <input type="text" class="form-control" value="@takvim.Bkitap" disabled>
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "Koordinator")).Succeeded){<input type="date" class="form-control" name="Bkitap">}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @if ((await AuthorizationService.AuthorizeAsync(User, "Koordinator")).Succeeded)
+            {
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+            }
+        </div>
+    </form>
+
 </div>
-	
+

@@ -55,14 +55,14 @@ else if (ViewBag.AraRapor2 != null)
 									{
 										<td>@proje.OgrenciOneriNoNavigation.Isim</td>
 										<td>@proje.OgrenciOneriNoNavigation.Danisman.Kisaltma</td>
-										<td>@(proje.OgrenciOneriNoNavigation.Ogrno1 + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Soyad)</td>
+										<td>@(proje.OgrenciOneriNoNavigation.Ogrenci1No + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Soyad)</td>
 										<td>
 											@if (proje.OgrNo2 != null)
 											{
-												@(proje.OgrenciOneriNoNavigation.Ogrno2 + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Soyad)
+												@(proje.OgrenciOneriNoNavigation.Ogrenci2No + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Soyad)
 											}
 										</td>
-										<td>@Html.ActionLink("Ara Rapor 1", "PdfGoruntule2", "PdfViewer", new { path = proje.Ararapor1, banch = proje.OgrenciOneriNoNavigation.Ogrno1 }, new { target = "_blank", style = "color:#FFFFFF;" })</td>
+										<td>@Html.ActionLink("Ara Rapor 1", "PdfGoruntule2", "PdfViewer", new { path = proje.Ararapor1, banch = proje.OgrenciOneriNoNavigation.Ogrenci1No }, new { target = "_blank", style = "color:#FFFFFF;" })</td>
 									}
 
 								</tr>
@@ -91,14 +91,14 @@ else if (ViewBag.AraRapor2 != null)
 									{
 										<td>@proje.OgrenciOneriNoNavigation.Isim</td>
 										<td>@proje.OgrenciOneriNoNavigation.Danisman.Kisaltma</td>
-										<td>@(proje.OgrenciOneriNoNavigation.Ogrno1 + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Soyad)</td>
+										<td>@(proje.OgrenciOneriNoNavigation.Ogrenci1No + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Soyad)</td>
 										<td>
 											@if (proje.OgrNo2 != null)
 											{
-												@(proje.OgrenciOneriNoNavigation.Ogrno2 + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Soyad)
+												@(proje.OgrenciOneriNoNavigation.Ogrenci2No + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Soyad)
 											}
 										</td>
-										<td>@Html.ActionLink("Ara Rapor 2", "PdfGoruntule2", "PdfViewer", new { path = proje.Ararapor2, banch = proje.OgrenciOneriNoNavigation.Ogrno1 }, new { target = "_blank", style = "color:#FFFFFF;" })</td>
+										<td>@Html.ActionLink("Ara Rapor 2", "PdfGoruntule2", "PdfViewer", new { path = proje.Ararapor2, banch = proje.OgrenciOneriNoNavigation.Ogrenci1No }, new { target = "_blank", style = "color:#FFFFFF;" })</td>
 									}
 								</tr>
 							}
