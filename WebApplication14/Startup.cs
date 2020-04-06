@@ -12,85 +12,90 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebApplication14.Helper;
 using WebApplication14.Models;
 
 namespace WebApplication14
 {
-	public class Startup
-	{
-		public Startup(IConfiguration configuration)
-		{
-			Configuration = configuration;
-		}
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
 
-		public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; }
 
-		// This method gets called by the runtime. Use this method to add services to the container.
-		public void ConfigureServices(IServiceCollection services)
-		{
-			services.AddDbContext<AraProjeContext>(options => options.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddDbContext<AraProjeContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+            );
 
-			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-				.AddCookie(config =>
-				{
-					config.Cookie.Name = "UserInfo.Cookie";
-					config.LoginPath = "/Login/Index";
-				});
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(config =>
+                {
+                    config.Cookie.Name = "UserInfo.Cookie";
+                    config.LoginPath = "/Login/Index";
+                });
 
-			services.AddAuthorization( options =>
-			{
-				options.AddPolicy("Akademisyen", policy =>
-				{
-					policy.RequireClaim(ClaimTypes.Role, "Akademisyen");
-				});
-				options.AddPolicy("Ogrenci", policy =>
-				{
-					policy.RequireClaim(ClaimTypes.Role, "Ogrenci");
-				});
-				options.AddPolicy("Koordinator", policy =>
-				{
-					policy.RequireClaim(ClaimTypes.Role, "Koordinator");
-				});
-			});
+            services.AddAuthorization(options =>
+           {
+               options.AddPolicy("Akademisyen", policy =>
+               {
+                   policy.RequireClaim(ClaimTypes.Role, "Akademisyen");
+               });
+               options.AddPolicy("Ogrenci", policy =>
+               {
+                   policy.RequireClaim(ClaimTypes.Role, "Ogrenci");
+               });
+               options.AddPolicy("Koordinator", policy =>
+               {
+                   policy.RequireClaim(ClaimTypes.Role, "Koordinator");
+               });
+           });
 
-			services.AddControllersWithViews();
+            services.AddControllersWithViews();
 
-		//	services.AddIdentity<IdentityUser, IdentityRole>()
-		//.AddEntityFrameworkStores<AraProjeContext>();
-			services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(5));
+            //	services.AddIdentity<IdentityUser, IdentityRole>()
+            //.AddEntityFrameworkStores<AraProjeContext>();
+            services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(5));
 
-			services.AddScoped(typeof(DbContext), typeof(AraProjeContext));
-		}
+            services.AddScoped(typeof(DbContext), typeof(AraProjeContext));
+        }
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-		{
-			if (env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-			}
-			else
-			{
-				app.UseExceptionHandler("/Home/Error");
-				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-				app.UseHsts();
-			}
-			app.UseHttpsRedirection();
-			app.UseStaticFiles();
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            app.MigrateDb();
 
-			app.UseSession();
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+            //app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
-			app.UseRouting();
+            app.UseSession();
 
-			app.UseAuthentication();
-			app.UseAuthorization();
+            app.UseRouting();
 
-			app.UseEndpoints(endpoints =>
-			{
-				endpoints.MapControllerRoute(
-					name: "default",
-					pattern: "{controller=Login}/{action=Index}/{id?}");
-			});
-		}
-	}
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Login}/{action=Index}/{id?}");
+            });
+        }
+    }
 }
