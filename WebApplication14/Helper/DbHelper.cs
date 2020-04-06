@@ -48,6 +48,16 @@ namespace WebApplication14.Helper
                         context.AkademikPersonel.AddRange(akademikPersoneller);
 
                         context.SaveChanges();
+
+                        config.AkademikPersoneller.Where(x => x.IsKoordinator).ToList().ForEach(x =>
+                        {
+                            context.ProjeKoordinatoru.Add(new ProjeKoordinatoru
+                            {
+                                AkademisyenId = akademikPersoneller.First(x => x.KullaniciAdi == x.KullaniciAdi).Id
+                            });
+                        });
+
+                        context.SaveChanges();
                     }
 
                     if (!context.Ogrenci.Any())
@@ -104,6 +114,8 @@ namespace WebApplication14.Helper
         [YamlMember(Alias = "Kullanici_Adi", ApplyNamingConventions = false)]
         public string KullaniciAdi { get; set; }
         public string Sifre { get; set; }
+        [YamlMember(Alias = "Koordinator_Mu", ApplyNamingConventions = false)]
+        public bool IsKoordinator { get; set; }
     }
 
     internal class OgrenciConfig
