@@ -45,4 +45,10 @@
     <Folder Include="wwwroot\disc\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="configuration.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
