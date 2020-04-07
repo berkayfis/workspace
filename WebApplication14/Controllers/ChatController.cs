@@ -101,7 +101,7 @@ namespace WebApplication14.Controllers
 				if (Eklenti.Length > 0)
 				{
 					// full path to file in temp location
-					filePath = "C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + Baslik + ".pdf";
+					filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Baslik + ".pdf"); //"C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + Baslik + ".pdf";
 
 					using (var stream = new FileStream(filePath, FileMode.Create))
 					{
