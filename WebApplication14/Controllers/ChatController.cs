@@ -30,6 +30,7 @@ namespace WebApplication14.Controllers
 			//	return RedirectToAction("Logout", "Login");
 			//}
 			SetMessageGuid();
+			GetMessages();
 			//ViewBag.DanismaniOldugumProjeler = _context.ProjeAl.Where(x => (x.ProjeNoNavigation.DanismanId == id || x.OgrenciOneriNoNavigation.Danismanid == id) && x.KabulDurumu == "Kabul").ToList();
             return View();
         }
@@ -94,53 +95,70 @@ namespace WebApplication14.Controllers
 			return View();
 		}
 		[HttpPost]
-		public async Task<IActionResult> SendEmailAsync(String Baslik, String İcerik, IFormFile Eklenti) {
-			String filePath = "";
-			BodyBuilder bodyBuilder = new BodyBuilder();
+		public async Task<IActionResult> SendEmailAsync(string Icerik, Guid ReceiverId, IFormFile Eklenti) {
 			if (Eklenti != null) { 
 				if (Eklenti.Length > 0)
 				{
 					// full path to file in temp location
-					filePath = "C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + Baslik + ".pdf";
+					string filePath = "C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + Eklenti.FileName;
 
 					using (var stream = new FileStream(filePath, FileMode.Create))
 					{
 						await Eklenti.CopyToAsync(stream);
 					}
-					bodyBuilder.Attachments.Add(filePath);
 				}
 			}
-			
+			Guid senderGuid = GetCurrentUserMessageId();
 
-			MimeMessage m = new MimeMessage();
-			MailboxAddress from = new MailboxAddress("YTÜ CE Proje Koordinatörlüğü", "ytuceprojectcoordinatorship@gmail.com");
-			m.From.Add(from);
-			MailboxAddress to = new MailboxAddress("KarsiTaraf","fsakyildiz@gmail.com");//öğrencilerin e mail adresi
-			m.To.Add(to);
-			int id = Convert.ToInt32(HttpContext.Session.GetInt32("id"));
-			AkademikPersonel a = _context.AkademikPersonel.Find(id);
-
-			m.Subject = a.Unvan + " " + a.Ad + " "  + a.Soyad + " - " + Baslik;
-			bodyBuilder.TextBody = İcerik;
-
-			m.Body = bodyBuilder.ToMessageBody();
-
-			MailKit.Net.Smtp.SmtpClient client = new MailKit.Net.Smtp.SmtpClient();
-			try
+			_context.Messages.Add(new Message
 			{
-				client.Connect("smtp.gmail.com", 587, false);
-			}
-			catch (Exception e) {
-				HttpContext.Session.SetInt32("mail", 0);
-				return RedirectToAction("Index", "Chat");
-			}
-			client.Authenticate("ytuceprojectcoordinatorship@gmail.com", "sami5777");
-			client.Send(m);
-			client.Disconnect(true);
-			client.Dispose();
+				Content = Icerik,
+				CreatedDate = DateTime.Now,
+				ReceiverId = ReceiverId,
+				SenderId =  senderGuid
+			});
+			_context.SaveChanges();			
 
-			HttpContext.Session.SetInt32("mail", 1);
 			return RedirectToAction("Index");
 		}
-    }
+
+		private Guid GetCurrentUserMessageId()
+		{
+			var userRole = User.Identity.AuthenticationType;
+			if (userRole == "Akademisyen Claims")
+			{
+				int id = Convert.ToInt32(HttpContext.Session.GetInt32("id"));
+				AkademikPersonel akademisyen = _context.AkademikPersonel.Find(id);
+				return akademisyen.MessageId;
+			}
+			else if (userRole == "Ogrenci Claims")
+			{
+				string id = HttpContext.Session.GetString("id");
+				Ogrenci ogrenci = _context.Ogrenci.Find(id);
+				return ogrenci.MessageId;
+			}
+			else
+			{
+				return Guid.Empty;
+			}
+		}
+
+		private List<Guid> GetMessages()
+		{
+			try
+			{
+				Guid currentUserMessageId = GetCurrentUserMessageId();
+				var receivedMessages = _context.Messages.Where(x => x.ReceiverId == currentUserMessageId).GroupBy(x=> x.SenderId).Select(x=>x.Key).ToList();
+				var sendedMessages = _context.Messages.Where(x => x.SenderId == currentUserMessageId).GroupBy(x => x.ReceiverId).Select(x => x.Key).ToList();
+
+				return null;
+				
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
+		}
+	}
 }
