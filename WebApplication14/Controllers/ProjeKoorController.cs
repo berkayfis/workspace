@@ -56,7 +56,7 @@ namespace WebApplication14.Controllers
                 if (Eklenti.Length > 0)
                 {
                     // full path to file in temp location
-                    filePath = "C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + duyuru.Baslik + ".pdf";
+                    filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, duyuru.Baslik + ".pdf"); // "C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + duyuru.Baslik + ".pdf";
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
                         await Eklenti.CopyToAsync(stream);
@@ -110,7 +110,7 @@ namespace WebApplication14.Controllers
                 if (Eklenti.Length > 0)
                 {
                     // full path to file in temp location
-                    filePath = "C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + duyuru.Baslik + ".pdf";
+                    filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, duyuru.Baslik + ".pdf"); //"C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + duyuru.Baslik + ".pdf";
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
@@ -146,7 +146,7 @@ namespace WebApplication14.Controllers
         #endregion
         public IActionResult DersiAlanOgrenciler()
         {
-            String filePath = "C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + HttpContext.Session.GetString("BulunduğumuzDönem");
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, HttpContext.Session.GetString("BulunduğumuzDönem"));  //"C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + HttpContext.Session.GetString("BulunduğumuzDönem");
 
             FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
             IExcelDataReader excelReader;
@@ -295,7 +295,7 @@ namespace WebApplication14.Controllers
             if (öğrenciler.Length > 0)
             {
                 // full path to file in temp location
-                var filePath = "C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + Dönem + fileExtension;
+                var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Dönem + fileExtension); //"C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + Dönem + fileExtension;
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {

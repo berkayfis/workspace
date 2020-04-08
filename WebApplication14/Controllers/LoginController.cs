@@ -31,7 +31,7 @@ namespace WebApplication14.Controllers
         [HttpPost]
         public IActionResult Index(String username, String password)
         {
-            string root = "C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\";
+            //string root = "C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\";
 
             var takvim = _context.Takvim.FirstOrDefault(x => x.Id == 1);
             if (DateTime.Today > takvim.Form2)
@@ -52,7 +52,7 @@ namespace WebApplication14.Controllers
                 HttpContext.Session.SetString("em", akademikPersonel.Kisaltma);
                 HttpContext.Session.SetInt32("akademisyen", akademikPersonel.Id);
 
-                string subdir = root + akademikPersonel.Kisaltma;
+                string subdir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "AkademikPersonel", akademikPersonel.Kisaltma);
                 // If directory does not exist, create it. 
                 if (!Directory.Exists(subdir))
                 {
@@ -68,9 +68,9 @@ namespace WebApplication14.Controllers
                 }
                 return RedirectToAction("Index", "ProjeOnerilerim");
             }
-            else if (IsOgrenci(username,password))
-            {            
-                Ogrenci ogrenci = _context.Ogrenci.FirstOrDefault(x => x.OgrenciNo == username && x.OgrenciNo == password);                
+            else if (IsOgrenci(username, password))
+            {
+                Ogrenci ogrenci = _context.Ogrenci.FirstOrDefault(x => x.OgrenciNo == username && x.OgrenciNo == password);
                 HttpContext.Session.SetString("id", ogrenci.OgrenciNo);
                 HttpContext.Session.SetString("ad", ogrenci.Ad + " " + ogrenci.Soyad);
                 HttpContext.Session.SetString("öğrenci", ogrenci.OgrenciNo);
@@ -133,7 +133,7 @@ namespace WebApplication14.Controllers
             {
                 return false;
             }
-        
+
         }
 
         private bool IsAkademikPersonel(string username, string password)
