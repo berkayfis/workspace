@@ -82,7 +82,7 @@ namespace WebApplication14.Controllers
             if (Form2.Length > 0)
             {
                 // full path to file in temp location
-                var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, proje.Ogrenci1No + " - " + proje.Isim + ".pdf"); //"C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + proje.Ogrenci1No + " - " + proje.Isim + ".pdf";
+                var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Ogrenci", proje.Ogrenci1No + " - " + proje.Isim + ".pdf"); //"C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + proje.Ogrenci1No + " - " + proje.Isim + ".pdf";
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
@@ -243,13 +243,13 @@ namespace WebApplication14.Controllers
         {
             String ogrNo = HttpContext.Session.GetString("id");
             ProjeAl proje = ProjeAlmisMi(ogrNo);
-            String filePath = "C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + ogrNo + "\\";
+            string rootPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Ogrenci", ogrNo);
 
             if (AraRapor1 != null)
             {
                 if (AraRapor1.Length > 0)
                 {
-                    filePath += "AraRapor1.pdf";
+                    var filePath = Path.Combine(rootPath, "AraRapor1.pdf");
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
@@ -268,7 +268,7 @@ namespace WebApplication14.Controllers
                 if (AraRapor2.Length > 0)
                 {
                     // full path to file in temp location
-                    filePath += "AraRapor2.pdf";
+                    var filePath = Path.Combine(rootPath, "AraRapor2.pdf");
 
 
                     await WriteToDiskAsync(AraRapor2, filePath);
@@ -284,7 +284,7 @@ namespace WebApplication14.Controllers
             {
                 if (FinalRaporu.Length > 0)
                 {
-                    filePath += "\\FinalRapor.pdf";
+                    var filePath = Path.Combine(rootPath, "FinalRapor.pdf");
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
