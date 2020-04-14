@@ -60,7 +60,7 @@ namespace WebApplication14.Controllers
 				if (Eklenti.Length > 0)
 				{
 					// full path to file in temp location
-					string filePath = "C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + Eklenti.FileName;
+					string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Eklenti.FileName);
 
 					using (var stream = new FileStream(filePath, FileMode.Create))
 					{
