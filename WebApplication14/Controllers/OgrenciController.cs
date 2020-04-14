@@ -67,7 +67,7 @@ namespace WebApplication14.Controllers
 
             ViewBag.oturumlar = _context.AlanOturum.ToList();
             ViewBag.akademisyenler = _context.AkademikPersonel.ToList().OrderBy(x => x.Kisaltma);
-            ViewBag.öğrenciler = atamasıYapılmayanOgrenciler();
+            ViewBag.öğrenciler = AtamasıYapılmayanOgrenciler();
             return View();
         }
 
@@ -161,7 +161,7 @@ namespace WebApplication14.Controllers
             öğrenciler.Remove(ogrenci);
 
             //ataması yapılan öğrencileri view'a gönderME
-            ViewBag.öğrenciler = atamasıYapılmayanOgrenciler();
+            ViewBag.öğrenciler = AtamasıYapılmayanOgrenciler();
 
             HttpContext.Session.SetInt32("İstekProjeID", proje.Id);
             return View(proje);
@@ -330,7 +330,7 @@ namespace WebApplication14.Controllers
             return RedirectToAction("Index");
         }
 
-        public List<Ogrenci> atamasıYapılmayanOgrenciler()
+        public List<Ogrenci> AtamasıYapılmayanOgrenciler()
         {
             List<Ogrenci> ogrenciler = _context.Ogrenci.ToList();
             List<ProjeAl> alinanProjeler = _context.ProjeAl.ToList();

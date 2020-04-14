@@ -25,6 +25,11 @@ namespace WebApplication14.Controllers
 
         public IActionResult Index()
         {
+            if (HttpContext.Session.Keys.Contains("id"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             return View();
         }
 
@@ -127,11 +132,8 @@ namespace WebApplication14.Controllers
                 HttpContext.SignInAsync(principal);
                 return true;
             }
-            else
-            {
-                return false;
-            }
 
+            return false;
         }
 
         private bool IsAkademikPersonel(string username, string password)
@@ -155,20 +157,13 @@ namespace WebApplication14.Controllers
                 HttpContext.SignInAsync(principal);
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         private bool IsKoordinator(AkademikPersonel akademikPersonel)
         {
-            ProjeKoordinatoru koordinator = _context.ProjeKoordinatoru.FirstOrDefault(x => x.AkademisyenId == akademikPersonel.Id);
-            if (koordinator == null)
-            {
-                return false;
-            }
-            return true;
+            return _context.ProjeKoordinatoru.Any(x => x.AkademisyenId == akademikPersonel.Id);
         }
 
         public IActionResult Logout()
