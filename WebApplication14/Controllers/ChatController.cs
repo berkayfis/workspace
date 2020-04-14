@@ -25,50 +25,10 @@ namespace WebApplication14.Controllers
 		}
 		public IActionResult Index()
         {
-			//if (HttpContext.Session.GetInt32("akademisyen") == null)
-			//{
-			//	return RedirectToAction("Logout", "Login");
-			//}
-			SetMessageGuid();
-			GetMessages();
-			//ViewBag.DanismaniOldugumProjeler = _context.ProjeAl.Where(x => (x.ProjeNoNavigation.DanismanId == id || x.OgrenciOneriNoNavigation.Danismanid == id) && x.KabulDurumu == "Kabul").ToList();
+			var messageUsers = GetMessages();
+			ViewBag.MessageUsers = GetMessageUsers(messageUsers);
             return View();
         }
-
-		private void SetMessageGuid()
-		{
-			var userRole = User.Identity.AuthenticationType;
-			if (userRole == "Akademisyen Claims")
-			{
-				CheckAkademisyenMessageGuid();				
-			}
-			else if (userRole == "Ogrenci Claims")
-			{
-				CheckOgrenciMessageGuid();
-			}
-		}
-		private void CheckOgrenciMessageGuid()
-		{
-			string id = HttpContext.Session.GetString("id");
-			Ogrenci ogrenci = _context.Ogrenci.Find(id);
-			if (ogrenci != null && ogrenci.MessageId == Guid.Empty)
-			{
-				ogrenci.MessageId = Guid.NewGuid();
-				_context.Ogrenci.Update(ogrenci);
-				_context.SaveChanges();
-			}
-		}
-		private void CheckAkademisyenMessageGuid()
-		{
-			int id = Convert.ToInt32(HttpContext.Session.GetInt32("id"));
-			AkademikPersonel akademisyen = _context.AkademikPersonel.Find(id);
-			if (akademisyen != null && akademisyen.MessageId == Guid.Empty)
-			{
-				akademisyen.MessageId = Guid.NewGuid();
-				_context.AkademikPersonel.Update(akademisyen);
-				_context.SaveChanges();
-			}
-		}
 
 		[Authorize]
 		public IActionResult SendEmail() {
@@ -122,6 +82,35 @@ namespace WebApplication14.Controllers
 			return RedirectToAction("Index");
 		}
 
+		public IActionResult ChatHistory(Guid guid)
+		{
+			var currentUserGuid = GetCurrentUserMessageId();
+			List<Message> chatHistory = _context.Messages.Where(x => (x.SenderId == guid && x.ReceiverId == currentUserGuid) || (x.ReceiverId == guid && x.SenderId == currentUserGuid)).OrderBy(x => x.CreatedDate).ToList();
+			ViewBag.ChatHistory = chatHistory;
+			ViewBag.CurrentUser = currentUserGuid;
+			ViewBag.Partner = GetMessagePartner(guid);
+			return View();
+		}
+
+		private dynamic GetMessagePartner(Guid guid)
+		{
+			var userRole = User.Identity.AuthenticationType;
+			if (userRole == "Akademisyen Claims")
+			{
+				Ogrenci ogrenci = _context.Ogrenci.Where(x=> x.MessageId==guid).FirstOrDefault();
+				return ogrenci;
+			}
+			else if (userRole == "Ogrenci Claims")
+			{
+				AkademikPersonel akademisyen = _context.AkademikPersonel.Where(x => x.MessageId == guid).FirstOrDefault();
+				return akademisyen;
+			}
+			else
+			{
+				return Guid.Empty;
+			}
+		}
+
 		private Guid GetCurrentUserMessageId()
 		{
 			var userRole = User.Identity.AuthenticationType;
@@ -142,16 +131,17 @@ namespace WebApplication14.Controllers
 				return Guid.Empty;
 			}
 		}
-
 		private List<Guid> GetMessages()
 		{
 			try
 			{
 				Guid currentUserMessageId = GetCurrentUserMessageId();
 				var receivedMessages = _context.Messages.Where(x => x.ReceiverId == currentUserMessageId).GroupBy(x=> x.SenderId).Select(x=>x.Key).ToList();
-				var sendedMessages = _context.Messages.Where(x => x.SenderId == currentUserMessageId).GroupBy(x => x.ReceiverId).Select(x => x.Key).ToList();
+				var sentMessages = _context.Messages.Where(x => x.SenderId == currentUserMessageId && !receivedMessages.Contains(x.ReceiverId)).GroupBy(x => x.ReceiverId).Select(x => x.Key).ToList();
 
-				return null;
+				receivedMessages.AddRange(sentMessages);
+
+				return receivedMessages;
 				
 			}
 			catch (Exception)
@@ -159,6 +149,19 @@ namespace WebApplication14.Controllers
 
 				throw;
 			}
+		}
+		private dynamic GetMessageUsers(List<Guid> messageUsers)
+		{
+			var userRole = User.Identity.AuthenticationType;
+			if (userRole == "Akademisyen Claims")
+			{
+				return _context.Ogrenci.Where(x => messageUsers.Contains(x.MessageId));
+			}
+			else if (userRole == "Ogrenci Claims")
+			{
+				return _context.AkademikPersonel.Where(x => messageUsers.Contains(x.MessageId));
+			}
+			return null;
 		}
 	}
 }

@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewData["Title"] = "Konuşma Geçmişi";
+    var currentUser = ViewBag.CurrentUser;
+    var partner = ViewBag.Partner;
+}
+<div>
+    <div>
+        <h3>
+            @partner.Ad @partner.Soyad
+        </h3>
+    </div> 
+    @foreach (Message message in ViewBag.ChatHistory)
+    {
+        <div class="row">
+            <div class="col-md-4 @(@currentUser == @message.SenderId ? "offset-md-8" :"")">
+                <span>@message.Content</span>
+                <br>
+                <span class="messageDate">@message.CreatedDate.ToString("HH:mm")</span>
+                <br>
+                <span class="messageDate">@message.CreatedDate.ToString("dd.MM.yyyy")</span>
+            </div>
+        </div>
+    }
+    <div>
+        <a class="btn btn-success" href="/Chat/SendEmail">Cevap Gönder</a>
+    </div>
+</div>

@@ -30,7 +30,7 @@ namespace WebApplication14
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AraProjeContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")).UseLazyLoadingProxies()
             );
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

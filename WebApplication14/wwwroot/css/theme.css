@@ -14640,3 +14640,6 @@ section {
 .vue-lists ul, .vue-lists ol {
     padding-left: 30px;
 }
+.messageDate {
+    font-size: smaller;
+}

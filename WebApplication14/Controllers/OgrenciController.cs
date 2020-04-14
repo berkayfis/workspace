@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication14.Models;
@@ -17,6 +18,7 @@ namespace WebApplication14.Controllers
         {
             _context = context;
         }
+        [Authorize(Roles="Ogrenci")]
         public IActionResult Index()
         {
             if (HttpContext.Session.GetInt32("Form2SureDoldu") == 1)

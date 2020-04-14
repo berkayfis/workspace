@@ -93,7 +93,7 @@ namespace WebApplication14.Controllers
                         HttpContext.Session.SetInt32("KabulOlduMu", 1);
                 }
 
-                string subdir = root + ogrenci.OgrenciNo;
+                string subdir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,ogrenci.OgrenciNo); //root + ogrenci.OgrenciNo;
                 // If directory does not exist, create it. 
                 if (!Directory.Exists(subdir))
                 {

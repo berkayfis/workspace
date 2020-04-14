@@ -123,6 +123,8 @@ namespace WebApplication14.Controllers
 
             return RedirectToAction("Duyurular", "ProjeKoor");
         }
+        
+        [Authorize(Roles = "Akademisyen,Ogrenci,Koordinator")]
         public IActionResult Duyurular()
         {
             ViewBag.Duyurular = _context.Duyuru.ToList();
@@ -138,6 +140,7 @@ namespace WebApplication14.Controllers
             return View();
         }
 
+        [Authorize(Roles ="Akademisyen,Ogrenci,Koordinator")]
         public IActionResult DuyuruGörüntüle(int id)
         {
             Duyuru duyuru = _context.Duyuru.FirstOrDefault(x => x.Id == id);

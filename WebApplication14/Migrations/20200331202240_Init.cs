@@ -20,7 +20,7 @@ namespace WebApplication14.Migrations
                     Kisaltma = table.Column<string>(nullable: true),
                     KullaniciAdi = table.Column<string>(nullable: true),
                     Sifre = table.Column<string>(nullable: true),
-                    MessageId = table.Column<Guid>(nullable: false, defaultValue: Guid.Empty)
+                    MessageId = table.Column<Guid>(nullable: false, defaultValue: Guid.NewGuid())
                 },
                 constraints: table =>
                 {
@@ -113,7 +113,7 @@ namespace WebApplication14.Migrations
                 columns: table => new
                 {
                     OgrenciNo = table.Column<string>(nullable: false),
-                    MessageId = table.Column<Guid>(nullable: false, defaultValue: Guid.Empty),
+                    MessageId = table.Column<Guid>(nullable: false, defaultValue: Guid.NewGuid()),
                     Ad = table.Column<string>(nullable: true),
                     Soyad = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
