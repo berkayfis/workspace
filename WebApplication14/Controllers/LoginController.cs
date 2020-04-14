@@ -31,8 +31,6 @@ namespace WebApplication14.Controllers
         [HttpPost]
         public IActionResult Index(String username, String password)
         {
-            //string root = "C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\";
-
             var takvim = _context.Takvim.FirstOrDefault(x => x.Id == 1);
             if (DateTime.Today > takvim.Form2)
                 HttpContext.Session.SetInt32("Form2SureDoldu", 1);
@@ -93,7 +91,7 @@ namespace WebApplication14.Controllers
                         HttpContext.Session.SetInt32("KabulOlduMu", 1);
                 }
 
-                string subdir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,ogrenci.OgrenciNo); //root + ogrenci.OgrenciNo;
+                string subdir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Ogrenci", ogrenci.OgrenciNo);
                 // If directory does not exist, create it. 
                 if (!Directory.Exists(subdir))
                 {
