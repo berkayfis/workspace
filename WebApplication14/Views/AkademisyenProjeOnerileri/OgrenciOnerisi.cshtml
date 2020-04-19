@@ -49,7 +49,7 @@
 							{
 								<td> </td>
 							}
-							<td>@Html.ActionLink("Form-2", "PdfGoruntule", "PdfViewer", new { path = proje.Form2 }, new { target="_blank"})</td>
+							<td>@Html.ActionLink("Form-2", "Index", "PdfViewer", new { path = proje.Form2 }, new { target="_blank"})</td>
 							@if (onayladığım[i] == 1)
 							{ //onaylandı ise
 								<td>Onaylandı @Html.ActionLink("Geri Al", "Discard", "AkademisyenProjeOnerileri", new { id = proje.Id })</td>

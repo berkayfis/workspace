@@ -39,7 +39,7 @@
 								<tr>
 									<td>@(eskiProje.Isim)</td>
 									<td>
-										@Html.ActionLink("pdf", "PdfGoruntule", "PdfViewer", new { path = eskiProje.Form2, banch = eskiProje.Danisman.Kisaltma }, new { target = "_blank" })
+										@Html.ActionLink("pdf", "Index", "PdfViewer", new { path = eskiProje.Form2, banch = eskiProje.Danisman.Kisaltma }, new { target = "_blank" })
 									</td>
 								</tr>
 							}

@@ -61,7 +61,7 @@
 								<label>1. Ara Rapor</label>
 								@if (proje.Ararapor1 != null)
 								{
-									@Html.ActionLink("Yüklediğiniz Rapor", "PdfGoruntule", "PdfViewer", new { path = proje.Ararapor1 , banch = ogrNo}, new { target = "_blank" })
+									@Html.ActionLink("Yüklediğiniz Rapor", "Index", "PdfViewer", new { path = proje.Ararapor1 , banch = ogrNo}, new { target = "_blank" })
 								}
 								<input type="file" name="AraRapor1" class="form-control" required>
 							</div>
@@ -82,7 +82,7 @@
 								<label>2. Ara Rapor</label>
 								@if (proje.Ararapor2 != null)
 								{
-									@Html.ActionLink("Yüklediğiniz Rapor", "PdfGoruntule", "PdfViewer", new { path = proje.Ararapor2, banch = ogrNo}, new { target = "_blank" })
+									@Html.ActionLink("Yüklediğiniz Rapor", "Index", "PdfViewer", new { path = proje.Ararapor2, banch = ogrNo}, new { target = "_blank" })
 								}
 								<input type="file" name="AraRapor2" class="form-control" required>
 							</div>
@@ -103,7 +103,7 @@
 								<label>Final Raporu</label>
 								@if (proje.Finalrapor != null)
 								{
-									@Html.ActionLink("Yüklediğiniz Rapor", "PdfGoruntule", "PdfViewer", new { path = proje.Finalrapor, banch = ogrNo }, new { target = "_blank" })
+									@Html.ActionLink("Yüklediğiniz Rapor", "Index", "PdfViewer", new { path = proje.Finalrapor, banch = ogrNo }, new { target = "_blank" })
 								}
 								<input type="file" name="FinalRaporu" class="form-control" required>
 							</div>
