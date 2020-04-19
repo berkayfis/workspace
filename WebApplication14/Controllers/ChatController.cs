@@ -23,6 +23,7 @@ namespace WebApplication14.Controllers
 		{
 			_context = context;
 		}
+		
 		public IActionResult Index()
         {
 			var messageUsers = GetMessages();
@@ -54,6 +55,7 @@ namespace WebApplication14.Controllers
 			ViewBag.Ogrenciler = ogrenciler;
 			return View();
 		}
+		
 		[HttpPost]
 		public async Task<IActionResult> SendEmailAsync(string Icerik, Guid ReceiverId, IFormFile Eklenti) {
 			if (Eklenti != null) { 
@@ -131,6 +133,7 @@ namespace WebApplication14.Controllers
 				return Guid.Empty;
 			}
 		}
+		
 		private List<Guid> GetMessages()
 		{
 			try
@@ -150,6 +153,7 @@ namespace WebApplication14.Controllers
 				throw;
 			}
 		}
+		
 		private dynamic GetMessageUsers(List<Guid> messageUsers)
 		{
 			var userRole = User.Identity.AuthenticationType;

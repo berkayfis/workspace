@@ -41,7 +41,7 @@
 									<td>@(eskiProje.KisiSayisi)</td>
 									<td>@(eskiProje.GrupSayisi)</td>
 									<td>
-										@Html.ActionLink("pdf", "PdfGoruntule2", "PdfViewer", new { path = eskiProje.Form1, banch = eskiProje.Danisman.Kisaltma }, new { target = "_blank" })
+										@Html.ActionLink("pdf", "PdfGoruntule", "PdfViewer", new { path = eskiProje.Form1, banch = eskiProje.Danisman.Kisaltma }, new { target = "_blank" })
 									</td>
 								</tr>
 							}

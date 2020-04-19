@@ -47,32 +47,36 @@ namespace WebApplication14.Controllers
 
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> DuyuruYayınlaAsync(Duyuru duyuru, IFormFile Eklenti)
         {
-            String filePath = "";
             if (Eklenti != null)
             {
                 if (Eklenti.Length > 0)
                 {
-                    // full path to file in temp location
-                    filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, duyuru.Baslik + ".pdf"); // "C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + duyuru.Baslik + ".pdf";
+                    var fileName = duyuru.Baslik + ".pdf";
+                    var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
+
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
                         await Eklenti.CopyToAsync(stream);
                     }
+                    duyuru.Eklenti = fileName;
                 }
-                duyuru.Eklenti = filePath;
             }
 
             duyuru.Zaman = DateTime.Now;
-            int id = Convert.ToInt32(HttpContext.Session.GetInt32("id"));
-            ProjeKoordinatoru koor = _context.ProjeKoordinatoru.FirstOrDefault(x => x.AkademisyenId == id);
-            duyuru.KoordinatorNo = koor.Id;
+            var id = Convert.ToInt32(HttpContext.Session.GetInt32("id"));
+            var koordinator = _context.ProjeKoordinatoru.FirstOrDefault(x => x.AkademisyenId == id);
+            duyuru.KoordinatorNo = koordinator.Id;
+
             _context.Duyuru.Add(duyuru);
             _context.SaveChanges();
+
             return RedirectToAction("Duyurular");
         }
+
         public IActionResult DuyuruDüzenle(int id)
         {
             if (HttpContext.Session.GetInt32("koordinatör") == null)
@@ -89,6 +93,7 @@ namespace WebApplication14.Controllers
             }
             return RedirectToAction("YayınladığımDuyurular", "ProjeKoor");
         }
+
         [HttpPost]
         public async Task<IActionResult> DuyuruDüzenleAsync(Duyuru duyuru, IFormFile Eklenti)
         {
@@ -106,30 +111,30 @@ namespace WebApplication14.Controllers
             duyuruDb.Zaman = DateTime.Now;
             if (Eklenti != null)
             {
-                String filePath = "";
                 if (Eklenti.Length > 0)
                 {
-                    // full path to file in temp location
-                    filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, duyuru.Baslik + ".pdf"); //"C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + duyuru.Baslik + ".pdf";
+                    var fileName = duyuru.Baslik + ".pdf";
+                    var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
                         await Eklenti.CopyToAsync(stream);
                     }
-                    duyuruDb.Eklenti = filePath;
+                    duyuruDb.Eklenti = fileName;
                 }
             }
             _context.SaveChanges();
 
             return RedirectToAction("Duyurular", "ProjeKoor");
         }
-        
+
         [Authorize(Roles = "Akademisyen,Ogrenci,Koordinator")]
         public IActionResult Duyurular()
         {
             ViewBag.Duyurular = _context.Duyuru.ToList();
             return View();
         }
+
         public IActionResult YayınladığımDuyurular()
         {
             if (HttpContext.Session.GetInt32("koordinatör") == null)
@@ -140,20 +145,21 @@ namespace WebApplication14.Controllers
             return View();
         }
 
-        [Authorize(Roles ="Akademisyen,Ogrenci,Koordinator")]
+        [Authorize(Roles = "Akademisyen,Ogrenci,Koordinator")]
         public IActionResult DuyuruGörüntüle(int id)
         {
             Duyuru duyuru = _context.Duyuru.FirstOrDefault(x => x.Id == id);
             return View(duyuru);
         }
         #endregion
+
         public IActionResult DersiAlanOgrenciler()
         {
-            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, HttpContext.Session.GetString("BulunduğumuzDönem"));  //"C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + HttpContext.Session.GetString("BulunduğumuzDönem");
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, HttpContext.Session.GetString("BulunduğumuzDönem"));
 
-            FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
             IExcelDataReader excelReader;
-            List<string> liste = new List<string>();
+            var liste = new List<string>();
 
             if (Path.GetExtension(filePath).ToUpper() == ".XLS")
             {
@@ -166,14 +172,14 @@ namespace WebApplication14.Controllers
                 excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
             }
 
-            DataSet result = excelReader.AsDataSet();
+            var result = excelReader.AsDataSet();
 
             while (excelReader.Read())
             {
                 liste.Add(excelReader.GetValue(0).ToString() + " " + excelReader.GetString(1) + " " + excelReader.GetString(2));
-                Ogrenci ogrenci = new Ogrenci();
+                var ogrenci = new Ogrenci();
                 ogrenci.OgrenciNo = excelReader.GetValue(0).ToString();
-                Ogrenci ogrenci1 = _context.Ogrenci.FirstOrDefault(x => x.OgrenciNo == ogrenci.OgrenciNo);
+                var ogrenci1 = _context.Ogrenci.FirstOrDefault(x => x.OgrenciNo == ogrenci.OgrenciNo);
                 if (ogrenci1 == null)
                 {
                     ogrenci.Ad = excelReader.GetString(1);
@@ -195,10 +201,10 @@ namespace WebApplication14.Controllers
             if (HttpContext.Session.GetInt32("koordinatör") == null)//Proje kurulunun kararını sadece koordinatör atayabilir
                 return RedirectToAction("Logout", "Login");
 
-            Takvim takvim = _context.Takvim.FirstOrDefault(x => x.Id == 1);
+            var takvim = _context.Takvim.FirstOrDefault(x => x.Id == 1);
             if (takvim.Toplanti == DateTime.Today)
             {
-                ProjeAl alınanProje = _context.ProjeAl.FirstOrDefault(x => x.Id == id);
+                var alınanProje = _context.ProjeAl.FirstOrDefault(x => x.Id == id);
                 if (alınanProje != null)
                 {
                     alınanProje.KabulDurumu = "Kabul";
@@ -213,15 +219,16 @@ namespace WebApplication14.Controllers
 
             return RedirectToAction("Index", "AtamasıYapılanProjeler");
         }
+
         public IActionResult Ret(int id)
         {
             if (HttpContext.Session.GetInt32("koordinatör") == null)//Proje kurulunun kararını sadece koordinatör atayabilir
                 return RedirectToAction("Logout", "Login");
 
-            Takvim takvim = _context.Takvim.FirstOrDefault(x => x.Id == 1);
+            var takvim = _context.Takvim.FirstOrDefault(x => x.Id == 1);
             if (takvim.Toplanti == DateTime.Today)
             {
-                ProjeAl alınanProje = _context.ProjeAl.FirstOrDefault(x => x.Id == id);
+                var alınanProje = _context.ProjeAl.FirstOrDefault(x => x.Id == id);
                 if (alınanProje != null)
                 {
                     alınanProje.KabulDurumu = "Ret";
@@ -235,6 +242,7 @@ namespace WebApplication14.Controllers
 
             return RedirectToAction("Index", "AtamasıYapılanProjeler");
         }
+
         public IActionResult Undo(int id)
         {
             if (HttpContext.Session.GetInt32("koordinatör") == null)//Proje kurulunun kararını sadece koordinatör atayabilir
@@ -265,6 +273,7 @@ namespace WebApplication14.Controllers
 
             return View();
         }
+
         [HttpPost]
         public IActionResult TakvimEkle(Takvim takvim)
         {
@@ -273,6 +282,7 @@ namespace WebApplication14.Controllers
 
             return RedirectToAction("Index", "ProjeKoor");
         }
+
         public IActionResult DonemBaslat()
         {
             //proje koordinatörünün işini kolaylaştırmak istersek
@@ -290,6 +300,7 @@ namespace WebApplication14.Controllers
 			}*/
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> DonemBaslatAsync(String Dönem, IFormFile öğrenciler)
         {
@@ -298,7 +309,7 @@ namespace WebApplication14.Controllers
             if (öğrenciler.Length > 0)
             {
                 // full path to file in temp location
-                var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Dönem + fileExtension); //"C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + Dönem + fileExtension;
+                var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Dönem + fileExtension);
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
@@ -309,6 +320,7 @@ namespace WebApplication14.Controllers
             HttpContext.Session.SetString("BulunduğumuzDönem", Dönem + fileExtension);
             return RedirectToAction("DersiAlanOgrenciler");
         }
+
         public IActionResult RaporlarıDagit()
         {
             if (HttpContext.Session.GetInt32("koordinatör") == null)
@@ -327,6 +339,7 @@ namespace WebApplication14.Controllers
 
             return View();
         }
+
         public IActionResult RaporlarRandomDagit()
         {
             List<ProjeAl> projeler = _context.ProjeAl.ToList();
@@ -348,6 +361,7 @@ namespace WebApplication14.Controllers
 
             return RedirectToAction("RaporlarıDagit", "ProjeKoor");
         }
+
         public IActionResult Modal()
         {
             return View();

@@ -103,6 +103,7 @@ namespace WebApplication14.Controllers
             ViewBag.oturumlar = _context.AlanOturum.ToList();
             return View();
         }
+        
         [HttpPost]
         public async Task<IActionResult> ProjeEkleAsync(ProjeOnerileri proje, IFormFile Form1, String Kategori)
         {
@@ -110,20 +111,20 @@ namespace WebApplication14.Controllers
             proje.DanismanId = DanısmanId;
 
             AkademikPersonel akademisyen = _context.AkademikPersonel.FirstOrDefault(x => x.Id == DanısmanId);
-            String s = "";
+
             if (Form1.Length > 0)
             {
                 // full path to file in temp location
-                var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "AkademikPersonel", akademisyen.Kisaltma, proje.Isim + ".pdf"); // "C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + akademisyen.Kisaltma + "\\" + proje.Isim + ".pdf";
+                var path = Path.Combine("AkademikPersonel", akademisyen.Kisaltma, proje.Isim + ".pdf");
+                var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await Form1.CopyToAsync(stream);
                 }
-                s = filePath;
+                proje.Form1 = path;
             }
 
-            proje.Form1 = s.ToString();
             proje.Kategori = Kategori;
 
             //akademisyenin eklediği proje direkt eski projeye akatarılır
@@ -143,6 +144,7 @@ namespace WebApplication14.Controllers
 
             return RedirectToAction("Index", "ProjeOnerilerim");
         }
+        
         public IActionResult EskiOnerilerim()
         {
             if (HttpContext.Session.GetInt32("akademisyen") == null)
@@ -158,6 +160,7 @@ namespace WebApplication14.Controllers
             ViewBag.eskiOnerilerim = _context.EskiKabulGorenProjeler.Where(x => x.DanismanId == id).ToList();
             return View();
         }
+        
         [HttpPost]
         public IActionResult EskiOnerilerim(int id)
         {
@@ -210,6 +213,7 @@ namespace WebApplication14.Controllers
             HttpContext.Session.SetInt32("ProjeID", id);
             return View(proje);
         }
+        
         [HttpPost]
         public async Task<IActionResult> ProjeDuzenleAsync(ProjeOnerileri proje, IFormFile Form1, String Kategori)
         {
@@ -234,14 +238,14 @@ namespace WebApplication14.Controllers
                 {
                     // full path to file in temp location
                     //proje.isim null ise isimlendirmeyi yanlış yapıyor
-                    var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "AkademikPersonel", a.Kisaltma, project.Isim + ".pdf"); // "C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + a.Kisaltma + "\\" + project.Isim + ".pdf";
+                    var path = Path.Combine("AkademikPersonel", a.Kisaltma, project.Isim + ".pdf");
+                    var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
                         await Form1.CopyToAsync(stream);
                     }
-                    project.Form1 = filePath;
-
+                    project.Form1 = path;
                 }
             }
 
@@ -324,6 +328,7 @@ namespace WebApplication14.Controllers
             ViewBag.gruplar = grupBilgileri;
             return View(proje);
         }
+        
         [HttpPost]
         public IActionResult ProjeAta(int istekId)
         {
@@ -407,7 +412,7 @@ namespace WebApplication14.Controllers
 
             return öğrenciler1;
         }
-
+        
         public Boolean IsForm2ExpiredDate()
         {
             Takvim takvim = _context.Takvim.FirstOrDefault(x => x.Id == 1);

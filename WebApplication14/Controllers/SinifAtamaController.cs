@@ -15,6 +15,7 @@ namespace WebApplication14.Controllers
 		{
 			_context = context;
 		}
+		
 		public IActionResult Index()
         {
 			Takvim t = _context.Takvim.FirstOrDefault(x => x.Id == 1);

@@ -18,7 +18,8 @@ namespace WebApplication14.Controllers
         {
             _context = context;
         }
-        [Authorize(Roles="Ogrenci")]
+        
+        [Authorize(Roles = "Ogrenci")]
         public IActionResult Index()
         {
             if (HttpContext.Session.GetInt32("Form2SureDoldu") == 1)
@@ -84,14 +85,14 @@ namespace WebApplication14.Controllers
             if (Form2.Length > 0)
             {
                 // full path to file in temp location
-                var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Ogrenci", proje.Ogrenci1No + " - " + proje.Isim + ".pdf"); //"C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + proje.Ogrenci1No + " - " + proje.Isim + ".pdf";
+                var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Ogrenci", proje.Ogrenci1No + " - " + proje.Isim + ".pdf");
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await Form2.CopyToAsync(stream);
                 }
-                String s = filePath;
-                proje.Form2 = s;
+
+                proje.Form2 = Path.Combine("Ogrenci", proje.Ogrenci1No + " - " + proje.Isim + ".pdf"); ;
             }
 
             //burada aynı zamanda PROJE_AL'a da ekleyeceğiz
@@ -110,7 +111,6 @@ namespace WebApplication14.Controllers
             //p.SaveChanges();
             return RedirectToAction("Index", "Ogrenci");
         }
-
 
         public IActionResult IstekGonder(int id)
         {
@@ -166,6 +166,7 @@ namespace WebApplication14.Controllers
             HttpContext.Session.SetInt32("İstekProjeID", proje.Id);
             return View(proje);
         }
+
         [HttpPost]
         public async Task<IActionResult> IstekGonderAsync(String OgrNo2, IFormFile Form2)
         {
@@ -182,13 +183,15 @@ namespace WebApplication14.Controllers
                 if (Form2.Length > 0)
                 {
                     // full path to file in temp location
-                    String filePath = "";
+                    var filePath = "";
                     //akademisyen daha önce giriş yapmadıysa DirectoryNotFoundException
                     if (OgrNo2 != null)
-                        filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "AkademikPersonel", proje.Danisman.Kisaltma, ogrNo + "-" + OgrNo2 + ".pdf"); //"C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + proje.Danisman.Kisaltma + "\\" + ogrNo + "-" + OgrNo2 + ".pdf";
+                        filePath = Path.Combine("AkademikPersonel", proje.Danisman.Kisaltma, ogrNo + "-" + OgrNo2 + ".pdf");
                     else
-                        filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "AkademikPersonel", proje.Danisman.Kisaltma, ogrNo + ".pdf"); //"C:\\Users\\FSA\\source\\repos\\demo\\WebApplication14\\wwwroot\\disc\\" + proje.Danisman.Kisaltma + "\\" + ogrNo + ".pdf";
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                        filePath = Path.Combine("AkademikPersonel", proje.Danisman.Kisaltma, ogrNo + ".pdf");
+
+                    var longPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, filePath);
+                    using (var stream = new FileStream(longPath, FileMode.Create))
                     {
                         await Form2.CopyToAsync(stream);
                     }
@@ -214,6 +217,7 @@ namespace WebApplication14.Controllers
             ViewBag.istekGonderdigimProjeler = _context.Istek.Where(x => x.OgrNo1 == ogrNo || x.OgrNo2 == ogrNo).ToList();
             return View();
         }
+
         public IActionResult BuDonemAldığımProje()
         {
             string ogrenciNo = HttpContext.Session.GetString("id");
@@ -240,29 +244,31 @@ namespace WebApplication14.Controllers
 
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> BuDonemAldığımProjeAsync(IFormFile AraRapor1, IFormFile AraRapor2, IFormFile FinalRaporu)
         {
-            String ogrNo = HttpContext.Session.GetString("id");
-            ProjeAl proje = ProjeAlmisMi(ogrNo);
-            string rootPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Ogrenci", ogrNo);
+            var ogrNo = HttpContext.Session.GetString("id");
+            var proje = ProjeAlmisMi(ogrNo);
+            var path = Path.Combine("Ogrenci", ogrNo);
+            var rootPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
 
             if (AraRapor1 != null)
             {
                 if (AraRapor1.Length > 0)
                 {
-                    var filePath = Path.Combine(rootPath, "AraRapor1.pdf");
+                    var filePath = Path.Combine(path, "AraRapor1.pdf");
 
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    using (var stream = new FileStream(Path.Combine(filePath, rootPath), FileMode.Create))
                     {
                         await AraRapor1.CopyToAsync(stream);
                     }
-                    if (proje != null)//zaten var proje:)
+
+                    if (proje != null) //zaten var proje
                     {
                         proje.Ararapor1 = filePath;
                         _context.SaveChanges();
                     }
-
                 }
             }
             else if (AraRapor2 != null)
@@ -270,45 +276,49 @@ namespace WebApplication14.Controllers
                 if (AraRapor2.Length > 0)
                 {
                     // full path to file in temp location
-                    var filePath = Path.Combine(rootPath, "AraRapor2.pdf");
+                    var filePath = Path.Combine(path, "AraRapor2.pdf");
 
+                    using (var stream = new FileStream(Path.Combine(filePath, rootPath), FileMode.Create))
+                    {
+                        await AraRapor2.CopyToAsync(stream);
+                    }
 
-                    await WriteToDiskAsync(AraRapor2, filePath);
-                    if (proje != null)//zaten var proje:)
+                    if (proje != null) //zaten var proje
                     {
                         proje.Ararapor2 = filePath;
                         _context.SaveChanges();
                     }
-
                 }
             }
             else if (FinalRaporu != null)
             {
                 if (FinalRaporu.Length > 0)
                 {
-                    var filePath = Path.Combine(rootPath, "FinalRapor.pdf");
+                    var filePath = Path.Combine(path, "FinalRapor.pdf");
 
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    using (var stream = new FileStream(Path.Combine(filePath, rootPath), FileMode.Create))
                     {
                         await FinalRaporu.CopyToAsync(stream);
                     }
-                    if (proje != null)//zaten var proje:)
+
+                    if (proje != null) //zaten var proje
                     {
                         proje.Finalrapor = filePath;
                         _context.SaveChanges();
                     }
-
                 }
             }
 
             return RedirectToAction("BuDonemAldığımProje", "Ogrenci");
         }
+
         public IActionResult DevamProjesi()
         {
             string ogrenciNo = HttpContext.Session.GetString("id");
             ViewBag.projem = _context.EskiBasarisizAlinanProje.Where(x => x.Ogrno1 == ogrenciNo).ToList();
             return View();
         }
+
         [HttpPost]
         public IActionResult DevamProjesi(int id)
         {
@@ -385,32 +395,6 @@ namespace WebApplication14.Controllers
             }
             else
                 return proje;
-        }
-        public async Task WriteToDiskAsync(IFormFile file, String filePath)
-        {
-            if (file != null)
-            {
-                if (file.Length > 0)
-                {
-                    try
-                    {
-                        /*if (System.IO.File.Exists(Path.Combine(root, file)))
-						{
-							// If file found, delete it    
-							System.IO.File.Delete(Path.Combine(root, file));
-							Console.WriteLine("File deleted.");
-						}*/
-                    }
-                    catch (Exception e)
-                    {
-
-                    }
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await file.CopyToAsync(stream);
-                    }
-                }
-            }
         }
     }
 }

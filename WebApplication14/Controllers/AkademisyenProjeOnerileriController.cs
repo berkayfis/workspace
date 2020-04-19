@@ -16,11 +16,13 @@ namespace WebApplication14.Controllers
 		{
 			_context = context;
 		}
+		
 		public IActionResult Index()
         {
 			ViewBag.projeler = _context.ProjeOnerileri.OrderBy(x => x.OturumNo).ToList();
             return View();
         }
+		
 		public IActionResult OgrenciOnerisi() {
 			if (HttpContext.Session.GetInt32("akademisyen") == null)
 			{
@@ -87,6 +89,7 @@ namespace WebApplication14.Controllers
 
 			return RedirectToAction("OgrenciOnerisi");
 		}
+		
 		public IActionResult Discard(int id) {
 			if (HttpContext.Session.GetInt32("akademisyen") == null)
 			{
