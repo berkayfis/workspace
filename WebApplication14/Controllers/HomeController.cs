@@ -10,35 +10,36 @@ using WebApplication14.Models;
 
 namespace WebApplication14.Controllers
 {
-	public class HomeController : Controller
-	{
-		private readonly ILogger<HomeController> _logger;
-		private readonly AraProjeContext _context;
+    public class HomeController : Controller
+    {
+        private readonly ILogger<HomeController> _logger;
+        private readonly AraProjeContext _context;
 
-		public HomeController(AraProjeContext context)
-		{
-			_context = context;
-		}
+        public HomeController(AraProjeContext context, ILogger<HomeController> logger)
+        {
+            _context = context;
+            _logger = logger;
+        }
 
-		public HomeController(ILogger<HomeController> logger)
-		{
-			_logger = logger;
-		}
+        public IActionResult Index()
+        {
+            var userRole = User.Identity.AuthenticationType;
+            if (userRole == "Akademisyen Claims")
+            {
+                return RedirectToAction("Index", "ProjeOnerilerim");
+            }
+            else if (userRole == "Ogrenci Claims")
+            {
+                return RedirectToAction("Index", "Ogrenci");
+            }
 
-		public IActionResult Index()
-		{
-			return View();
-		}
+            return RedirectToAction("Index", "Login");
+        }
 
-		public IActionResult Privacy()
-		{
-			return View();
-		}
-
-		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-		public IActionResult Error()
-		{
-			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-		}
-	}
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+    }
 }

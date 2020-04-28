@@ -47,7 +47,7 @@
 								<td>@proje.GrupSayisi</td>
 								<td><a class="btn btn-success" href="/ProjeOnerilerim/ProjeDuzenle?id=@proje.Id"><i class="fas fa-edit"></i></a></td>
 								<td>
-									@Html.ActionLink("pdf", "PdfGoruntule2", "PdfViewer", new { path = proje.Form1, banch = proje.Danisman.Kisaltma }, new { target = "_blank" })
+									@Html.ActionLink("pdf", "Index", "PdfViewer", new { path = proje.Form1, banch = proje.Danisman.Kisaltma }, new { target = "_blank" })
 								</td>
 								<td>@atamaSayisi[i]</td>
 								@if (atamaSayisi[i] == proje.GrupSayisi)

@@ -16,6 +16,7 @@ namespace WebApplication14.Controllers
 		{
 			_context = context;
 		}
+		
 		public IActionResult Index()
         {
 			if (HttpContext.Session.GetInt32("asistan") == null) {

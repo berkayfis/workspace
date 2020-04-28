@@ -15,6 +15,7 @@ namespace WebApplication14.Controllers
         {
             _context = context;
         }
+        
         public IActionResult Index()
         {
 			var model = _context.ProjeAl.ToList();

@@ -17,7 +17,6 @@ namespace WebApplication14.Controllers
         {
             _context = context;
         }
-
         
         public IActionResult Index()
         {
@@ -25,6 +24,7 @@ namespace WebApplication14.Controllers
             ViewBag.takvim = takvim;
             return View();
         }
+        
         [HttpPost]
         [Authorize(Roles = "Koordinator")]
         public IActionResult Index(Takvim takvimYeni)

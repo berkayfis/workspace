@@ -77,7 +77,6 @@ namespace WebApplication14.Controllers
             return View(model);
         }
 
-
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Login()
@@ -112,6 +111,5 @@ namespace WebApplication14.Controllers
 
             return View(model);
         }
-	
     }
 }
