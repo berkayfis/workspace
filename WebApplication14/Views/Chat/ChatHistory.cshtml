@@ -23,6 +23,7 @@
         </div>
     }
     <div>
-        <a class="btn btn-success" href="/Chat/SendEmail">Cevap Gönder</a>
+        @*<a class="btn btn-success" href="/Chat/SendEmail">Cevap Gönder</a>*@
+        <a asp-controller="Chat" asp-action="SendEmail" asp-route-receiverGuid="@partner.MessageId">Cevap Gönder</a>
     </div>
 </div>

@@ -57,9 +57,9 @@ namespace WebApplication14.Controllers
                 return RedirectToAction("Logout", "Login");
             }
 
-            String ogrNo = HttpContext.Session.GetString("öğrenci");
+            string ogrenciNo = HttpContext.Session.GetString("öğrenci");
 
-            ProjeAl alınanProje = ProjeAlmisMi(ogrNo);
+            ProjeAl alınanProje = ProjeAlmisMi(ogrenciNo);
             if (alınanProje != null)
             {// bu arkadaşa proje atanmış, proje önermesin
                 return RedirectToAction("Index", "Ogrenci");
@@ -74,11 +74,11 @@ namespace WebApplication14.Controllers
         [HttpPost]
         public async Task<IActionResult> ProjeOnerAsync(OgrenciProjeOnerisi proje, IFormFile Form2)
         {
-            String ogrNo = HttpContext.Session.GetString("id");
-            Ogrenci a = _context.Ogrenci.Find(ogrNo);
-            if (a != null)
+            string ogrenciNo = HttpContext.Session.GetString("id");
+            Ogrenci ogrenci = _context.Ogrenci.Find(ogrenciNo);
+            if (ogrenci != null)
             {
-                proje.Ogrenci1No = ogrNo;
+                proje.Ogrenci1No = ogrenciNo;
             }
 
             if (Form2.Length > 0)
@@ -90,20 +90,27 @@ namespace WebApplication14.Controllers
                 {
                     await Form2.CopyToAsync(stream);
                 }
-                String s = filePath;
-                proje.Form2 = s;
+                proje.Form2 = filePath;
             }
 
             //burada aynı zamanda PROJE_AL'a da ekleyeceğiz
-            ProjeAl alınan_proje = new ProjeAl();
+            //ProjeAl alınan_proje = new ProjeAl();
             /*alınan_proje.OgrNo1 = ogrNo;
 			if (proje.Ogrno2 != null)
 				alınan_proje.OgrNo2 = proje.Ogrno2;
 			alınan_proje.= proje.Danismanid;*/
-            alınan_proje.ProjeDurumu = "Yeni Proje (Öğrenci Önerisinden)";
+            //alınan_proje.ProjeDurumu = "Yeni Proje (Öğrenci Önerisinden)";
 
             if (proje.Ogrenci2No == "0")
+            {
                 proje.Ogrenci2No = null;
+                proje.OgrenciOnayi = 1;
+            }
+            else
+            {
+                proje.OgrenciOnayi = 0;
+            }
+            proje.Statu = "Yeni Proje (Öğrenci Önerisinden)";
             _context.OgrenciProjeOnerisi.Add(proje);
             _context.SaveChanges();
             //p.ProjeAl.Add(alınan_proje);
@@ -111,6 +118,37 @@ namespace WebApplication14.Controllers
             return RedirectToAction("Index", "Ogrenci");
         }
 
+        public IActionResult Onerilerim()
+        {
+            string ogrenciNo = HttpContext.Session.GetString("id");
+            ViewBag.ProjeOnerilerim = _context.OgrenciProjeOnerisi.Where(x => x.Ogrenci1No == ogrenciNo || x.Ogrenci2No == ogrenciNo).ToList();
+            ViewBag.CurrentStudentNo = ogrenciNo;
+            //2. Ogrenci onayı eklenecek.
+            return View();
+        }
+
+        public IActionResult Kabul(int id)
+        {
+            var ogrenciOnerisi = _context.OgrenciProjeOnerisi.FirstOrDefault(x => x.Id == id);
+            if (ogrenciOnerisi != null)
+            {
+                ogrenciOnerisi.OgrenciOnayi = 1;
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Onerilerim");
+        }
+
+        public IActionResult Ret(int id)
+        {
+            var ogrenciOnerisi = _context.OgrenciProjeOnerisi.FirstOrDefault(x => x.Id == id);
+            if (ogrenciOnerisi != null)
+            {
+                ogrenciOnerisi.OgrenciOnayi = 2;
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Onerilerim");
+        }
 
         public IActionResult IstekGonder(int id)
         {

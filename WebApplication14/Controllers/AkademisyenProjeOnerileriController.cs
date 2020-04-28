@@ -32,7 +32,7 @@ namespace WebApplication14.Controllers
 			}
 
 			int id = Convert.ToInt32(HttpContext.Session.GetInt32("id"));
-			List<OgrenciProjeOnerisi> model = _context.OgrenciProjeOnerisi.Where(x => x.Danismanid == id).ToList();
+			List<OgrenciProjeOnerisi> model = _context.OgrenciProjeOnerisi.Where(x => x.Danismanid == id && x.OgrenciOnayi == 1).ToList();
 			List<ProjeAl> kabulEdilenler = new List<ProjeAl>();
 			List<int> onaylandıMı = new List<int>();
 			int flag = 0;

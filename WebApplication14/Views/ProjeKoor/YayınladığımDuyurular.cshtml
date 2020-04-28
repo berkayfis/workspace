@@ -2,6 +2,20 @@
 @{
 	ViewData["Title"] = "Yayınladığım Duyurular";
 }
+
+<script>
+	function DeleteAnnouncement() {
+
+		if (confirm("Evet Hayır")) {
+			console.log("trueee");
+			return true;
+		} else {
+			console.log("falseee");
+			return false;
+        }
+    }
+
+</script>
 	<a class="btn btn-success" href="/ProjeKoor/DuyuruYayınla"><i class="fas fa-plus"></i>Yeni Duyuru Ekle</a>
 
 @foreach (Duyuru duyuru in ViewBag.YayınladığımDuyurular)
@@ -11,13 +25,18 @@
 			<div class="card-header">
 				<strong class="card-title">
 					@duyuru.Baslik
-					<small>
-						<span class="badge badge-success float-right mt-1">@duyuru.Zaman</span>
-						<span class="badge badge-danger float-right mt-1">@duyuru.Koordinator.Akademisyen.Kisaltma</span>
-						
-							@Html.ActionLink("Düzenle", "DuyuruDüzenle", "ProjeKoor", new { id = duyuru.Id })
-						
-					</small>
+                    <small>
+                        <span class="badge badge-success float-right mt-1">@duyuru.Zaman</span>
+                        <span class="badge badge-danger float-right mt-1">@duyuru.Koordinator.Akademisyen.Kisaltma</span>
+
+                        @*Html.ActionLink("Düzenle", "DuyuruDüzenle", "ProjeKoor", new { id = duyuru.Id }, new { @class= "btn btn info" })
+                        @Html.ActionLink("Sil", "DuyuruSil", "ProjeKoor", new { id = duyuru.Id } ,new { onclick = "return DeleteAnnouncement()" })*@
+                    <form asp-action="DuyuruSil" asp-route-id="@duyuru.Id" method="post">
+                        @Html.ActionLink("Düzenle", "DuyuruDüzenle", "ProjeKoor", new { id = duyuru.Id }, new { @class = "btn btn-info" })
+                        <button type="submit" class="btn btn-danger announceDelete" onclick="return DeleteAnnouncement()">Sil</button>
+                    </form>
+
+                    </small>
 				</strong>
 			</div>
 			<div class="card-body">

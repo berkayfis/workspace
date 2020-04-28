@@ -21,3 +21,7 @@ Ogrenciler:
     - Ogrenci_No: "5002530"
       Ad: "Mert"
       Soyad: "Kazanc"
+AlanOturumlar:
+    - Ad : "Ağ Teknolojileri, İşletim Sistemleri, Robot Teknolojileri "
+    - Ad : "Doğal Dil İşleme, Yapay Zeka, Görüntü ve İşaret İşleme"
+    - Ad : "Yazılım Müh., Büyük Veri İşleme, Veri Madenciliği"

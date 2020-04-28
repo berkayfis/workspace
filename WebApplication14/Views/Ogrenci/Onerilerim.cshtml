@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewData["Title"] = "Onerilerim";
+}
+
+<h1>Proje Önerilerim</h1>
+
+<div class="row m-t-30">
+    <div class="col-md-12">
+        <!-- DATA TABLE-->
+        <div class="table-responsive m-b-40">
+            <table class="table table-borderless table-data3">
+                <thead>
+                    <tr>
+                        <th>İsim</th>
+                        <th>Danışman</th>
+                        <th>Birinci Öğrenci</th>
+                        <th>İkinci Öğrenci</th>
+                        <th>Öğrenci Onay Durumu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (OgrenciProjeOnerisi proje in ViewBag.ProjeOnerilerim)
+                    {
+                    <tr>
+                        <td>@proje.Isim</td>
+                        <td>@proje.Danisman.Kisaltma</td>
+                        <td>
+                            @(proje.Ogrenci1No + " " +
+								proje.Ogrno1Navigation.Ad + " " +
+								proje.Ogrno1Navigation.Soyad)
+                        </td>
+                        @if (proje.Ogrenci2No != null)
+                        {
+                            <td>
+                                @(proje.Ogrenci2No + " " +
+									proje.Ogrno2Navigation.Ad + " " +
+									proje.Ogrno2Navigation.Soyad)
+                            </td>
+                            @if (proje.Ogrenci2No == ViewBag.CurrentStudentNo)
+                            {
+                                @if (proje.OgrenciOnayi == 0)
+                                {
+                                    <td>@Html.ActionLink("Kabul", "Kabul", "Ogrenci", new { id = proje.Id })  |  @Html.ActionLink("Ret", "Ret", "Ogrenci", new { id = proje.Id })  </td>
+                                }
+                                else if (proje.OgrenciOnayi == 1)
+                                {
+                                    <td>Kabul</td>
+                                }
+                                else if (proje.OgrenciOnayi == 2)
+                                {
+                                    <td>Ret</td>
+                                }
+                            }
+                            else
+                            {
+                                @if (proje.OgrenciOnayi == 0)
+                                {
+                                    <td>Onay Bekliyor</td>
+                                }
+                                else if (proje.OgrenciOnayi == 1)
+                                {
+                                    <td>Kabul</td>
+                                }
+                                else if (proje.OgrenciOnayi == 2)
+                                {
+                                    <td>Ret</td>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            <td> </td>
+                            <td> </td>
+                        }
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <!-- END DATA TABLE-->
+    </div>
+</div>

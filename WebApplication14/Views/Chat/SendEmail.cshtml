@@ -26,9 +26,18 @@
                                     <select class="form-control" name="ReceiverId" required>
                                         @foreach (Ogrenci ogrenci in ViewBag.Ogrenciler)
                                         {
-                                            <option value="@ogrenci.MessageId">
-                                                @string.Join(' ', ogrenci.Ad, ogrenci.Soyad)
-                                            </option>
+                                            if (ogrenci.MessageId == ViewBag.ReceiverGuid)
+                                            {
+                                                <option selected value="@ogrenci.MessageId">
+                                                    @string.Join(' ', ogrenci.Ad, ogrenci.Soyad)
+                                                </option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@ogrenci.MessageId">
+                                                    @string.Join(' ', ogrenci.Ad, ogrenci.Soyad)
+                                                </option>
+                                            }
                                         }
                                     </select>
                                 </div>
@@ -40,9 +49,18 @@
                                     <select class="form-control" name="ReceiverId" required>
                                         @foreach (AkademikPersonel akademisyen in ViewBag.Akademisyenler)
                                         {
-                                            <option value="@akademisyen.MessageId">
-                                                @string.Join(' ', akademisyen.Ad, akademisyen.Soyad)
-                                            </option>
+                                            if (akademisyen.MessageId == ViewBag.ReceiverGuid)
+                                            {
+                                                <option selected value="@akademisyen.MessageId">
+                                                    @string.Join(' ', akademisyen.Ad, akademisyen.Soyad)
+                                                </option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@akademisyen.MessageId">
+                                                    @string.Join(' ', akademisyen.Ad, akademisyen.Soyad)
+                                                </option>
+                                            }
                                         }
                                     </select>
                                 </div>

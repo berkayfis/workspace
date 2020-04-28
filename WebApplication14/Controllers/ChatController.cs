@@ -31,7 +31,7 @@ namespace WebApplication14.Controllers
         }
 
 		[Authorize]
-		public IActionResult SendEmail() {
+		public IActionResult SendEmail(Guid receiverGuid) {
 			//if (HttpContext.Session.GetInt32("akademisyen") == null)
 			//{
 			//	return RedirectToAction("Logout", "Login");
@@ -48,12 +48,18 @@ namespace WebApplication14.Controllers
 			//}
 			//ProjeAl proje = _context.ProjeAl.FirstOrDefault(x => x.Id == id);
 			var akademisyenler = _context.AkademikPersonel.OrderBy(x => x.Ad);
-			var ogrenciler = _context.Ogrenci.OrderBy(x => x.OgrenciNo);
+			var ogrenciler = _context.Ogrenci.OrderBy(x => x.Ad);
+
+			if (receiverGuid != Guid.Empty)
+			{
+				ViewBag.ReceiverGuid = receiverGuid;
+			}
 
 			ViewBag.Akademisyenler = akademisyenler;
 			ViewBag.Ogrenciler = ogrenciler;
 			return View();
 		}
+
 		[HttpPost]
 		public async Task<IActionResult> SendEmailAsync(string Icerik, Guid ReceiverId, IFormFile Eklenti) {
 			if (Eklenti != null) { 

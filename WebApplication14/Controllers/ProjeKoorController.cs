@@ -12,7 +12,7 @@ using WebApplication14.Models;
 
 namespace WebApplication14.Controllers
 {
-    [Authorize(Roles = "Koordinator")]
+    [Authorize]
     public class ProjeKoorController : Controller
     {
         private readonly AraProjeContext _context;
@@ -39,7 +39,8 @@ namespace WebApplication14.Controllers
             return RedirectToAction("Index");
         }
 
-        #region  DUYURU         
+        #region  DUYURU     
+        [Authorize]
         public IActionResult DuyuruYayınla()
         {
             if (HttpContext.Session.GetInt32("koordinatör") == null)
@@ -124,7 +125,6 @@ namespace WebApplication14.Controllers
             return RedirectToAction("Duyurular", "ProjeKoor");
         }
         
-        [Authorize(Roles = "Akademisyen,Ogrenci,Koordinator")]
         public IActionResult Duyurular()
         {
             ViewBag.Duyurular = _context.Duyuru.ToList();
@@ -145,6 +145,18 @@ namespace WebApplication14.Controllers
         {
             Duyuru duyuru = _context.Duyuru.FirstOrDefault(x => x.Id == id);
             return View(duyuru);
+        }
+        [HttpPost]
+        public IActionResult DuyuruSil(int id)
+        {
+            Duyuru duyuru = _context.Duyuru.FirstOrDefault(x => x.Id == id);
+
+            _context.Duyuru.Remove(duyuru);
+            _context.SaveChanges();
+
+            int koordinatorId = Convert.ToInt32(HttpContext.Session.GetInt32("koordinatör"));
+            ViewBag.YayınladığımDuyurular = _context.Duyuru.Where(x => x.KoordinatorNo == koordinatorId).ToList();
+            return View("YayınladığımDuyurular");
         }
         #endregion
         public IActionResult DersiAlanOgrenciler()

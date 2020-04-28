@@ -84,9 +84,22 @@ namespace WebApplication14.Helper
                     {
                         context.Takvim.Add(new Takvim
                         {
-                            Form2 = DateTime.Now,
-                            Toplanti = DateTime.Now
+                            Form2 = DateTime.Today,
+                            Toplanti = DateTime.Today
                         });
+
+                        context.SaveChanges();
+                    }
+                    if (!context.AlanOturum.Any())
+                    {
+                        var oturumlar = new List<AlanOturum>();
+                        foreach (var oturumConfig in config.AlanOturumlar)
+                        {
+                            context.AlanOturum.Add(new AlanOturum
+                            {
+                                Adi = oturumConfig.Ad
+                            });
+                        }
 
                         context.SaveChanges();
                     }
@@ -101,6 +114,8 @@ namespace WebApplication14.Helper
         public List<AkademikPersonelConfig> AkademikPersoneller { get; set; }
 
         public List<OgrenciConfig> Ogrenciler { get; set; }
+
+        public List<AlanOturumConfig> AlanOturumlar { get; set; }
     }
 
     internal class AkademikPersonelConfig
@@ -124,5 +139,9 @@ namespace WebApplication14.Helper
         public string OgrenciNo { get; set; }
         public string Ad { get; set; }
         public string Soyad { get; set; }
+    }
+    internal class AlanOturumConfig
+    {
+        public string Ad { get; set; }
     }
 }

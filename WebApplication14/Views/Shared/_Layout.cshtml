@@ -113,6 +113,14 @@
                                     <i class="fas fa-map-marker-alt"></i>YayınlananProjeler
                                 </a>
                             </li>
+                            @if (Context.Session.GetInt32("Form2SureDoldu") == null)
+                            {
+                                <li>
+                                    <a href="/Ogrenci/Index">
+                                        <i class="fas fa-map-marker-alt"></i>Proje Önerilerim
+                                    </a>
+                                </li>
+                            }
                         }
                         <li>
                             <a href="/ProjeTakvimi/Index">
@@ -146,11 +154,22 @@
                                 </a>
                             </li>
                         }
-                        <li>
-                            <a href="/AtamasıYapılanProjeler/Index">
-                                <i class="fas fa-gavel"></i>Atanan Projeler
-                            </a>
-                        </li>
+                        @if (Context.Session.GetInt32("Form2SureDoldu") == null)
+                        {
+                            <li>
+                                <a href="/AtamasıYapılanProjeler/Index">
+                                    <i class="fas fa-gavel"></i>Kurul Kararı Bekleyen Projeler
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="/AtamasıYapılanProjeler/Index">
+                                    <i class="fas fa-gavel"></i>Atanan Projeler
+                                </a>
+                            </li>
+                        }
                     </ul>
 				</div>
 			</nav>
@@ -243,11 +262,22 @@
                                 </a>
                             </li>
                         }
-                        <li>
-                            <a href="/AtamasıYapılanProjeler/Index">
-                                <i class="fas fa-gavel"></i>Atanan Projeler
-                            </a>
-                        </li>
+                        @if (Context.Session.GetInt32("Form2SureDoldu") == null)
+                        {
+                            <li>
+                                <a href="/AtamasıYapılanProjeler/Index">
+                                    <i class="fas fa-gavel"></i>Kurul Kararı Bekleyen Projeler
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="/AtamasıYapılanProjeler/Index">
+                                    <i class="fas fa-gavel"></i>Atanan Projeler
+                                </a>
+                            </li>
+                        }
                         @if (Context.Session.GetInt32("öğrenci") != null)
                         {
                             if (Context.Session.GetInt32("projeAlmisMi") == 1)//proje atamam yapıldıysa
@@ -278,7 +308,14 @@
                                     </a>
                                 </li>
                             }
-
+                            @if (Context.Session.GetInt32("Form2SureDoldu") == null)
+                            {
+                                <li>
+                                    <a href="/Ogrenci/Onerilerim">
+                                        <i class="fas fa-map-marker-alt"></i>Proje Önerilerim
+                                    </a>
+                                </li>
+                            }
                         }
                     </ul>
 				</nav>

@@ -19,6 +19,7 @@ namespace WebApplication14.Models
         public string Turu { get; set; }
         public string Form2 { get; set; }
         public string Statu { get; set; }
+        public int OgrenciOnayi { get; set; }
 
         public virtual AkademikPersonel Danisman { get; set; }
         public virtual Ogrenci Ogrno1Navigation { get; set; }
