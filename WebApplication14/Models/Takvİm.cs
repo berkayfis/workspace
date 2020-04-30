@@ -18,6 +18,8 @@ namespace WebApplication14.Models
         public DateTime? Arabütünleme { get; set; }
         public DateTime? Bitirmebutunleme { get; set; }
         public DateTime? Bkitap { get; set; }
+        public DateTime? Form1 { get; set; }
+        public DateTime? Form1Toplanti { get; set; }
         public int Id { get; set; }
         public string Donem { get; set; }
     }

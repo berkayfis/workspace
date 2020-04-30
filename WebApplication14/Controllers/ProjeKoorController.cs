@@ -402,5 +402,28 @@ namespace WebApplication14.Controllers
             }
             _context.SaveChanges();
         }
+        public IActionResult Form1Kabul(int id)
+        {
+            //Date Eklenecek.
+            var proje = _context.ProjeOnerileri.FirstOrDefault(x => x.Id == id);
+            if (proje != null)
+            {
+                proje.Status = 1;
+            }
+            _context.SaveChanges();
+            return RedirectToAction("Index", "AkademisyenProjeOnerileri");
+        }
+
+        public IActionResult Form1Ret(int id)
+        {
+            //Date Eklenecek.
+            var proje = _context.ProjeOnerileri.FirstOrDefault(x => x.Id == id);
+            if (proje != null)
+            {
+                proje.Status = 2;
+            }
+            _context.SaveChanges();
+            return RedirectToAction("Index", "AkademisyenProjeOnerileri");
+        }
     }
 }

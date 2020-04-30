@@ -87,9 +87,12 @@
                                         <i class="fas fa-plus-circle"></i>Proje Ekle
                                     </a>
                                     <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                                        @if (Context.Session.GetInt32("Form1SureDoldu") == null)
+                                        {
                                         <li>
                                             <a href="/ProjeOnerilerim/ProjeEkle">Yeni Proje Ekle</a>
                                         </li>
+                                        }                                        
                                         <li>
                                             <a href="/ProjeOnerilerim/EskiOnerilerim">Eski Önerilerimden Getir</a>
                                         </li>
@@ -212,9 +215,12 @@
                                         <i class="fas fa-plus-circle"></i>Proje Ekle
                                     </a>
                                     <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                                        <li>
-                                            <a href="/ProjeOnerilerim/ProjeEkle">Yeni Proje Ekle</a>
-                                        </li>
+                                        @if (Context.Session.GetInt32("Form1SureDoldu") == null)
+                                        {
+                                            <li>
+                                                <a href="/ProjeOnerilerim/ProjeEkle">Yeni Proje Ekle</a>
+                                            </li>
+                                        }
                                         <li>
                                             <a href="/ProjeOnerilerim/EskiOnerilerim">Eski Önerilerimden Getir</a>
                                         </li>

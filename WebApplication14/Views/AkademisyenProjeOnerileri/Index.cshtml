@@ -1,40 +1,63 @@
-﻿
+﻿@using System.Linq
+@using Microsoft.AspNetCore.Http;
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
 @{
-	ViewData["Title"] = "Akademisyen Proje Önerileri";
+    ViewData["Title"] = "Akademisyen Proje Önerileri";
 }
 
 <div class="row m-t-30">
-	<div class="col-md-12">
-		<!-- DATA TABLE-->
-		<div class="table-responsive m-b-40">
-			<table class="table table-borderless table-data3">
-				<thead>
-					<tr>
-						<th>Oturum No</th>
-						<th>Proje İsmi</th>
-						<th>Danışman</th>
-						<th>Kişi Sayısı</th>
-						<th>Grup Sayısı</th>
-						<th>Form-1</th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach (ProjeOnerileri proje in ViewBag.projeler)
-					{
-					<tr>
-						<td>@proje.OturumNo</td>
-						<td>@proje.Isim</td>
-						<td>@proje.Danisman.Kisaltma</td>
-						<td>@proje.KisiSayisi</td>
-						<td>@proje.GrupSayisi</td>
-						<td>@Html.ActionLink("pdf", "Index", "PdfViewer", new { id = proje.Id }, new { target = "_blank" })</td>
-					</tr>
-					}
-				</tbody>
-			</table>
-		</div>
-		<!-- END DATA TABLE-->
-	</div>
+    <div class="col-md-12">
+        <!-- DATA TABLE-->
+        <div class="table-responsive m-b-40">
+            <table class="table table-borderless table-data3">
+                <thead>
+                    <tr>
+                        <th>Oturum No</th>
+                        <th>Proje İsmi</th>
+                        <th>Danışman</th>
+                        <th>Kişi Sayısı</th>
+                        <th>Grup Sayısı</th>
+                        <th>Form-1</th>
+                        <th>Kurul Kararı</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (ProjeOnerileri proje in ViewBag.projeler)
+                    {
+                        <tr>
+                            <td>@proje.OturumNo</td>
+                            <td>@proje.Isim</td>
+                            <td>@proje.Danisman.Kisaltma</td>
+                            <td>@proje.KisiSayisi</td>
+                            <td>@proje.GrupSayisi</td>
+                            <td>@Html.ActionLink("pdf", "Index", "PdfViewer", new { path = proje.Form1, banch = proje.Danisman.Kisaltma }, new { target = "_blank" })</td>
+                            @if (proje.Status == 0)
+                            {
+                                @if ((await AuthorizationService.AuthorizeAsync(User, "Koordinator")).Succeeded && Context.Session.GetInt32("Form1Toplanti") == 1)
+                                {
+                                    <td> @Html.ActionLink("Kabul", "Form1Kabul", "ProjeKoor", new { id = proje.Id })  |  @Html.ActionLink("Ret", "Form1Ret", "ProjeKoor", new { id = proje.Id })</td>
+                                }
+                                else
+                                {
+                                    <td>Kurul Kararı Bekliyor</td>
+                                }
+                            }
+                            else if (proje.Status == 1)
+                            {
+                                <td>Kabul</td>
+                            }
+                            else if (proje.Status == 2)
+                            {
+                                <td>Ret</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <!-- END DATA TABLE-->
+    </div>
 </div>
 
 

@@ -19,6 +19,7 @@ namespace WebApplication14.Models
         public int? GrupSayisi { get; set; }
         public string Kategori { get; set; }
         public string Form1 { get; set; }
+        public int Status { get; set; }
 
         public virtual AkademikPersonel Danisman { get; set; }
         public virtual AlanOturum OturumNoNavigation { get; set; }

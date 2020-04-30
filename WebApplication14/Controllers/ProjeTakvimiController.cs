@@ -56,6 +56,11 @@ namespace WebApplication14.Controllers
                 takvim.Ret = takvimYeni.Ret;
             if (takvimYeni.Toplanti != null)
                 takvim.Toplanti = takvimYeni.Toplanti;
+            if (takvimYeni.Form1 != null)
+                takvim.Form1 = takvimYeni.Form1;
+            if (takvimYeni.Form1Toplanti != null)
+                takvim.Form1Toplanti = takvimYeni.Form1Toplanti;
+
             _context.SaveChanges();
             return RedirectToAction("Index", "ProjeTakvimi");
         }

@@ -37,7 +37,7 @@ namespace WebApplication14.Controllers
             }
             ViewBag.flag = flag;
 
-            List<ProjeOnerileri> akademisyenOnerileri = _context.ProjeOnerileri.OrderBy(x => x.Danisman.Kisaltma).ToList();
+            List<ProjeOnerileri> akademisyenOnerileri = _context.ProjeOnerileri.Where(x=> x.Status == 1).OrderBy(x => x.Danisman.Kisaltma).ToList();
             ViewBag.AkademisyenOnerileri = akademisyenOnerileri;
 
             List<int> kaçKezAtandı = new List<int>();

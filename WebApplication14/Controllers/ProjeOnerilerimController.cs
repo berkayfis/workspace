@@ -47,7 +47,7 @@ namespace WebApplication14.Controllers
             }
             else
             {
-                List<ProjeOnerileri> projeOnerilerimList = _context.ProjeOnerileri.Where(x => x.DanismanId == id).ToList();
+                List<ProjeOnerileri> projeOnerilerimList = _context.ProjeOnerileri.Where(x => x.DanismanId == id && x.Status == 1).ToList();
 
                 List<int> atananProjeSayisi = new List<int>();
                 foreach (ProjeOnerileri proje in projeOnerilerimList)

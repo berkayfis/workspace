@@ -41,7 +41,10 @@ namespace WebApplication14.Controllers
                 HttpContext.Session.SetInt32("Form2SureDoldu", 1);
             if (DateTime.Today < takvim.Arasinav && DateTime.Today > takvim.Finalrapor)
                 HttpContext.Session.SetInt32("AraSınavveBitirmeSınav", 1);
-
+            if (DateTime.Today > takvim.Form1)            
+                HttpContext.Session.SetInt32("Form1SureDoldu", 1);
+            if (DateTime.Today == takvim.Form1Toplanti)
+                HttpContext.Session.SetInt32("Form1Toplanti", 1);
 
             if (IsAkademikPersonel(username, password))
             {
