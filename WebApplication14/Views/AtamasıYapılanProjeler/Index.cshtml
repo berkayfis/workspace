@@ -121,7 +121,14 @@
                             }
                             else if (ViewBag.form2toplanti == 1)
                             {
-                                <td>@Html.ActionLink("Kabul", "Kabul", "ProjeKoor", new { id = proje.Id }) | @Html.ActionLink("Ret", "Ret", "ProjeKoor", new { id = proje.Id })</td>
+                                if (proje.KabulDurumu != null)
+                                {
+                                    <td>@proje.KabulDurumu</td>
+                                }
+                                else
+                                {
+                                    <td>@Html.ActionLink("Kabul", "Kabul", "ProjeKoor", new { id = proje.Id }) | @Html.ActionLink("Ret", "Ret", "ProjeKoor", new { id = proje.Id })</td>
+                                }
                             }
                             else
                             {
