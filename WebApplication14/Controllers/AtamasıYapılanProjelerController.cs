@@ -34,6 +34,7 @@ namespace WebApplication14.Controllers
 				}
 				ViewBag.flag = flag;
 			}
+			ViewBag.form2toplanti = HttpContext.Session.GetInt32("Form2Toplanti");
 			ViewBag.alinanProjeler = _context.ProjeAl.ToList();
             return View();
         }

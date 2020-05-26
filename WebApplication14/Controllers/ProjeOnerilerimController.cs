@@ -128,16 +128,16 @@ namespace WebApplication14.Controllers
             proje.Kategori = Kategori;
 
             //akademisyenin eklediği proje direkt eski projeye akatarılır
-            EskiKabulGorenProjeler eskiProje = new EskiKabulGorenProjeler();
-            eskiProje.Isim = proje.Isim;
-            eskiProje.DanismanId = proje.DanismanId;
-            eskiProje.GrupSayisi = proje.GrupSayisi;
-            eskiProje.KisiSayisi = proje.KisiSayisi;
-            eskiProje.OturumNo = proje.OturumNo;
-            eskiProje.Turu = proje.Kategori;
-            eskiProje.Form1 = proje.Form1;
+            //EskiKabulGorenProjeler eskiProje = new EskiKabulGorenProjeler();
+            //eskiProje.Isim = proje.Isim;
+            //eskiProje.DanismanId = proje.DanismanId;
+            //eskiProje.GrupSayisi = proje.GrupSayisi;
+            //eskiProje.KisiSayisi = proje.KisiSayisi;
+            //eskiProje.OturumNo = proje.OturumNo;
+            //eskiProje.Turu = proje.Kategori;
+            //eskiProje.Form1 = proje.Form1;
 
-            _context.EskiKabulGorenProjeler.Add(eskiProje);
+            //_context.EskiKabulGorenProjeler.Add(eskiProje);
 
             _context.Add(proje);
             _context.SaveChanges();

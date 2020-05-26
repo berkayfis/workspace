@@ -410,6 +410,19 @@ namespace WebApplication14.Controllers
             {
                 proje.Status = 1;
             }
+
+            EskiKabulGorenProjeler eskiProje = new EskiKabulGorenProjeler()
+            {
+                Isim = proje.Isim,
+                DanismanId = proje.DanismanId,
+                GrupSayisi = proje.GrupSayisi,
+                KisiSayisi = proje.KisiSayisi,
+                OturumNo = proje.OturumNo,
+                Turu = proje.Kategori,
+                Form1 = proje.Form1
+            };
+            _context.EskiKabulGorenProjeler.Add(eskiProje);
+
             _context.SaveChanges();
             return RedirectToAction("Index", "AkademisyenProjeOnerileri");
         }
