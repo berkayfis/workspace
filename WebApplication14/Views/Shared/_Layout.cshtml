@@ -157,7 +157,7 @@
                                 </a>
                             </li>
                         }
-                        @if (Context.Session.GetInt32("Form2SureDoldu") == null)
+                        @if (Context.Session.GetInt32("Form2SureDoldu") == null || Context.Session.GetInt32("Form2Toplanti") == 1)
                         {
                             <li>
                                 <a href="/AtamasıYapılanProjeler/Index">
@@ -268,7 +268,7 @@
                                 </a>
                             </li>
                         }
-                        @if (Context.Session.GetInt32("Form2SureDoldu") == null)
+                        @if (Context.Session.GetInt32("Form2SureDoldu") == null || Context.Session.GetInt32("Form2Toplanti") == 1)
                         {
                             <li>
                                 <a href="/AtamasıYapılanProjeler/Index">

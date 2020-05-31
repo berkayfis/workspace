@@ -12,7 +12,7 @@
     </div> 
     @foreach (Message message in ViewBag.ChatHistory)
     {
-        <div class="row">
+        <div class="messageRow row">
             <div class="col-md-4 @(@currentUser == @message.SenderId ? "offset-md-8" :"")">
                 <span>@message.Content</span>
                 <br>

@@ -70,26 +70,67 @@ namespace WebApplication14.Controllers
 			}
 
 			OgrenciProjeOnerisi proje = _context.OgrenciProjeOnerisi.FirstOrDefault(x => x.Id == id);
-			ProjeAl alınanProje = new ProjeAl();
+			if (ProjeAlmisMi(proje))
+			{
+
+			}
+			else
+			{
+				ProjeAl alınanProje = new ProjeAl();
+				alınanProje.OgrenciOneriNo = proje.Id;
+				alınanProje.Form2 = proje.Form2;
+				alınanProje.OgrNo1 = proje.Ogrenci1No;
+				if (proje.Ogrenci2No != null)
+					alınanProje.OgrNo2 = proje.Ogrenci2No;
+				alınanProje.ProjeDurumu = proje.Statu;
+
+				_context.ProjeAl.Add(alınanProje);
+
+				var ogrenci1Oneriler = _context.OgrenciProjeOnerisi.Where(x => (x.Ogrenci1No == proje.Ogrenci1No || x.Ogrenci2No == proje.Ogrenci1No) && x.Id != id).ToList();
+				var ogrenci1Istekler = _context.Istek.Where(x => x.OgrNo1 == proje.Ogrenci1No || x.OgrNo2 == proje.Ogrenci1No).ToList();
+
+				_context.OgrenciProjeOnerisi.RemoveRange(ogrenci1Oneriler);
+				_context.Istek.RemoveRange(ogrenci1Istekler);
+
+				if (proje.Ogrenci2No != null)
+				{
+					var ogrenci2Oneriler = _context.OgrenciProjeOnerisi.Where(x => (x.Ogrenci1No == proje.Ogrenci2No || x.Ogrenci2No == proje.Ogrenci2No)&& x.Id!=id).ToList();
+					var ogrenci2Istekler = _context.Istek.Where(x => x.OgrNo1 == proje.Ogrenci2No || x.OgrNo2 == proje.Ogrenci2No).ToList();
+					
+					_context.OgrenciProjeOnerisi.RemoveRange(ogrenci2Oneriler);
+					_context.Istek.RemoveRange(ogrenci2Istekler);
+				}
+			}
 
 			/*ProjeAl projeyiAlmisMi = p.ProjeAl.FirstOrDefault(x => x.OgrNo1 == proje.Ogrno1 || proje.Ogrno2 == proje.Ogrno1);
 			if (projeyiAlmisMi != null) {
 				return RedirectToAction("Logout", "Login");
 			}*/
 
-			alınanProje.OgrenciOneriNo = proje.Id;
-			alınanProje.Form2 = proje.Form2;
-			alınanProje.OgrNo1 = proje.Ogrenci1No;
-			if (proje.Ogrenci2No != null)
-				alınanProje.OgrNo2 = proje.Ogrenci2No;
-			alınanProje.ProjeDurumu = proje.Statu;
-
-			_context.ProjeAl.Add(alınanProje);
+			
 			_context.SaveChanges();
 
 			return RedirectToAction("OgrenciOnerisi");
 		}
-		
+
+		private bool ProjeAlmisMi(OgrenciProjeOnerisi oneri)
+		{
+			ProjeAl proje = new ProjeAl();
+			if (oneri.Ogrenci2No != null)
+			{
+				proje = _context.ProjeAl.FirstOrDefault(x => x.OgrNo1 == oneri.Ogrenci1No || x.OgrNo1 == oneri.Ogrenci2No || x.OgrNo2 == oneri.Ogrenci1No || x.OgrNo2 == oneri.Ogrenci2No);
+			}
+			else
+			{
+				proje = _context.ProjeAl.FirstOrDefault(x => x.OgrNo1 == oneri.Ogrenci1No || x.OgrNo2 == oneri.Ogrenci1No);
+			}
+			if (proje == null)
+			{
+				return false;
+			}
+			return true;
+		}
+
 		public IActionResult Discard(int id) {
 			if (HttpContext.Session.GetInt32("akademisyen") == null)
 			{

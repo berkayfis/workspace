@@ -210,10 +210,10 @@ namespace WebApplication14.Controllers
             Takvim takvim = _context.Takvim.FirstOrDefault(x => x.Id == 1);
             if (takvim.Toplanti == DateTime.Today)
             {
-                ProjeAl alınanProje = _context.ProjeAl.FirstOrDefault(x => x.Id == id);
-                if (alınanProje != null)
+                ProjeAl alinanProje = _context.ProjeAl.FirstOrDefault(x => x.Id == id);
+                if (alinanProje != null)
                 {
-                    alınanProje.KabulDurumu = "Kabul";
+                    alinanProje.KabulDurumu = "Kabul";
                 }
                 _context.SaveChanges();
             }
@@ -225,6 +225,7 @@ namespace WebApplication14.Controllers
 
             return RedirectToAction("Index", "AtamasıYapılanProjeler");
         }
+
         public IActionResult Ret(int id)
         {
             if (HttpContext.Session.GetInt32("koordinatör") == null)//Proje kurulunun kararını sadece koordinatör atayabilir
@@ -377,28 +378,36 @@ namespace WebApplication14.Controllers
                 projeler = _context.ProjeAl.Where(x => x.Ararapor2 != null).ToList();
             }
             List<AkademikPersonel> resAssist = _context.AkademikPersonel.Where(x => x.Unvan == "Arş. Grv.").ToList();
-            int[,] isYuku = new int[2, resAssist.Count];
-            int i = 0;
-            foreach (AkademikPersonel akademisyen in resAssist)
-            {
-                isYuku[i, 0] = akademisyen.Id;
-                isYuku[i, 1] = 0;
-            }
+            //int[,] isYuku = new int[2, resAssist.Count];
+            //int i = 0;
+            //foreach (AkademikPersonel akademisyen in resAssist)
+            //{
+            //    isYuku[i, 0] = akademisyen.Id;
+            //    isYuku[i, 1] = 0;
+            //}
 
             var rand = new Random();
+            int i = 0;
             foreach (ProjeAl proje in projeler)
             {
                 int x = rand.Next(resAssist.Count);
+
                 int randomAkademisyenId = resAssist[x].Id;
                 proje.AsistanId = randomAkademisyenId;
-                i = 0;
-                int flag = 0;
+
+                resAssist.RemoveAt(x);
+                if (resAssist.Count == 0)
+                {
+                    resAssist = _context.AkademikPersonel.Where(x => x.Unvan == "Arş. Grv.").ToList();
+                }
+
+                //i = 0;                
                 /*while (isYuku[i, 0] != randomAkademisyenId && flag == 0)
 				{
 					if()
 					i++;
 				}*/
-                isYuku[i, 1]++;
+
             }
             _context.SaveChanges();
         }

@@ -346,6 +346,10 @@ namespace WebApplication14.Controllers
 
                 //proje ataması yapılan öğrencinin, diğer istekleri silinmeli(bir öğrenci en fazla bir proje alabilir)
                 List<Istek> digerIstekler = _context.Istek.Where(x => x.OgrNo1 == atamasıYapılacakIstek.OgrNo1 || x.OgrNo2 == atamasıYapılacakIstek.OgrNo1).ToList();
+                //Öğrenci önerileri silinecek.
+                var ogrenciOnerileri = _context.OgrenciProjeOnerisi.Where(x => x.Ogrenci1No == atamasıYapılacakIstek.OgrNo1 || x.Ogrenci2No == atamasıYapılacakIstek.OgrNo1).ToList();
+                _context.OgrenciProjeOnerisi.RemoveRange(ogrenciOnerileri);
+
                 foreach (Istek istek in digerIstekler)
                 {
                     _context.Istek.Remove(istek);
@@ -361,6 +365,9 @@ namespace WebApplication14.Controllers
                 {
                     _context.Istek.Remove(istek1);
                 }
+
+                var ogrenciOnerileri = _context.OgrenciProjeOnerisi.Where(x => x.Ogrenci1No == atamasıYapılacakIstek.OgrNo1 || x.Ogrenci2No == atamasıYapılacakIstek.OgrNo1 ||x.Ogrenci1No == atamasıYapılacakIstek.OgrNo2 || x.Ogrenci2No == atamasıYapılacakIstek.OgrNo2).ToList();
+
                 digerIstekler = _context.Istek.Where(x => x.OgrNo1 == atamasıYapılacakIstek.OgrNo2 || x.OgrNo2 == atamasıYapılacakIstek.OgrNo2).ToList();
                 foreach (Istek istek1 in digerIstekler)
                 {

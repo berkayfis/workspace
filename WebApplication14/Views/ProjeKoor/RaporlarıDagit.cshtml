@@ -31,7 +31,7 @@ else if (ViewBag.AraRapor2 != null)
 							<th>Danışman</th>
 							<th>Öğrenci 1</th>
 							<th>Öğrenci 2</th>
-							<th>Form</th>
+							<th>Rapor</th>
 							<th>Görevli Asistan</th>
 						</tr>
 					</thead>
@@ -57,7 +57,7 @@ else if (ViewBag.AraRapor2 != null)
 									<td>@Html.ActionLink("Ara Rapor 1", "Index", "PdfViewer", new { path = proje.Ararapor1, banch = proje.OgrNo1 }, new { target = "_blank", style = "color:#FFFFFF;" })</td>
 									if (proje.AsistanId != null)
 									{
-										<td>@proje.Asistan.Kisaltma</td>
+										<td>@proje.Asistan.Ad @proje.Asistan.Soyad</td>
 									}
 								}
 								else
@@ -81,7 +81,7 @@ else if (ViewBag.AraRapor2 != null)
 									<td>@Html.ActionLink("Ara Rapor 1", "Index", "PdfViewer", new { path = proje.Ararapor1 ,banch = proje.OgrenciOneriNoNavigation.Ogrenci1No}, new { target = "_blank", style = "color:#FFFFFF;" })</td>
 									if (proje.AsistanId != null)
 									{
-										<td>@proje.Asistan.Kisaltma</td>
+									<td>@proje.Asistan.Ad @proje.Asistan.Soyad</td>
 									}
 								}
 								else
@@ -114,7 +114,7 @@ else if (ViewBag.AraRapor2 != null)
 								<td>@Html.ActionLink("Ara Rapor 2", "Index", "PdfViewer", new { path = proje.Ararapor2, banch = proje.OgrNo1 }, new { target = "_blank", style = "color:#FFFFFF;" })</td>
 								if (proje.AsistanId != null)
 								{
-									<td>@proje.Asistan.Kisaltma</td>
+									<td>@proje.Asistan.Ad @proje.Asistan.Soyad</td>
 								}
 							}
 							else
@@ -138,7 +138,7 @@ else if (ViewBag.AraRapor2 != null)
 								<td>@Html.ActionLink("Ara Rapor 2", "Index", "PdfViewer", new { path = proje.Ararapor2, banch = proje.OgrenciOneriNoNavigation.Ogrenci1No }, new { target = "_blank", style = "color:#FFFFFF;" })</td>
 								if (proje.AsistanId != null)
 								{
-									<td>@proje.Asistan.Kisaltma</td>
+									<td>@proje.Asistan.Ad @proje.Asistan.Soyad</td>
 								}
 							}
 							else
