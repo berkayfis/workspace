@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication14.Models;
 
 namespace WebApplication14.Migrations
 {
     [DbContext(typeof(AraProjeContext))]
-    partial class AraProjeContextModelSnapshot : ModelSnapshot
+    [Migration("20200603080254_versionFour")]
+    partial class versionFour
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -401,9 +403,6 @@ namespace WebApplication14.Migrations
                     b.Property<string>("Seans")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("SinavTarihi")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Sinif")
                         .HasColumnType("nvarchar(max)");
 
@@ -415,15 +414,6 @@ namespace WebApplication14.Migrations
 
                     b.Property<int>("akademisyenID3")
                         .HasColumnType("int");
-
-                    b.Property<string>("akademisyenKisaltma1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("akademisyenKisaltma2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("akademisyenKisaltma3")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ogrNo1")
                         .HasColumnType("nvarchar(max)");

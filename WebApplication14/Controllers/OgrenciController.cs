@@ -37,7 +37,7 @@ namespace WebApplication14.Controllers
             }
             ViewBag.flag = flag;
 
-            List<ProjeOnerileri> akademisyenOnerileri = _context.ProjeOnerileri.Where(x=> x.Status == 1).OrderBy(x => x.Danisman.Kisaltma).ToList();
+            List<ProjeOnerileri> akademisyenOnerileri = _context.ProjeOnerileri.Where(x=> x.Status == 1).OrderBy(x=> x.Kategori).ThenBy(x => x.Danisman.Kisaltma).ToList();
             ViewBag.AkademisyenOnerileri = akademisyenOnerileri;
 
             List<int> kaçKezAtandı = new List<int>();
@@ -270,6 +270,27 @@ namespace WebApplication14.Controllers
                     ViewBag.AraRapor2 = 1;
                 else if (DateTime.Today == takvim.Finalrapor)
                     ViewBag.FinalRapor = 1;
+
+                var araRaporSure = takvim.Ararapor1.Value.Subtract(DateTime.Today).Days;
+                var araRapor2Sure = takvim.Ararapor2.Value.Subtract(DateTime.Today).Days;
+                var finalRaporSure = takvim.Finalrapor.Value.Subtract(DateTime.Today).Days;
+                if (0<araRaporSure && araRaporSure<7)
+                {
+                    ViewBag.WarningMessage = "1. Ara Rapor Teslimine bir haftadan az kaldı";
+                }
+                else if(0 < araRapor2Sure && araRapor2Sure < 7)
+                {
+                    ViewBag.WarningMessage = "2. Ara Rapor Teslimine bir haftadan az kaldı";
+                }
+                else if(0 < finalRaporSure && finalRaporSure < 7)
+                {
+                    ViewBag.WarningMessage = "Final Rapor Teslimine bir haftadan az kaldı";
+                }
+                else
+                {
+                    ViewBag.WarningMessage = string.Empty;
+                }
+
             }
             else
             {//bu dönem proje almıyorsa

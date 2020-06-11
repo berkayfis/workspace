@@ -63,22 +63,22 @@
                         <div class="form-group">
                             <label>Final Rapor Teslimi</label>
                             <input type="text" value="@takvim.Finalrapor" class="form-control" disabled>
-                            @if ((await AuthorizationService.AuthorizeAsync(User, "Koordinator")).Succeeded){<input type="date" name="FİnalRapor" class="form-control">}
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "Koordinator")).Succeeded){<input type="date" name="FinalRapor" class="form-control">}
                         </div>
                         <div class="form-group">
                             <label>Bilgisayar(Ara) Projesi Final Sınavı</label>
                             <input type="text" value="@takvim.Arasinav" class="form-control" disabled>
-                            @if ((await AuthorizationService.AuthorizeAsync(User, "Koordinator")).Succeeded){<input type="date" name="AraSinav" class="form-control">}
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "Koordinator")).Succeeded){<input type="date" name="Arasinav" class="form-control">}
                         </div>
                         <div class="form-group">
                             <label>Bitirme Projesi Final Sınavı</label>
                             <input type="text" class="form-control" value="@takvim.Bitirmesinav" disabled>
-                            @if ((await AuthorizationService.AuthorizeAsync(User, "Koordinator")).Succeeded){<input type="date" class="form-control" name="BİtİrmeSinav">}
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "Koordinator")).Succeeded){<input type="date" class="form-control" name="Bitirmesinav">}
                         </div>
                         <div class="form-group">
                             <label>Proje Kitap Teslimi(Finalde Başarılı Olanlar İçin)</label>
                             <input type="text" class="form-control" value="@takvim.Kitap" disabled>
-                            @if ((await AuthorizationService.AuthorizeAsync(User, "Koordinator")).Succeeded){<input type="date" class="form-control" name="Kİtap">}
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "Koordinator")).Succeeded){<input type="date" class="form-control" name="Kitap">}
                         </div>
                     </div>
                 </div>

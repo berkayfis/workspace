@@ -373,7 +373,7 @@ namespace WebApplication14.Controllers
                 {
                     _context.Istek.Remove(istek1);
                 }
-
+                _context.OgrenciProjeOnerisi.RemoveRange(ogrenciOnerileri);
                 _context.Remove(atamasıYapılacakIstek);//bu arkadaşlar artık bir projeye atandılar isteklerini sil
             }
 

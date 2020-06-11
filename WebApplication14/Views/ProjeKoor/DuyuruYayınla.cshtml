@@ -1,36 +1,37 @@
 ﻿
 @{
-	ViewData["Title"] = "DuyuruYayınla";
+    ViewData["Title"] = "DuyuruYayınla";
 }
+
 @using (Html.BeginForm("DuyuruYayınla", "ProjeKoor", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-	<div class="row">
-		<div class="col-md-12">
-			<div class="block">
-				<div class="block-heading">
-					<div class="main-text h2">
-						Yeni Duyuru Ekleme Sayfası
-					</div>
-				</div>
-				<div class="block-content-outer">
-					<div class="block-content-inner">
-						<form action="/Duyuru/DuyuruEkle" method="post" role="form">
-							<div class="form-group">
-								<label for="exampleInputEmail1">Duyuru Konusu</label>
-								<input type="text" class="form-control" id="exampleInputEmail1" placeholder="Duyuru başlığını giriniz" name="Baslik">
-							</div>
-							<div class="form-group">
-								<textarea name="Icerik" id="" cols="30" rows="7" class="form-control" placeholder="Duyuru İçeriğini Giriniz" style="margin-top: 0px; margin-bottom: 0px; height: 181px;"></textarea>
-							</div>
-							<div class="form-group">
-								<label>Eklenti</label><br><br>
-								<input type="file" name="Eklenti">
-							</div>
-							<button type="submit" class="btn btn-primary">Kaydet</button>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="block">
+                <div class="block-heading">
+                    <div class="main-text h2">
+                        Yeni Duyuru Ekleme Sayfası
+                    </div>
+                </div>
+                <div class="block-content-outer">
+                    <div class="block-content-inner">
+                        <form action="/Duyuru/DuyuruEkle" method="post" role="form">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Duyuru Konusu</label>
+                                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Duyuru başlığını giriniz" name="Baslik">
+                            </div>
+                            <div class="form-group">
+                                <textarea name="Icerik" id="" cols="30" rows="7" class="form-control" placeholder="Duyuru İçeriğini Giriniz" style="margin-top: 0px; margin-bottom: 0px; height: 181px;"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Eklenti</label><br><br>
+                                <input type="file" name="Eklenti">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Kaydet</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 }

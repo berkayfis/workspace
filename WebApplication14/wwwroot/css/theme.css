@@ -14645,3 +14645,8 @@ section {
     background-color: #e4fbff;
     border: groove;
 }
+.raporWarningMessage {
+    color: #ffc107;
+    font-weight:bolder;
+    padding-left:10px;
+}

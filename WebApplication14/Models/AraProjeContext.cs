@@ -37,7 +37,8 @@ namespace WebApplication14.Models
         public virtual DbSet<Takvim> Takvim { get; set; }
 
         public virtual DbSet<Message> Messages { get; set; }
-
+        
+        public virtual DbSet<FinalSinav> Finals { get; set; }
 
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

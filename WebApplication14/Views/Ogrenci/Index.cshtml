@@ -39,8 +39,8 @@
 		}
 		<!-- DATA TABLE-->
 		<div class="table-responsive m-b-40">
-			<table class="table table-borderless table-data3">
-				<thead>
+			<table class="table table-borderless">
+				<thead class="thead-dark">
 					<tr>
 						<th>Oturum No</th>
 						<th>Tür</th>
@@ -58,7 +58,7 @@
 				<tbody>
 					@foreach (ProjeOnerileri proje in ViewBag.AkademisyenOnerileri)
 					{
-						<tr>
+						<tr class="@(proje.Kategori == "Bilgisayar(Ara) Proje" ? "table-info" : "table-warning")">
 							<td>@proje.OturumNo</td>
 							<td>@proje.Kategori</td>
 							<td>@proje.Isim</td>

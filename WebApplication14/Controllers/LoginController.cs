@@ -69,6 +69,7 @@ namespace WebApplication14.Controllers
                 }
 
                 HttpContext.Session.SetString("dir", akademikPersonel.Kisaltma + "/Profil.PNG");
+                HttpContext.Session.SetString("profilImage", "../images/Akademisyen/" + akademikPersonel.Kisaltma + ".PNG");
 
                 ProjeKoordinatoru koor = _context.ProjeKoordinatoru.FirstOrDefault(x => x.AkademisyenId == akademikPersonel.Id);
                 if (koor != null)
@@ -103,6 +104,7 @@ namespace WebApplication14.Controllers
                 }
 
                 string subdir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Ogrenci", ogrenci.OgrenciNo);
+
                 // If directory does not exist, create it. 
                 if (!Directory.Exists(subdir))
                 {
@@ -110,6 +112,8 @@ namespace WebApplication14.Controllers
                 }
 
                 HttpContext.Session.SetString("dir", ogrenci.OgrenciNo + "/Profil.PNG");
+                HttpContext.Session.SetString("profilImage", "../images/Ogrenci/" + ogrenci.OgrenciNo+ ".PNG");
+
 
                 if (DateTime.Today > takvim.Toplanti)
                 {

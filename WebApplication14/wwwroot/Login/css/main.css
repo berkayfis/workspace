@@ -211,7 +211,7 @@ iframe {
 }
 
 .login100-form-logo {
-  font-size: 60px; 
+    /*font-size: 60px; 
   color: #333333;
 
   display: -webkit-box;
@@ -225,7 +225,14 @@ iframe {
   height: 120px;
   border-radius: 50%;
   background-color: #fff;
-  margin: 0 auto;
+  margin: 0 auto; */
+    display: flex;
+    align-items: center;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background-image: url(/images/logo.png);
+    margin: 0 auto;
 }
 
 .login100-form-title {

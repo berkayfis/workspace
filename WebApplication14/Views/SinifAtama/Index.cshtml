@@ -1,255 +1,100 @@
 ﻿
 @{
-	ViewData["Title"] = "Kabul Gören Projeler";
-	List<int> akademisyenIds = new List<int>();
-	List<String> seanslar = ViewBag.seanslar;
-	int i = 0, j = 0;
-	List<int> toplamSayi = ViewBag.toplam;
-	List<String> derslikler = ViewBag.derslikler;
+    ViewData["Title"] = "Final Sınav Programı";
 }
-<div class="row">
-	<div class="col-lg-12">
-		<!-- USER DATA-->
-		<div class="user-data m-b-30">
-			<h3 class="title-3 m-b-30">
-				<i class="zmdi zmdi-check-circle"></i>Final Sınavına Girecek Öğrenciler
-			</h3>
-			<div class="table-responsive table-data">
-				<table class="table">
-					<thead>
-						<tr>
-							<td>Proje Adı</td>
-							<td>Danışman</td>
-							<td>Alan Öğrenciler</td>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach (ProjeAl proje in ViewBag.buDonemProjeYapanlarAra)
-						{
-							<tr>
-								@if (proje.ProjeNo != null)
-								{
-									<td>
-										<div class="table-data__info">
-											<h6>@proje.ProjeNoNavigation.Isim</h6>
-											<span>
-												<a>@proje.ProjeNoNavigation.Kategori</a>
-											</span>
-										</div>
-									</td>
-									<td><span class="role member">@(proje.ProjeNoNavigation.Danisman.Kisaltma)</span></td>
-									<td>
-										<span class="role user">@(proje.OgrNo1Navigation.OgrenciNo + " " + proje.OgrNo1Navigation.Ad + " " + proje.OgrNo1Navigation.Soyad)</span>
-										@if (proje.OgrNo2 != null)
-										{
-											<span class="role user">@(proje.OgrNo2Navigation.OgrenciNo + " " + proje.OgrNo2Navigation.Ad + " " + proje.OgrNo2Navigation.Soyad)</span>
-										}
-									</td>
-								}
-								else if (proje.OgrenciOneriNo != null)
-								{
-									<td>
-										<div class="table-data__info">
-											<h6>@proje.OgrenciOneriNoNavigation.Isim</h6>
-											<span>
-												<a>@proje.OgrenciOneriNoNavigation.Turu</a>
-											</span>
-										</div>
-									</td>
-									<td><span class="role member">@(proje.OgrenciOneriNoNavigation.Danisman.Kisaltma)</span></td>
-									<td>
-										<span class="role user">@(proje.OgrenciOneriNoNavigation.Ogrenci1No + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Soyad)</span>
-										@if (proje.OgrNo2 != null)
-										{
-											<span class="role user">@(proje.OgrenciOneriNoNavigation.Ogrenci2No + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Soyad)</span>
-										}
-									</td>
-								}
-							</tr>
-						}
-						@foreach (ProjeAl proje in ViewBag.buDonemProjeYapanlarBitirme)
-						{
-							<tr>
-								@if (proje.ProjeNo != null)
-								{
-									<td>
-										<div class="table-data__info">
-											<h6>@proje.ProjeNoNavigation.Isim</h6>
-											<span>
-												<a>@proje.ProjeNoNavigation.Kategori</a>
-											</span>
-										</div>
-									</td>
-									<td><span class="role member">@(proje.ProjeNoNavigation.Danisman.Kisaltma)</span></td>
-									<td>
-										<span class="role user">@(proje.OgrNo1Navigation.OgrenciNo + " " + proje.OgrNo1Navigation.Ad + " " + proje.OgrNo1Navigation.Soyad)</span>
-										@if (proje.OgrNo2 != null)
-										{
-											<span class="role user">@(proje.OgrNo2Navigation.OgrenciNo + " " + proje.OgrNo2Navigation.Ad + " " + proje.OgrNo2Navigation.Soyad)</span>
-										}
-									</td>
-								}
-								else if (proje.OgrenciOneriNo != null)
-								{
-									<td>
-										<div class="table-data__info">
-											<h6>@proje.OgrenciOneriNoNavigation.Isim</h6>
-											<span>
-												<a>@proje.OgrenciOneriNoNavigation.Turu</a>
-											</span>
-										</div>
-									</td>
-									<td><span class="role member">@(proje.OgrenciOneriNoNavigation.Danisman.Kisaltma)</span></td>
-									<td>
-										<span class="role user">@(proje.OgrenciOneriNoNavigation.Ogrenci1No + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno1Navigation.Soyad)</span>
-										@if (proje.OgrNo2 != null)
-										{
-											<span class="role user">@(proje.OgrenciOneriNoNavigation.Ogrenci2No + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Ad + " " + proje.OgrenciOneriNoNavigation.Ogrno2Navigation.Soyad)</span>
-										}
-									</td>
-								}
-							</tr>
-						}
-					</tbody>
-				</table>
-			</div>
-		</div>
-		<!-- END USER DATA-->
-	</div>
-</div>
 
-<div class="row">
-	<div class="col-lg-12">
-		<!-- USER DATA-->
-		<div class="user-data m-b-30">
-			<h3 class="title-3 m-b-30">
-				<i class="zmdi zmdi-library"></i>Ara Projeler İçin Sınıf Planlaması
-			</h3>
-			<div class="table-responsive table-data">
-				<table class="table">
-					<thead>
-						<tr>
-							<th>Sınıflar</th>
-							<th>Saat</th>
-							<th>Danışman</th>
-							<th>Proje İsmi</th>
-							<th>Ogr 1</th>
-							<th>Ogr 2</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach (List<ProjeAl> proje in ViewBag.danismanlik)
-						{
-
-							<tr>
-								<td rowspan=@(proje.Count + 1)>@derslikler[i]</td>
-							</tr>
-							j = 0;
-							@foreach (ProjeAl projeler in proje)
-							{
-								<tr>
-									<td>@seanslar[j]</td>
-									@if (projeler.ProjeNo != null)
-									{
-										<td>@(projeler.ProjeNoNavigation.Danisman.Kisaltma)</td>
-										<td>@(projeler.ProjeNoNavigation.Isim)</td>
-										<td>@(projeler.OgrNo1Navigation.OgrenciNo + " " + projeler.OgrNo1Navigation.Ad + " " + projeler.OgrNo1Navigation.Soyad)</td>
-										if (projeler.OgrNo2 != null)
-										{
-											<td>@(projeler.OgrNo2Navigation.OgrenciNo + " " + projeler.OgrNo2Navigation.Ad + " " + projeler.OgrNo2Navigation.Soyad)</td>
-										}
-
-
-									}
-									else if (projeler.OgrenciOneriNo != null)
-									{
-										<td>@(projeler.OgrenciOneriNoNavigation.Danisman.Kisaltma)</td>
-										<td>@(projeler.OgrenciOneriNoNavigation.Isim)</td>
-										<td>@(projeler.OgrenciOneriNoNavigation.Ogrno1Navigation.OgrenciNo + " " + projeler.OgrenciOneriNoNavigation.Ogrno1Navigation.Ad + " " + projeler.OgrenciOneriNoNavigation.Ogrno1Navigation.Soyad)</td>
-										if (projeler.OgrenciOneriNoNavigation.Ogrenci2No != null)
-										{
-											<td>@(projeler.OgrenciOneriNoNavigation.Ogrno2Navigation.OgrenciNo + " " + projeler.OgrenciOneriNoNavigation.Ogrno2Navigation.Ad + " " + projeler.OgrenciOneriNoNavigation.Ogrno2Navigation.Soyad)</td>
-										}
-
-
-									}
-								</tr>
-								j++;
-							}
-							i++;
-						}
-					</tbody>
-				</table>
-			</div>
-		</div>
-		<!-- END USER DATA-->
-	</div>
-</div>
-<div class="row">
-	<div class="col-lg-12">
-		<!-- USER DATA-->
-		<div class="user-data m-b-30">
-			<h3 class="title-3 m-b-30">
-				<i class="zmdi zmdi-library"></i>Bitirme Projeleri İçin Sınıf Planlaması
-			</h3>
-			<div class="table-responsive table-data">
-				<table class="table">
-					<thead>
-						<tr>
-							<th>Sınıflar</th>
-							<th>Saat</th>
-							<th>Danışman</th>
-							<th>Proje İsmi</th>
-							<th>Ogr 1</th>
-							<th>Ogr 2</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach (List<ProjeAl> proje in ViewBag.danismanlik2)
-						{
-
-							<tr>
-								<td rowspan=@(proje.Count + 1)>D106</td>
-							</tr>
-							j = 0;
-							@foreach (ProjeAl projeler in proje)
-							{
-								<tr>
-									<td>@seanslar[j]</td>
-									@if (projeler.ProjeNo != null)
-									{
-										<td>@(projeler.ProjeNoNavigation.Danisman.Kisaltma)</td>
-										<td>@(projeler.ProjeNoNavigation.Isim)</td>
-										<td>@(projeler.OgrNo1Navigation.OgrenciNo + " " + projeler.OgrNo1Navigation.Ad + " " + projeler.OgrNo1Navigation.Soyad)</td>
-										if (projeler.OgrNo2 != null)
-										{
-											<td>@(projeler.OgrNo2Navigation.OgrenciNo + " " + projeler.OgrNo2Navigation.Ad + " " + projeler.OgrNo2Navigation.Soyad)</td>
-										}
-
-
-									}
-									else if (projeler.OgrenciOneriNo != null)
-									{
-										<td>@(projeler.OgrenciOneriNoNavigation.Danisman.Kisaltma)</td>
-										<td>@(projeler.OgrenciOneriNoNavigation.Isim)</td>
-										<td>@(projeler.OgrenciOneriNoNavigation.Ogrno1Navigation.OgrenciNo + " " + projeler.OgrenciOneriNoNavigation.Ogrno1Navigation.Ad + " " + projeler.OgrenciOneriNoNavigation.Ogrno1Navigation.Soyad)</td>
-										if (projeler.OgrenciOneriNoNavigation.Ogrenci2No != null)
-										{
-											<td>@(projeler.OgrenciOneriNoNavigation.Ogrno2Navigation.OgrenciNo + " " + projeler.OgrenciOneriNoNavigation.Ogrno2Navigation.Ad + " " + projeler.OgrenciOneriNoNavigation.Ogrno2Navigation.Soyad)</td>
-										}
-
-
-									}
-								</tr>
-								j++;
-							}
-						}
-					</tbody>
-				</table>
-			</div>
-		</div>
-		<!-- END USER DATA-->
-	</div>
-</div>
-
-
+@if (ViewBag.ErrorMessage != null)
+{
+    <div>
+        <h3>
+            @ViewBag.ErrorMessage
+        </h3>
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- USER DATA-->
+            <div class="user-data m-b-30">
+                <h3 class="title-3 m-b-30">
+                    <i class="zmdi zmdi-library"></i>Ara Proje Final Takvimi Planlaması
+                </h3>
+                <div class="table-responsive table-data">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Sınıflar</th>
+                                <th>Saat</th>
+                                <th>Danışman</th>
+                                <th>Proje İsmi</th>
+                                <th>Ogrenci 1</th>
+                                <th>Ogrenci 2</th>
+                                <th>Akademisyen 1</th>
+                                <th>Akademisyen 2</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (FinalSinav finalExam in ViewBag.araProjeler)
+                            {
+                                <tr>
+                                    <td>@finalExam.Sinif</td>
+                                    <td>@finalExam.Seans</td>
+                                    <td>@finalExam.akademisyenKisaltma1</td>
+                                    <td>@finalExam.projeAdı</td>
+                                    <td>@finalExam.ogrNo1</td>
+                                    <td>@finalExam.ogrNo2</td>
+                                    <td>@finalExam.akademisyenKisaltma2</td>
+                                    <td>@finalExam.akademisyenKisaltma3</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- END USER DATA-->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- USER DATA-->
+            <div class="user-data m-b-30">
+                <h3 class="title-3 m-b-30">
+                    <i class="zmdi zmdi-library"></i>Bitirme Proje Final Takvimi Planlaması
+                </h3>
+                <div class="table-responsive table-data">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Sınıflar</th>
+                                <th>Saat</th>
+                                <th>Danışman</th>
+                                <th>Proje İsmi</th>
+                                <th>Ogrenci 1</th>
+                                <th>Ogrenci 2</th>
+                                <th>Akademisyen 1</th>
+                                <th>Akademisyen 2</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (FinalSinav finalExam in ViewBag.bitirmeProjeler)
+                            {
+                                <tr>
+                                    <td>@finalExam.Sinif</td>
+                                    <td>@finalExam.Seans</td>
+                                    <td>@finalExam.akademisyenKisaltma1</td>
+                                    <td>@finalExam.projeAdı</td>
+                                    <td>@finalExam.ogrNo1</td>
+                                    <td>@finalExam.ogrNo2</td>
+                                    <td>@finalExam.akademisyenKisaltma2</td>
+                                    <td>@finalExam.akademisyenKisaltma3</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- END USER DATA-->
+        </div>
+    </div>
+}
