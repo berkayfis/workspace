@@ -30,20 +30,22 @@
 								<th>İsim</th>
 								<th>Kişi Sayısı</th>
 								<th>Grup Sayısı</th>
+								<th>Kategori</th>
 								<th>Form-1</th>
 							</tr>
 						</thead>
 						<tbody>
 							@foreach (EskiKabulGorenProjeler eskiProje in ViewBag.eskiOnerilerim)
 							{
-								<tr>
-									<td>@(eskiProje.Isim)</td>
-									<td>@(eskiProje.KisiSayisi)</td>
-									<td>@(eskiProje.GrupSayisi)</td>
-									<td>
-										@Html.ActionLink("pdf", "Index", "PdfViewer", new { path = eskiProje.Form1, banch = eskiProje.Danisman.Kisaltma }, new { target = "_blank" })
-									</td>
-								</tr>
+                            <tr>
+                                <td>@(eskiProje.Isim)</td>
+                                <td>@(eskiProje.KisiSayisi)</td>
+                                <td>@(eskiProje.GrupSayisi)</td>
+                                <td>@(eskiProje.Turu)</td>
+                                <td>
+                                    @Html.ActionLink("pdf", "Index", "PdfViewer", new { path = eskiProje.Form1, banch = eskiProje.Danisman.Kisaltma }, new { target = "_blank" })
+                                </td>
+                            </tr>
 							}
 						</tbody>
 					</table>
